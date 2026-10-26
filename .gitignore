@@ -6,6 +6,7 @@
 .godot/
 .godot-mcp/
 .agents/
+addons/
 
 # Exported builds and archives
 build/
