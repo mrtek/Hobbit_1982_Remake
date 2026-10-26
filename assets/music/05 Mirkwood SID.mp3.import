@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dl7asap374pl4"
+path="res://.godot/imported/05 Mirkwood SID.mp3-bdc943f0f6b48f4d2ee234b709b9ad58.mp3str"
+
+[deps]
+
+source_file="res://assets/music/05 Mirkwood SID.mp3"
+dest_files=["res://.godot/imported/05 Mirkwood SID.mp3-bdc943f0f6b48f4d2ee234b709b9ad58.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

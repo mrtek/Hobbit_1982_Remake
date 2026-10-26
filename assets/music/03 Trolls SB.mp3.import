@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dh3yodr4rqpw1"
+path="res://.godot/imported/03 Trolls SB.mp3-5ca9df61558f8b2872b73eddc57c127f.mp3str"
+
+[deps]
+
+source_file="res://assets/music/03 Trolls SB.mp3"
+dest_files=["res://.godot/imported/03 Trolls SB.mp3-5ca9df61558f8b2872b73eddc57c127f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

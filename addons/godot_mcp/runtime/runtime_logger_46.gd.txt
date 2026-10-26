@@ -1,0 +1,39 @@
+extends Logger
+var _mutex := Mutex.new()
+var _queue: Array = []
+var _sequence := 0
+var _dropped := 0
+
+func _append(kind: String, message: String, stream, file, line, frames: Array = []) -> void:
+    _mutex.lock()
+    _sequence += 1
+    if _queue.size() >= 500:
+        _queue.pop_front()
+        _dropped += 1
+    _queue.append({"sequence":_sequence,"timestamp":Time.get_datetime_string_from_system(true)+"Z",
+        "kind":kind,"stream":stream,"message":message.left(4096),"file":file,"line":line,
+        "frames":frames,"truncated":message.length()>4096})
+    _mutex.unlock()
+
+func _log_message(message: String, error: bool) -> void:
+    _append("output",message,"stderr" if error else "stdout",null,null)
+
+func _log_error(function: String, file: String, line: int, code: String, rationale: String, _notify: bool, error_type: int, _traces: Array[ScriptBacktrace]) -> void:
+    var frames: Array = []
+    if not file.is_empty():
+        frames.append({"file":file.left(1024),"line":maxi(line,0),"function":function.left(256)})
+    _append("warning" if error_type == 1 else "error",rationale if not rationale.is_empty() else code,null,file.left(1024),maxi(line,0),frames)
+
+func drain() -> Dictionary:
+    _mutex.lock()
+    var entries: Array = []
+    var bytes := 0
+    while not _queue.is_empty() and entries.size() < 50:
+        var next_bytes := JSON.stringify(_queue[0]).to_utf8_buffer().size()+128
+        if bytes+next_bytes>240*1024:
+            break
+        bytes += next_bytes
+        entries.append(_queue.pop_front())
+    var result := {"entries":entries,"dropped":_dropped}
+    _mutex.unlock()
+    return result

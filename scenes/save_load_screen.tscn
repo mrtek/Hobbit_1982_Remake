@@ -1,0 +1,1003 @@
+[gd_scene load_steps=8 format=3 uid="uid://save_load_screen_uid"]
+
+[ext_resource type="Script" path="res://scripts/save_load_screen.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
+bg_color = Color(0.02, 0.03, 0.05, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.06, 0.07, 0.1, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.72, 0.3, 0.85)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 20
+shadow_color = Color(0, 0, 0, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
+bg_color = Color(0.05, 0.06, 0.08, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.45, 0.55, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thumb"]
+bg_color = Color(0.03, 0.04, 0.05, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.35, 0.45, 0.35)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_confirm"]
+bg_color = Color(0.08, 0.09, 0.12, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.3, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 24
+shadow_color = Color(0, 0, 0, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+bg_color = Color(0.05, 0.1, 0.07, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.9, 0.5, 0.7)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="SaveLoadScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="DimOverlay" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_overlay")
+
+[node name="MainPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(1540, 920)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -770.0
+offset_top = -460.0
+offset_right = 770.0
+offset_bottom = 460.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="MainPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxMain" type="VBoxContainer" parent="MainPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TopRow" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HBoxTabs" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/TopRow"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BtnTabSave" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow/HBoxTabs"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "💾 СОХРАНИТЬ"
+
+[node name="BtnTabLoad" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow/HBoxTabs"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "📂 ЗАГРУЗИТЬ"
+
+[node name="SaveLoadTitle" type="Label" parent="MainPanel/Margin/VBoxMain/TopRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "СОХРАНЕНИЕ ИГРЫ"
+horizontal_alignment = 1
+
+[node name="HBoxPages" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/TopRow"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BtnPagePrev" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow/HBoxPages"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 18
+text = "◀"
+
+[node name="BtnPage1" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow/HBoxPages"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "Стр. 1 (1-6)"
+
+[node name="BtnPage2" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow/HBoxPages"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "Стр. 2 (7-12)"
+
+[node name="BtnPageNext" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow/HBoxPages"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 18
+text = "▶"
+
+[node name="BtnClose" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 40)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 20
+text = "✕"
+
+[node name="HSeparator" type="HSeparator" parent="MainPanel/Margin/VBoxMain"]
+layout_mode = 2
+
+[node name="GridSlots" type="GridContainer" parent="MainPanel/Margin/VBoxMain"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 18
+theme_override_constants/v_separation = 16
+columns = 3
+
+[node name="SlotCard1" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Margin" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxTop" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox"]
+layout_mode = 2
+
+[node name="SlotNum1" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Слот 1"
+
+[node name="SlotDate1" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.8, 0.85)
+theme_override_font_sizes/font_size = 14
+text = "—"
+
+[node name="Spacer" type="Control" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/HBoxTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnDelete1" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 28)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "🗑"
+tooltip_text = "Удалить сохранение"
+
+[node name="Body1" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContent1" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ThumbFrame" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1/VBoxContent1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_thumb")
+
+[node name="SlotThumb1" type="TextureRect" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1/VBoxContent1/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="EmptyLabel1" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1/VBoxContent1/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.55, 0.65, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "ПУСТОЙ СЛОТ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxBottom" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1/VBoxContent1"]
+layout_mode = 2
+
+[node name="VBoxInfo" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1/VBoxContent1/HBoxBottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="RoomName1" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1/VBoxContent1/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Свободный слот"
+text_overrun_behavior = 3
+
+[node name="StatsLine1" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1/VBoxContent1/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.75)
+theme_override_font_sizes/font_size = 13
+text = "Нет данных"
+
+[node name="ActionHint1" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1/VBoxContent1/HBoxBottom"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "✚ Сохранить"
+horizontal_alignment = 2
+
+[node name="BtnCardAction1" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="SlotCard2" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Margin" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxTop" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox"]
+layout_mode = 2
+
+[node name="SlotNum2" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Слот 2"
+
+[node name="SlotDate2" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.8, 0.85)
+theme_override_font_sizes/font_size = 14
+text = "—"
+
+[node name="Spacer" type="Control" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/HBoxTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnDelete2" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 28)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "🗑"
+tooltip_text = "Удалить сохранение"
+
+[node name="Body2" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContent2" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ThumbFrame" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2/VBoxContent2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_thumb")
+
+[node name="SlotThumb2" type="TextureRect" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2/VBoxContent2/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="EmptyLabel2" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2/VBoxContent2/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.55, 0.65, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "ПУСТОЙ СЛОТ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxBottom" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2/VBoxContent2"]
+layout_mode = 2
+
+[node name="VBoxInfo" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2/VBoxContent2/HBoxBottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="RoomName2" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2/VBoxContent2/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Свободный слот"
+text_overrun_behavior = 3
+
+[node name="StatsLine2" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2/VBoxContent2/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.75)
+theme_override_font_sizes/font_size = 13
+text = "Нет данных"
+
+[node name="ActionHint2" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2/VBoxContent2/HBoxBottom"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "✚ Сохранить"
+horizontal_alignment = 2
+
+[node name="BtnCardAction2" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="SlotCard3" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Margin" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxTop" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox"]
+layout_mode = 2
+
+[node name="SlotNum3" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Слот 3"
+
+[node name="SlotDate3" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.8, 0.85)
+theme_override_font_sizes/font_size = 14
+text = "—"
+
+[node name="Spacer" type="Control" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/HBoxTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnDelete3" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 28)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "🗑"
+tooltip_text = "Удалить сохранение"
+
+[node name="Body3" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContent3" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ThumbFrame" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3/VBoxContent3"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_thumb")
+
+[node name="SlotThumb3" type="TextureRect" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3/VBoxContent3/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="EmptyLabel3" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3/VBoxContent3/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.55, 0.65, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "ПУСТОЙ СЛОТ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxBottom" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3/VBoxContent3"]
+layout_mode = 2
+
+[node name="VBoxInfo" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3/VBoxContent3/HBoxBottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="RoomName3" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3/VBoxContent3/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Свободный слот"
+text_overrun_behavior = 3
+
+[node name="StatsLine3" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3/VBoxContent3/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.75)
+theme_override_font_sizes/font_size = 13
+text = "Нет данных"
+
+[node name="ActionHint3" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3/VBoxContent3/HBoxBottom"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "✚ Сохранить"
+horizontal_alignment = 2
+
+[node name="BtnCardAction3" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="SlotCard4" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Margin" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxTop" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox"]
+layout_mode = 2
+
+[node name="SlotNum4" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Слот 4"
+
+[node name="SlotDate4" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.8, 0.85)
+theme_override_font_sizes/font_size = 14
+text = "—"
+
+[node name="Spacer" type="Control" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/HBoxTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnDelete4" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 28)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "🗑"
+tooltip_text = "Удалить сохранение"
+
+[node name="Body4" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContent4" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ThumbFrame" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4/VBoxContent4"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_thumb")
+
+[node name="SlotThumb4" type="TextureRect" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4/VBoxContent4/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="EmptyLabel4" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4/VBoxContent4/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.55, 0.65, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "ПУСТОЙ СЛОТ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxBottom" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4/VBoxContent4"]
+layout_mode = 2
+
+[node name="VBoxInfo" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4/VBoxContent4/HBoxBottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="RoomName4" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4/VBoxContent4/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Свободный слот"
+text_overrun_behavior = 3
+
+[node name="StatsLine4" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4/VBoxContent4/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.75)
+theme_override_font_sizes/font_size = 13
+text = "Нет данных"
+
+[node name="ActionHint4" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4/VBoxContent4/HBoxBottom"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "✚ Сохранить"
+horizontal_alignment = 2
+
+[node name="BtnCardAction4" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="SlotCard5" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Margin" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxTop" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox"]
+layout_mode = 2
+
+[node name="SlotNum5" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Слот 5"
+
+[node name="SlotDate5" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.8, 0.85)
+theme_override_font_sizes/font_size = 14
+text = "—"
+
+[node name="Spacer" type="Control" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/HBoxTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnDelete5" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 28)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "🗑"
+tooltip_text = "Удалить сохранение"
+
+[node name="Body5" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContent5" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ThumbFrame" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5/VBoxContent5"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_thumb")
+
+[node name="SlotThumb5" type="TextureRect" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5/VBoxContent5/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="EmptyLabel5" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5/VBoxContent5/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.55, 0.65, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "ПУСТОЙ СЛОТ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxBottom" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5/VBoxContent5"]
+layout_mode = 2
+
+[node name="VBoxInfo" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5/VBoxContent5/HBoxBottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="RoomName5" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5/VBoxContent5/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Свободный слот"
+text_overrun_behavior = 3
+
+[node name="StatsLine5" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5/VBoxContent5/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.75)
+theme_override_font_sizes/font_size = 13
+text = "Нет данных"
+
+[node name="ActionHint5" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5/VBoxContent5/HBoxBottom"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "✚ Сохранить"
+horizontal_alignment = 2
+
+[node name="BtnCardAction5" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="SlotCard6" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Margin" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxTop" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox"]
+layout_mode = 2
+
+[node name="SlotNum6" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Слот 6"
+
+[node name="SlotDate6" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.8, 0.85)
+theme_override_font_sizes/font_size = 14
+text = "—"
+
+[node name="Spacer" type="Control" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/HBoxTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnDelete6" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/HBoxTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 28)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "🗑"
+tooltip_text = "Удалить сохранение"
+
+[node name="Body6" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContent6" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ThumbFrame" type="PanelContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6/VBoxContent6"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_thumb")
+
+[node name="SlotThumb6" type="TextureRect" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6/VBoxContent6/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="EmptyLabel6" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6/VBoxContent6/ThumbFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.55, 0.65, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "ПУСТОЙ СЛОТ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxBottom" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6/VBoxContent6"]
+layout_mode = 2
+
+[node name="VBoxInfo" type="VBoxContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6/VBoxContent6/HBoxBottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="RoomName6" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6/VBoxContent6/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Свободный слот"
+text_overrun_behavior = 3
+
+[node name="StatsLine6" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6/VBoxContent6/HBoxBottom/VBoxInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.75)
+theme_override_font_sizes/font_size = 13
+text = "Нет данных"
+
+[node name="ActionHint6" type="Label" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6/VBoxContent6/HBoxBottom"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "✚ Сохранить"
+horizontal_alignment = 2
+
+[node name="BtnCardAction6" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+flat = true
+
+[node name="BottomRow" type="HBoxContainer" parent="MainPanel/Margin/VBoxMain"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ToastLabel" type="Label" parent="MainPanel/Margin/VBoxMain/BottomRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.4, 1, 0.5, 1)
+theme_override_font_sizes/font_size = 16
+text = "Игра успешно сохранена!"
+
+[node name="BtnBackBottom" type="Button" parent="MainPanel/Margin/VBoxMain/BottomRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Назад"
+
+[node name="ConfirmOverlay" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="ConfirmOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="Card" type="PanelContainer" parent="ConfirmOverlay"]
+custom_minimum_size = Vector2(540, 240)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -120.0
+offset_right = 270.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_confirm")
+
+[node name="Margin" type="MarginContainer" parent="ConfirmOverlay/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 22
+
+[node name="VBox" type="VBoxContainer" parent="ConfirmOverlay/Card/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Header" type="Label" parent="ConfirmOverlay/Card/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 20
+text = "ПОДТВЕРЖДЕНИЕ"
+horizontal_alignment = 1
+
+[node name="HSep" type="HSeparator" parent="ConfirmOverlay/Card/Margin/VBox"]
+layout_mode = 2
+
+[node name="ConfirmPrompt" type="Label" parent="ConfirmOverlay/Card/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 17
+text = "Перезаписать сохранение в Слоте 1?"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HBoxBtns" type="HBoxContainer" parent="ConfirmOverlay/Card/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="BtnConfirmYes" type="Button" parent="ConfirmOverlay/Card/Margin/VBox/HBoxBtns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 42)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 17
+text = "Да"
+
+[node name="BtnConfirmNo" type="Button" parent="ConfirmOverlay/Card/Margin/VBox/HBoxBtns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 42)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 17
+text = "Отмена"

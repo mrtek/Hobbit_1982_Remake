@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cu58idarcypro"
+path="res://.godot/imported/06 Desolation of Smaug.mp3-d5c3f4902420fbf078120bbbf6c90a53.mp3str"
+
+[deps]
+
+source_file="res://assets/music/06 Desolation of Smaug.mp3"
+dest_files=["res://.godot/imported/06 Desolation of Smaug.mp3-d5c3f4902420fbf078120bbbf6c90a53.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

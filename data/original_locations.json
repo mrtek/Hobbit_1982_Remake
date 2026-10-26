@@ -1,0 +1,2100 @@
+[
+  {
+    "id": 1,
+    "name": "Tunnel Like Hall",
+    "name_ru": "Уютная прихожая",
+    "description": "a comfortable tunnel like",
+    "description_ru": "Вы находитесь в круглой уютной прихожей норы хоббита. Стены обшиты деревянными панелями, на полу ковер, а круглая зеленая дверь ведет на восток в большой мир.",
+    "image_file": "01 Tunnel Like Hall.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 4,
+        "via_obj": 5
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Forest Road",
+    "name_ru": "Лесная дорога",
+    "description": "",
+    "description_ru": "Узкая каменистая дорога вьется среди густых перелесков. Воздух свеж и пахнет хвоей.",
+    "image_file": "02 Forest Road.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 3,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 46,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Forest",
+    "name_ru": "Густой лес",
+    "description": "",
+    "description_ru": "Древний дикий лес. Высокие деревья переплетаются ветвями, закрывая солнечный свет.",
+    "image_file": "03 Forest.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 2,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 45,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Lonelands",
+    "name_ru": "Пустоши",
+    "description": "a gloomy empty land with",
+    "description_ru": "Мрачные, безлюдные пустоши. Земля каменистая и сухая. Впереди на востоке маячат темные очертания холмов.",
+    "image_file": "04 Lonelands.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 1,
+        "via_obj": 5
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 5,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 5,
+        "via_obj": 0
+      },
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 6,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Trolls Clearing",
+    "name_ru": "Поляна троллей",
+    "description": "",
+    "description_ru": "Просторная поляна в лесу. Повсюду валяются обглоданные бараньи кости и следы костра. В воздухе стоит тяжелый запах троллей.",
+    "image_file": "05 Trolls Clearing.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 4,
+        "via_obj": 0
+      },
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 9,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 6,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Trolls Path",
+    "name_ru": "Тропа троллей",
+    "description": "a hidden path with trolls foot",
+    "description_ru": "Грязная тропа, протоптанная огромными босыми ступнями. Она ведет прямо к темному входу в скалу.",
+    "image_file": "06 Trolls Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 5,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 7,
+        "via_obj": 1
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Trolls Cave",
+    "name_ru": "Пещера троллей",
+    "description": "the trolls cave.",
+    "description_ru": "Зловонная темная пещера троллей. По углам свалено награбленное добро, старое оружие и кости жертв.",
+    "image_file": "07 Trolls Cave.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 6,
+        "via_obj": 1
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Running River",
+    "name_ru": "Быстротечная река",
+    "description": "",
+    "description_ru": "Шумный горный поток с пенистыми волнами преграждает путь. Вода чистая, но течение стремительно.",
+    "image_file": "08 Running River.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 45,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 3,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Rivendell",
+    "name_ru": "Ривенделл",
+    "description": "",
+    "description_ru": "Прекрасная долина Ривенделл, Последний Домашний Приют к западу от Гор. Здесь звенят водопады и вечно звучат эльфийские песни.",
+    "image_file": "09 Rivendell.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 10,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 5,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Misty Mountain",
+    "name_ru": "Мглистые горы",
+    "description": "a hard dangerous path in the",
+    "description_ru": "Суровые зубчатые пики Мглистых гор. Ветер свистит среди камней, над головой клубится ледяной туман.",
+    "image_file": "0A Misty Mountain.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 11,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 68,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 9,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 73,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Narrow Place",
+    "name_ru": "Узкое ущелье",
+    "description": "a narrow{5} place with a",
+    "description_ru": "Тесная расщелина среди отвесных скал. Кажется, камни готовы сомкнуться над головой.",
+    "image_file": "0B Narrow Place.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 12,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 10,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 14,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Dangerous Narrow Path",
+    "name_ru": "Опасная узкая тропа",
+    "description": "a narrow dangerous path.",
+    "description_ru": "Головокружительно узкая тропинка над бездонной пропастью. Внизу во тьме ревут горные потоки.",
+    "image_file": "0C Dangerous Narrow Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 22,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 11,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Goblins Dungeon",
+    "name_ru": "Темница гоблинов",
+    "description": "",
+    "description_ru": "Мрачный подземный каземат гоблинов. С потолка капает ледяная вода, пахнет сыростью и плесенью.",
+    "image_file": "0D Goblins Dungeon.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 16,
+        "via_obj": 17
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 18,
+        "via_obj": 27
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Large Dry Cave",
+    "name_ru": "Большая сухая пещера",
+    "description": "a large dry cave which is",
+    "description_ru": "Просторная сухая пещера, казавшаяся отличным укрытием от горной бури. В глубине видна узкая трещина в скале.",
+    "image_file": "0E Large Dry Cave.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 15,
+        "via_obj": 6
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 11,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Dark Stuffy Passage",
+    "name_ru": "Темный душный проход",
+    "description": "",
+    "description_ru": "Низкий душный коридор, пробитый гоблинами в недрах горы. Воздух спертый и горячий.",
+    "image_file": "0F Dark Stuffy Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 14,
+        "via_obj": 6
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 52,
+        "via_obj": 0
+      },
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 58,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Big Goblins Cavern",
+    "name_ru": "Огромная пещера гоблинов",
+    "description": "a big cavern with torches",
+    "description_ru": "Колоссальная пещера, озаренная багровым пламенем чадящих костров. Здесь заседает Верховный Гоблин.",
+    "image_file": "10 Big Goblins Cavern.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 57,
+        "via_obj": 0
+      },
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 18,
+        "via_obj": 0
+      },
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 13,
+        "via_obj": 17
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Deep Dark Lake",
+    "name_ru": "Глубокое темное озеро",
+    "description": "the brink of a deep dark under",
+    "description_ru": "Берег бескрайнего подземного озера. Вода черная и холодная, как лед. Посреди озера темнеет скалистый островок.",
+    "image_file": "11 Deep Dark Lake.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 55,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Dark Winding Passage",
+    "name_ru": "Темный извилистый проход",
+    "description": "",
+    "description_ru": "Бесконечный извилистый туннель, уходящий вглубь корней Мглистых гор.",
+    "image_file": "12 Dark Winding Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 63,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 13,
+        "via_obj": 27
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Inside Goblins Gate",
+    "name_ru": "Внутри врат гоблинов",
+    "description": "the goblins gate.",
+    "description_ru": "Каменный зал перед тяжелыми коваными воротами, ведущими наружу на восточную сторону гор.",
+    "image_file": "13 Inside Goblins Gate.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 20,
+        "via_obj": 10
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 65,
+        "via_obj": 0
+      },
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 16,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Outside Goblins Gate",
+    "name_ru": "Снаружи врат гоблинов",
+    "description": "the goblins gate.",
+    "description_ru": "Каменистый склон с восточной стороны Мглистых гор. Вход в подземелья скрыт среди валунов.",
+    "image_file": "14 Outside Goblins Gate.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 19,
+        "via_obj": 10
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 21,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Treeless Opening",
+    "name_ru": "Безлесная поляна",
+    "description": "",
+    "description_ru": "Широкая поляна среди холмов у подножия гор. Отсюда открывается вид на Великую реку.",
+    "image_file": "15 Treeless Opening.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 22,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 20,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Beorns House",
+    "name_ru": "Дом Беорна",
+    "description": "",
+    "description_ru": "Огромный деревянный зал Беорна. Пахнет свежим медом, воском и печеным хлебом. Вокруг бродят сообразительные животные.",
+    "image_file": "16 Beorns House.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 24,
+        "via_obj": 0
+      },
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 20,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 46,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 12,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 49,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Forestriver",
+    "name_ru": "Лесная река",
+    "description": "",
+    "description_ru": "Полноводная Лесная река течет сквозь чащу Лихолесья на восток к Долгому озеру.",
+    "image_file": "17 Forestriver.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 33,
+        "via_obj": 42
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 48,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Forest Gate",
+    "name_ru": "Лесные врата",
+    "description": "the gate to mirkwood.",
+    "description_ru": "Начало тропы сквозь Лихолесье. Деревья стоят плотной черной стеной, образуя сумрачную арку.",
+    "image_file": "18 Forest Gate.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 22,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 46,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 25,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Bewitched Gloomy Place",
+    "name_ru": "Заколдованное мрачное место",
+    "description": "",
+    "description_ru": "Гиблое место в глубине Лихолесья. Тени здесь неестественно густые, а воздух навевает дремоту.",
+    "image_file": "19 Bewitched Gloomy Place.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 24,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 66,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 0,
+        "via_obj": 9
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Spider Threads Place",
+    "name_ru": "Место с паутиной",
+    "description": "a place of black",
+    "description_ru": "Ветви деревьев оплетены толстой, липкой паутиной. Вверху в полумраке шевелятся огромные черные лапы пауков.",
+    "image_file": "1A Spider Threads Place.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 29,
+        "via_obj": 7
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 50,
+        "via_obj": 7
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 28,
+        "via_obj": 7
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 27,
+        "via_obj": 7
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Smothering Forest",
+    "name_ru": "Удушливый лес",
+    "description": "a forest of tangled smothering",
+    "description_ru": "Густейшая чаща Лихолесья. Листва не пропускает ни единого луча солнца, дышать тяжело.",
+    "image_file": "1B Smothering Forest.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 26,
+        "via_obj": 7
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 50,
+        "via_obj": 7
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Levelled Elvish Clearing",
+    "name_ru": "Ровная эльфийская поляна",
+    "description": "an elvish clearing with",
+    "description_ru": "Круглая поляна, где лесные эльфы разводят огни и устраивают пиры под звездным небом.",
+    "image_file": "1C Levelled Elvish Clearing.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 25,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 26,
+        "via_obj": 7
+      },
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 30,
+        "via_obj": 13
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Deep Bog",
+    "name_ru": "Глубокая трясина",
+    "description": "",
+    "description_ru": "Зыбкое болото в лесной низине. Черная жижа жадно чавкает под ногами.",
+    "image_file": "1D Deep Bog.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 26,
+        "via_obj": 7
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Elvenkings Great Halls",
+    "name_ru": "Великие чертоги короля эльфов",
+    "description": "",
+    "description_ru": "Величественные подземные залы Лесного короля, украшенные резьбой по живому камню.",
+    "image_file": "1E Elvenkings Great Halls.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 31,
+        "via_obj": 8
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 32,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 28,
+        "via_obj": 13
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "name": "Dark Dungeon",
+    "name_ru": "Темная эльфийская темница",
+    "description": "a dark dungeon in the",
+    "description_ru": "Каменная камера для пленников во дворце короля эльфов. Дверь надежно заперта снаружи.",
+    "image_file": "1F Dark Dungeon.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 32,
+        "via_obj": 8
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 30,
+        "via_obj": 8
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Elvenkings Cellar",
+    "name_ru": "Винный погреб короля",
+    "description": "the cellar where the king",
+    "description_ru": "Глубокий подвал, где сложены ряды больших дубовых бочек с крепким дорвинионским вином. В полу виден люк для сброса пустых бочек в реку.",
+    "image_file": "20 Elvenkings Cellar.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 31,
+        "via_obj": 8
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 30,
+        "via_obj": 0
+      },
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 33,
+        "via_obj": 12
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "name": "Forestriver",
+    "name_ru": "Лесная река под дворцом",
+    "description": "",
+    "description_ru": "Река у водосброса королевского дворца. Сюда через люк падают пустые бочки и плывут по течению.",
+    "image_file": "21 Forestriver.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 34,
+        "via_obj": 39
+      },
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 0,
+        "via_obj": 12
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 0,
+        "via_obj": 42
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "name": "Long Lake",
+    "name_ru": "Долгое озеро",
+    "description": "",
+    "description_ru": "Огромное спокойное озеро, отражающее далекие вершины Одинокой Горы. Вода холодная и чистая.",
+    "image_file": "22 Long Lake.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 36,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 35,
+        "via_obj": 0
+      },
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 33,
+        "via_obj": 39
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 45,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "name": "Lake Town",
+    "name_ru": "Озерный город (Эсгарот)",
+    "description": "a wooden town in the middle of",
+    "description_ru": "Деревянный город Эсгарот, построенный на высоких сваях прямо на воде Долгого озера. Повсюду покачиваются лодки.",
+    "image_file": "23 Lake Town.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 34,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 34,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 34,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 34,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "name": "River",
+    "name_ru": "Быстрое течение реки",
+    "description": "a strong river: the current is",
+    "description_ru": "Быстрое русло реки, несущее воды на юг к водопадам.",
+    "image_file": "21 Forestriver.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 37,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 34,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "name": "Dragons Desolation",
+    "name_ru": "Пустошь Смауга",
+    "description": "a bleak barren land that was",
+    "description_ru": "Выжженная земля вокруг Одинокой Горы. Трава обращена в пепел, камни растрескались от жара дыхания дракона.",
+    "image_file": "25 Dragons Desolation.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 38,
+        "via_obj": 0
+      },
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 36,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "name": "Dale Valley",
+    "name_ru": "Долина Дейла",
+    "description": "the ruins of the town of",
+    "description_ru": "Развалины некогда цветущего города Дейла у подножия Горы. Кругом царит мертвое безмолвие.",
+    "image_file": "26 Dale Valley.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 39,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 37,
+        "via_obj": 0
+      },
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 40,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "name": "Front Gate",
+    "name_ru": "Главные врата Эребора",
+    "description": "the front gate of the lonely",
+    "description_ru": "Исполинские каменные врата в недра Одинокой Горы. Из арки струится темный пар и бежит река Бегущая.",
+    "image_file": "27 Front Gate.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 41,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 38,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 40,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "name": "Ravenhill",
+    "name_ru": "Воронья скала",
+    "description": "the west side of ravenhill.",
+    "description_ru": "Одинокая высокая скала на отроге Горы. Старинный сторожевой пост, где издревле гнездятся мудрые вороны.",
+    "image_file": "28 Ravenhill.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 42,
+        "via_obj": 0
+      },
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 37,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 39,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "name": "Lower Halls",
+    "name_ru": "Нижние чертоги (Логово Смауга)",
+    "description": "the halls where the dragon",
+    "description_ru": "Необозримый зал гномьих чертогов. На гигантской горе сверкающего золота и самоцветов возлежит грозный дракон Смауг.",
+    "image_file": "29 Lower Halls.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 39,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 43,
+        "via_obj": 0
+      },
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 44,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "name": "Sidedoor",
+    "name_ru": "Потайная боковая дверь",
+    "description": "a little steep bay, still and",
+    "description_ru": "Узкий уступ на западном склоне Одинокой Горы. В гладкой каменной стене скрыт контур тайной двери гномов.",
+    "image_file": "2A Sidedoor.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 40,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 43,
+        "via_obj": 11
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 51,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "name": "Smooth Straight Passage",
+    "name_ru": "Гладкий прямой проход",
+    "description": "a smooth straight passage.",
+    "description_ru": "Идеально высеченный в камне туннель, ведущий от потайной двери прямо к логову дракона.",
+    "image_file": "2B Smooth Straight Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 42,
+        "via_obj": 11
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 41,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "name": "Lonely Mountain",
+    "name_ru": "Одинокая гора",
+    "description": "the lonely mountain.",
+    "description_ru": "Величественная вершина Эребора, возвышающаяся над равниной. Ветер гудит среди древних камней.",
+    "image_file": "2C Lonely Mountain.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 41,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 42,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 39,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 40,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "name": "Waterfall",
+    "name_ru": "Водопад",
+    "description": "",
+    "description_ru": "Грохочущий водопад срывается со скалы, обдавая все вокруг миллионами водяных брызг.",
+    "image_file": "2D Waterfall.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 8,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 3,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "name": "Forest Road",
+    "name_ru": "Лесная дорога к Озеру",
+    "description": "",
+    "description_ru": "Тропа, огибающая восточную опушку Лихолесья по направлению к Озерному городу.",
+    "image_file": "2E Forest Road.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 2,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 24,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "name": "Place",
+    "name_ru": "Площадка у серого камня",
+    "description": "",
+    "description_ru": "Небольшая каменистая площадка. Здесь стоит плоский серый камень, облюбованный черным дроздом.",
+    "image_file": "2E Forest Road.png",
+    "is_dark": false,
+    "exits": []
+  },
+  {
+    "id": 48,
+    "name": "Mountains",
+    "name_ru": "Вершины Мглистых гор",
+    "description": "",
+    "description_ru": "Белоснежные заснеженные пики под пронзительно-синим северным небом.",
+    "image_file": "30 Mountains.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 49,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 47,
+        "via_obj": 0
+      },
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 23,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "name": "Great River",
+    "name_ru": "Великая река Андуин",
+    "description": "",
+    "description_ru": "Широкие могучие воды Андуина, текущие на юг сквозь просторы Дикого Края.",
+    "image_file": "31 Great River.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 48,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 22,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 24,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 10,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "name": "Forest",
+    "name_ru": "Дремучий бор",
+    "description": "",
+    "description_ru": "Непроходимый массив вековых сосен и дубов на границе Лихолесья.",
+    "image_file": "03 Forest.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 26,
+        "via_obj": 7
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 67,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "name": "Empty Place",
+    "name_ru": "Пустое каменистое плато",
+    "description": "",
+    "description_ru": "Широкое каменистое плато, продуваемое холодными северными ветрами.",
+    "image_file": "33 Empty Place.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 47,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 42,
+        "via_obj": 0
+      },
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 44,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "name": "Passage",
+    "name_ru": "Проход в лабиринте гоблинов",
+    "description": "",
+    "description_ru": "Один из многочисленных темных проходов в запутанном лабиринте гоблинов.",
+    "image_file": "0F Dark Stuffy Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 15,
+        "via_obj": 0
+      },
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 53,
+        "via_obj": 0
+      },
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 54,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "name": "Passage",
+    "name_ru": "Тупиковый проход гоблинов",
+    "description": "",
+    "description_ru": "Узкий тупик. На полу валяются кости и ржавые осколки металла.",
+    "image_file": "12 Dark Winding Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 52,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "name": "Passage",
+    "name_ru": "Перекресток подземелий",
+    "description": "",
+    "description_ru": "Пересечение низких туннелей. Отсюда ведут ходы во все стороны.",
+    "image_file": "0F Dark Stuffy Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 52,
+        "via_obj": 0
+      },
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 55,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 64,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 17,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "name": "Passage",
+    "name_ru": "Сырой каменный туннель",
+    "description": "",
+    "description_ru": "Камни покрыты липкой слизью. Издалека доносятся хриплые крики гоблинов.",
+    "image_file": "12 Dark Winding Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 17,
+        "via_obj": 0
+      },
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 54,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 61,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 60,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "name": "Passage",
+    "name_ru": "Глубокий спуск в скале",
+    "description": "",
+    "description_ru": "Крутой наклонный коридор, ведущий еще глубже под гору.",
+    "image_file": "0F Dark Stuffy Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 60,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "name": "Passage",
+    "name_ru": "Тесный лаз",
+    "description": "",
+    "description_ru": "Узкий лаз, в котором можно передвигаться только согнувшись.",
+    "image_file": "12 Dark Winding Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 16,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 65,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 58,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "name": "Passage",
+    "name_ru": "Вонючий тупик",
+    "description": "",
+    "description_ru": "Заваленный камнями тупик. Пахнет гоблинским логовом.",
+    "image_file": "0F Dark Stuffy Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 62,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 15,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 57,
+        "via_obj": 0
+      },
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 59,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "name": "Passage",
+    "name_ru": "Извилистая трещина",
+    "description": "",
+    "description_ru": "Естественная трещина в базальтовой толще горы.",
+    "image_file": "12 Dark Winding Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 58,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 60,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "name": "Passage",
+    "name_ru": "Коридор с эхом",
+    "description": "",
+    "description_ru": "Каждый шаг в этом коридоре гулко отдается далеко во тьме.",
+    "image_file": "0F Dark Stuffy Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 61,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 59,
+        "via_obj": 0
+      },
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 56,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 61,
+    "name": "Passage",
+    "name_ru": "Забытый проход у озера",
+    "description": "",
+    "description_ru": "Сырой проход неподалеку от подземного озера. Воздух здесь ледяной.",
+    "image_file": "12 Dark Winding Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 54,
+        "via_obj": 0
+      },
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 60,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 62,
+    "name": "Passage",
+    "name_ru": "Заваленный штрек",
+    "description": "",
+    "description_ru": "Старая гномья выработка, наполовину заваленная обвалившимися плитами.",
+    "image_file": "0F Dark Stuffy Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 61,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 63,
+    "name": "Passage",
+    "name_ru": "Развилка подземных путей",
+    "description": "",
+    "description_ru": "Темная развилка туннелей гоблинов.",
+    "image_file": "12 Dark Winding Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 64,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 18,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 58,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 64,
+    "name": "Passage",
+    "name_ru": "Караульный туннель",
+    "description": "",
+    "description_ru": "Широкий коридор, где гоблины обычно выставляют свои дозоры.",
+    "image_file": "0F Dark Stuffy Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 65,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 54,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 63,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 65,
+    "name": "Passage",
+    "name_ru": "Верхний ход лабиринта",
+    "description": "",
+    "description_ru": "Коридор, поднимающийся обратно к внешним пещерам.",
+    "image_file": "12 Dark Winding Passage.png",
+    "is_dark": true,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 64,
+        "via_obj": 0
+      },
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 57,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 19,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 66,
+    "name": "West Bank",
+    "name_ru": "Западный берег Черной реки",
+    "description": "the west[0x02][0x04] the east",
+    "description_ru": "Западный берег Заколдованного черного ручья. Вода в нем темная и опасная: тот, кто коснется ее, погрузится в вечный сон.",
+    "image_file": "42 West Bank.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 25,
+        "via_obj": 0
+      },
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 67,
+        "via_obj": 9
+      }
+    ]
+  },
+  {
+    "id": 67,
+    "name": "East Bank",
+    "name_ru": "Восточный берег Черной реки",
+    "description": "east bank black river",
+    "description_ru": "Восточный берег Заколдованной реки. На этом берегу привязана старая лодка.",
+    "image_file": "43 East Bank.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 50,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 66,
+        "via_obj": 9
+      }
+    ]
+  },
+  {
+    "id": 68,
+    "name": "Narrow Path",
+    "name_ru": "Узкая лесная тропа",
+    "description": "",
+    "description_ru": "Еле заметная тропинка, петляющая среди гигантских корней черных дубов.",
+    "image_file": "44 Narrow Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 71,
+        "via_obj": 0
+      },
+      {
+        "direction": "northeast",
+        "direction_ru": "северо-восток",
+        "dest": 69,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 10,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 69,
+    "name": "Path",
+    "name_ru": "Тропа среди паутины",
+    "description": "",
+    "description_ru": "Тропа, по бокам которой колышутся белесые нити паутины.",
+    "image_file": "44 Narrow Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 70,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 68,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 10,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 70,
+    "name": "Path",
+    "name_ru": "Тропа у лощины",
+    "description": "",
+    "description_ru": "Тропинка спускается в сырую лесную лощину.",
+    "image_file": "44 Narrow Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "southeast",
+        "direction_ru": "юго-восток",
+        "dest": 72,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 69,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 71,
+    "name": "Path",
+    "name_ru": "Заросшая тропинка",
+    "description": "",
+    "description_ru": "Тропа почти полностью скрыта под колючим кустарником.",
+    "image_file": "44 Narrow Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 69,
+        "via_obj": 0
+      },
+      {
+        "direction": "south",
+        "direction_ru": "юг",
+        "dest": 74,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 68,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 72,
+    "name": "Path",
+    "name_ru": "Каменистая лесная тропа",
+    "description": "",
+    "description_ru": "Под ногами скрипят острые камни, вокруг стоят мертвые иссохшие деревья.",
+    "image_file": "44 Narrow Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "northwest",
+        "direction_ru": "северо-запад",
+        "dest": 70,
+        "via_obj": 0
+      },
+      {
+        "direction": "southwest",
+        "direction_ru": "юго-запад",
+        "dest": 71,
+        "via_obj": 0
+      },
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 75,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 73,
+    "name": "Path",
+    "name_ru": "Тропа на холм",
+    "description": "",
+    "description_ru": "Тропа поднимается на невысокий холм среди леса.",
+    "image_file": "44 Narrow Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 74,
+        "via_obj": 0
+      },
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 10,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 74,
+    "name": "Path",
+    "name_ru": "Тропа к поляне эльфов",
+    "description": "",
+    "description_ru": "Впереди сквозь листву мелькают огоньки и доносится нежная музыка эльфов.",
+    "image_file": "44 Narrow Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "north",
+        "direction_ru": "север",
+        "dest": 71,
+        "via_obj": 0
+      },
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 73,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 75,
+    "name": "Steep Path",
+    "name_ru": "Крутая тропа в горах",
+    "description": "",
+    "description_ru": "Крутой подъем по осыпающейся каменистой тропе к горному перевалу.",
+    "image_file": "4B Steep Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 76,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 76,
+    "name": "Path",
+    "name_ru": "Осыпь на горной тропе",
+    "description": "",
+    "description_ru": "Каменная осыпь. Идти приходится очень осторожно, чтобы не сорваться.",
+    "image_file": "4B Steep Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 77,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 77,
+    "name": "Path",
+    "name_ru": "Тропа над ущельем",
+    "description": "",
+    "description_ru": "Тропа идет вдоль края глубокого каньона.",
+    "image_file": "4B Steep Path.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "down",
+        "direction_ru": "вниз",
+        "dest": 78,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 78,
+    "name": "Deep Misty Valley",
+    "name_ru": "Глубокая мглистая долина",
+    "description": "",
+    "description_ru": "Долина, наполненная густым молочно-белым туманом. Звуки здесь приглушены.",
+    "image_file": "4E Deep Misty Valley.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "east",
+        "direction_ru": "восток",
+        "dest": 79,
+        "via_obj": 0
+      },
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 77,
+        "via_obj": 0
+      }
+    ]
+  },
+  {
+    "id": 79,
+    "name": "Valley",
+    "name_ru": "Тайный карниз долины",
+    "description": "",
+    "description_ru": "Уединенный карниз на склоне долины. Здесь лежит потерянный ключ от тайника.",
+    "image_file": "4E Deep Misty Valley.png",
+    "is_dark": false,
+    "exits": [
+      {
+        "direction": "west",
+        "direction_ru": "запад",
+        "dest": 78,
+        "via_obj": 0
+      },
+      {
+        "direction": "up",
+        "direction_ru": "вверх",
+        "dest": 74,
+        "via_obj": 0
+      }
+    ]
+  }
+]

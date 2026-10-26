@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cpydw3i75hsm1"
+path="res://.godot/imported/02 Hobbit Hole SID.mp3-c0d23069e1cde68d32d7b9fe089d695e.mp3str"
+
+[deps]
+
+source_file="res://assets/music/02 Hobbit Hole SID.mp3"
+dest_files=["res://.godot/imported/02 Hobbit Hole SID.mp3-c0d23069e1cde68d32d7b9fe089d695e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

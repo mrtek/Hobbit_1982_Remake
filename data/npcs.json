@@ -1,0 +1,325 @@
+[
+  {
+    "id": 60,
+    "name": "Dragon Smaug",
+    "name_ru": "Дракон Смауг",
+    "aliases": [
+      "дракон",
+      "дракона",
+      "дракону",
+      "смауг",
+      "смауга",
+      "смаугу",
+      "dragon",
+      "smaug"
+    ],
+    "location": 41,
+    "strength": 250,
+    "health": 250,
+    "max_health": 250,
+    "is_sleeping": true,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Колоссальный красно-золотой дракон. Его чешуя тверда, как сталь, а из пасти струится дым."
+  },
+  {
+    "id": 62,
+    "name": "Gandalf",
+    "name_ru": "Гэндальф",
+    "aliases": [
+      "гэндальф",
+      "гэндальфа",
+      "гэндальфу",
+      "гендальф",
+      "волшебник",
+      "маг",
+      "gandalf"
+    ],
+    "location": 1,
+    "strength": 200,
+    "health": 200,
+    "max_health": 200,
+    "is_dead": false,
+    "friendly": true,
+    "desc_ru": "Мудрый волшебник в остроконечной синей шляпе, длинном сером плаще и с серебряным посохом."
+  },
+  {
+    "id": 63,
+    "name": "Thorin",
+    "name_ru": "Торин Дубощит",
+    "aliases": [
+      "торин",
+      "торина",
+      "торину",
+      "дубощит",
+      "гном",
+      "thorin"
+    ],
+    "location": 1,
+    "strength": 160,
+    "health": 160,
+    "max_health": 160,
+    "is_dead": false,
+    "friendly": true,
+    "desc_ru": "Торин Дубощит, наследник Подгорного королевства. Гордый и отважный предводитель гномов."
+  },
+  {
+    "id": 64,
+    "name": "Wood Elf",
+    "name_ru": "Лесной эльф",
+    "aliases": [
+      "эльф",
+      "эльфа",
+      "лесной эльф",
+      "страж",
+      "elf"
+    ],
+    "location": 28,
+    "strength": 90,
+    "health": 90,
+    "max_health": 90,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Лесной эльф в зеленом одеянии с луком и кинжалом на поясе."
+  },
+  {
+    "id": 65,
+    "name": "Elrond",
+    "name_ru": "Элронд",
+    "aliases": [
+      "элронд",
+      "элронда",
+      "элронду",
+      "владыка элронд",
+      "elrond"
+    ],
+    "location": 9,
+    "strength": 180,
+    "health": 180,
+    "max_health": 180,
+    "is_dead": false,
+    "friendly": true,
+    "desc_ru": "Владыка Ривенделла, благородный и мудрый, как король эльфов, и могучий, как воин."
+  },
+  {
+    "id": 66,
+    "name": "Butler",
+    "name_ru": "Дворецкий Галион",
+    "aliases": [
+      "дворецкий",
+      "дворецкого",
+      "галион",
+      "butler"
+    ],
+    "location": 32,
+    "strength": 70,
+    "health": 70,
+    "max_health": 70,
+    "is_sleeping": false,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Королевский дворецкий, обожающий дегустировать лучшее вино из подвалов."
+  },
+  {
+    "id": 67,
+    "name": "Warg",
+    "name_ru": "Свирепый варг",
+    "aliases": [
+      "варг",
+      "варга",
+      "волк",
+      "волка",
+      "warg"
+    ],
+    "location": 21,
+    "strength": 100,
+    "health": 100,
+    "max_health": 100,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Гигантский дикий волк с горящими красными глазами и острыми клыками."
+  },
+  {
+    "id": 68,
+    "name": "Gollum",
+    "name_ru": "Голлум",
+    "aliases": [
+      "голлум",
+      "голлума",
+      "голлуму",
+      "горлум",
+      "gollum"
+    ],
+    "location": 17,
+    "strength": 80,
+    "health": 80,
+    "max_health": 80,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Тощее бледное существо с большими светящимися глазами. Он непрестанно бормочет: 'Моя прелесссть...'"
+  },
+  {
+    "id": 70,
+    "name": "Bard",
+    "name_ru": "Бард Лучник",
+    "aliases": [
+      "бард",
+      "барда",
+      "барду",
+      "лучник",
+      "bard"
+    ],
+    "location": 35,
+    "strength": 140,
+    "health": 140,
+    "max_health": 140,
+    "is_dead": false,
+    "friendly": true,
+    "desc_ru": "Суровый меткий стрелок из Озерного города, потомок древних королей Дейла."
+  },
+  {
+    "id": 71,
+    "name": "Troll William",
+    "name_ru": "Тролль Уильям",
+    "aliases": [
+      "уильям",
+      "тролль",
+      "тролля",
+      "troll",
+      "william"
+    ],
+    "location": 5,
+    "strength": 180,
+    "health": 180,
+    "max_health": 180,
+    "is_stone": false,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Огромный туповатый тролль, жарящий баранину на углях костра."
+  },
+  {
+    "id": 72,
+    "name": "Troll Tom",
+    "name_ru": "Тролль Том",
+    "aliases": [
+      "том",
+      "тролль",
+      "тролля",
+      "troll",
+      "tom"
+    ],
+    "location": 5,
+    "strength": 180,
+    "health": 180,
+    "max_health": 180,
+    "is_stone": false,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Грубый верзила-тролль, постоянно спорящий со своими товарищами."
+  },
+  {
+    "id": 61,
+    "name": "Goblin",
+    "name_ru": "Гоблин-дозорный",
+    "aliases": [
+      "гоблин",
+      "гоблина",
+      "орка",
+      "орк",
+      "goblin"
+    ],
+    "location": 15,
+    "strength": 70,
+    "health": 70,
+    "max_health": 70,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Злобный горный гоблин с кривым ятаганом."
+  },
+  {
+    "id": 69,
+    "name": "Goblin",
+    "name_ru": "Гоблин",
+    "aliases": [
+      "гоблин",
+      "гоблина",
+      "goblin"
+    ],
+    "location": 58,
+    "strength": 70,
+    "health": 70,
+    "max_health": 70,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Пещерный гоблин."
+  },
+  {
+    "id": 73,
+    "name": "Goblin",
+    "name_ru": "Гоблин",
+    "aliases": [
+      "гоблин",
+      "гоблина",
+      "goblin"
+    ],
+    "location": 18,
+    "strength": 70,
+    "health": 70,
+    "max_health": 70,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Пещерный гоблин."
+  },
+  {
+    "id": 74,
+    "name": "Goblin",
+    "name_ru": "Гоблин",
+    "aliases": [
+      "гоблин",
+      "гоблина",
+      "goblin"
+    ],
+    "location": 56,
+    "strength": 70,
+    "health": 70,
+    "max_health": 70,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Пещерный гоблин."
+  },
+  {
+    "id": 75,
+    "name": "Goblin",
+    "name_ru": "Гоблин",
+    "aliases": [
+      "гоблин",
+      "гоблина",
+      "goblin"
+    ],
+    "location": 64,
+    "strength": 70,
+    "health": 70,
+    "max_health": 70,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Пещерный гоблин."
+  },
+  {
+    "id": 76,
+    "name": "Great Goblin",
+    "name_ru": "Великий Гоблин",
+    "aliases": [
+      "великий гоблин",
+      "вождь гоблинов",
+      "великого гоблина",
+      "great goblin"
+    ],
+    "location": 16,
+    "strength": 160,
+    "health": 160,
+    "max_health": 160,
+    "is_dead": false,
+    "friendly": false,
+    "desc_ru": "Огромный жирный вождь гоблинов, восседающий на каменном троне."
+  }
+]

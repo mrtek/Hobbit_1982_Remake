@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c13a61c05y5hy"
+path="res://.godot/imported/01 Fanfare SID.mp3-666eae975d0d51130c2d52d69c099f1e.mp3str"
+
+[deps]
+
+source_file="res://assets/music/01 Fanfare SID.mp3"
+dest_files=["res://.godot/imported/01 Fanfare SID.mp3-666eae975d0d51130c2d52d69c099f1e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

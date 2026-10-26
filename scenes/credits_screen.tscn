@@ -1,0 +1,361 @@
+[gd_scene load_steps=9 format=3 uid="uid://credits_screen_uid"]
+
+[ext_resource type="Script" path="res://scripts/credits_screen.gd" id="1_script"]
+[ext_resource type="Shader" path="res://assets/shaders/credits_picture_mask.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pic"]
+shader = ExtResource("2_shader")
+shader_parameter/edge_softness = 0.08
+shader_parameter/edge_margin = 0.06
+shader_parameter/noise_roughness = 0.035
+shader_parameter/vignette_darkness = 0.45
+
+[sub_resource type="Gradient" id="Gradient_fade_top"]
+colors = PackedColorArray(0.02, 0.03, 0.05, 1, 0.02, 0.03, 0.05, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fade_top"]
+gradient = SubResource("Gradient_fade_top")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_fade_bottom"]
+colors = PackedColorArray(0.02, 0.03, 0.05, 0, 0.02, 0.03, 0.05, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fade_bottom"]
+gradient = SubResource("Gradient_fade_bottom")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_back"]
+bg_color = Color(0.08, 0.1, 0.14, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.3, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="CreditsScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.05, 0.98)
+
+[node name="PicturesLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PicLeft" type="TextureRect" parent="PicturesLayer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_pic")
+layout_mode = 0
+offset_left = 60.0
+offset_top = 160.0
+offset_right = 530.0
+offset_bottom = 460.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="PicRight" type="TextureRect" parent="PicturesLayer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_pic")
+layout_mode = 0
+offset_left = 1390.0
+offset_top = 220.0
+offset_right = 1860.0
+offset_bottom = 520.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ScrollArea" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_right = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ScrollContent" type="Control" parent="ScrollArea"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 1080.0
+offset_bottom = 4000.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="TextVBox" type="VBoxContainer" parent="ScrollArea/ScrollContent"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 2800.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="SpacerTop" type="Control" parent="ScrollArea/ScrollContent/TextVBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="GameTitle" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 46
+text = "THE HOBBIT"
+horizontal_alignment = 1
+
+[node name="GameSubtitle" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.85, 0.95, 0.9)
+theme_override_font_sizes/font_size = 22
+text = "РЕМЕЙК КУЛЬТОВОГО ПРИКЛЮЧЕНИЯ (1982)"
+horizontal_alignment = 1
+
+[node name="Sep1" type="HSeparator" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+
+[node name="HeaderAuthor" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "АВТОР РЕМЕЙКА"
+horizontal_alignment = 1
+
+[node name="AuthorName" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Freeonce (aka MrTEK)"
+horizontal_alignment = 1
+
+[node name="Year" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.85, 0.8)
+theme_override_font_sizes/font_size = 18
+text = "2026"
+horizontal_alignment = 1
+
+[node name="Sep2" type="HSeparator" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+
+[node name="HeaderHistory" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "О СОЗДАНИИ ЭТОЙ ИГРЫ"
+horizontal_alignment = 1
+
+[node name="HistoryText" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.9, 0.94, 1)
+theme_override_constants/line_spacing = 8
+theme_override_font_sizes/font_size = 19
+text = "Этот проект — дань уважения одной из самых революционных и значимых игр в истории компьютерных развлечений.
+
+Выпущенная в 1982 году австралийской студией Melbourne House для ZX Spectrum, Commodore 64 и других платформ, «The Hobbit» стала настоящим шедевром золотого века интерактивной литературы.
+
+Создатели оригинала — Филип Митчелл (Philip Mitchell) и Вероника Меглер (Veronika Megler) — опередили своё время на десятилетия. Их парсер естественного языка «Inglish» позволял формулировать сложные команды, общаться со спутниками и взаимодействовать с физическим миром так, как не могла ни одна другая игра той эпохи."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Sep3" type="HSeparator" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+
+[node name="HeaderRemake" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "ФИЛОСОФИЯ РЕМЕЙКА"
+horizontal_alignment = 1
+
+[node name="RemakeText" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.9, 0.94, 1)
+theme_override_constants/line_spacing = 8
+theme_override_font_sizes/font_size = 19
+text = "Цель ремейка на движке Godot 4.3 — сохранить ту самую неповторимую атмосферу оригинала, соединив аутентичную симуляцию с комфортом современных технологий:
+
+• Живой автономный мир (WorldSim): Торин Оукеншильд, Гэндальф, Элронд, Бард Лучник, Голлум и свирепые тролли живут своей жизнью, перемещаются по Средиземью и реагируют на события независимо от присутствия игрока.
+
+• Физическая модель: каждый предмет обладает весом, объёмом и уникальными свойствами. Контейнеры можно открывать, заглядывать внутрь, прятать в них вещи и даже залезать в них самому!
+
+• Умный русскоязычный парсер: полная адаптация грамматики и падежей («что лежит внутри сундука», «взять еду из шкафа», «Торин, открой дверь ключом»).
+
+• 79 канонических локаций, 43 интерактивных предмета и 17 персонажей из повести Профессора."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Sep4" type="HSeparator" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+
+[node name="HeaderModes" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "ТРИ ЭПОХИ В ОДНОЙ ИГРЕ"
+horizontal_alignment = 1
+
+[node name="ModesText" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.9, 0.94, 1)
+theme_override_constants/line_spacing = 8
+theme_override_font_sizes/font_size = 19
+text = "Игрок может в любой момент переключиться между тремя эпохами:
+
+✦ «СОВРЕМЕННЫЙ (MODERN)»
+Детализированные полноцветные HD-иллюстрации, фэнтезийный шрифт Greengoth и богатый оркестровый саундтрек.
+
+✦ «РЕТРО (VGA)»
+Атмосфера золотой эры MS-DOS 90-х: 256-цветная палитра, шрифт DOS2000 и аутентичное звучание звуковых карт Sound Blaster.
+
+✦ «КЛАССИЧЕСКИЙ (ZX SPECTRUM)»
+Первозданная романтика 1982 года: подлинная 8-битная графика, шрифт ZX Spectrum 7 и тёплый аналоговый чиптюн-звук SID / AY."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Sep5" type="HSeparator" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+
+[node name="HeaderThanks" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "БЛАГОДАРНОСТИ"
+horizontal_alignment = 1
+
+[node name="ThanksText" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.9, 0.94, 1)
+theme_override_constants/line_spacing = 8
+theme_override_font_sizes/font_size = 19
+text = "Дж. Р. Р. Толкину — за бессмертный мир Средиземья, в который хочется возвращаться снова и снова.
+
+Филипу Митчеллу и Веронике Меглер — за дерзость первопроходцев и создание шедевра 1982 года.
+
+Создателям и сообществу игрового движка Godot Engine.
+
+Ретро-сообществу и всем преданным любителям текстовых квестов.
+
+И вам, дорогой игрок, за то, что отправились в это приключение «Туда и Обратно»!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Sep6" type="HSeparator" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+
+[node name="QuoteText" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 0.9)
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 20
+text = "«В норе под землёй жил хоббит.
+Не в сырой и затхлой норе, где полно червей,
+и не в сухой песчаной, где не на что сесть...
+Это была хоббичья нора, а значит — уютная во всех отношениях.»"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="FooterText" type="Label" parent="ScrollArea/ScrollContent/TextVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.85, 0.7)
+theme_override_font_sizes/font_size = 17
+text = "— Конец записей —"
+horizontal_alignment = 1
+
+[node name="SpacerBottom" type="Control" parent="ScrollArea/ScrollContent/TextVBox"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="FadeTop" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 150.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_fade_top")
+expand_mode = 1
+
+[node name="FadeBottom" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_fade_bottom")
+expand_mode = 1
+
+[node name="UIOverlay" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BtnBack" type="Button" parent="UIOverlay"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 40.0
+offset_top = 30.0
+offset_right = 260.0
+offset_bottom = 76.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_back")
+text = "◀ Назад в меню"
+
+[node name="SpeedHint" type="Label" parent="UIOverlay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -50.0
+offset_right = -40.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.65, 0.7, 0.8, 0.65)
+theme_override_font_sizes/font_size = 15
+text = "[ПРОБЕЛ] — Ускорить      [ESC] — Назад"
+horizontal_alignment = 2
+vertical_alignment = 1

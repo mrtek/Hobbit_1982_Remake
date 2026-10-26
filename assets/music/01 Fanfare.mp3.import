@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://domh78ltgh4f3"
+path="res://.godot/imported/01 Fanfare.mp3-19a14cb28867dc000228af05f20723db.mp3str"
+
+[deps]
+
+source_file="res://assets/music/01 Fanfare.mp3"
+dest_files=["res://.godot/imported/01 Fanfare.mp3-19a14cb28867dc000228af05f20723db.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

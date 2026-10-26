@@ -1,0 +1,1240 @@
+[gd_scene load_steps=14 format=3 uid="uid://c8m83j14dvw7h"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_abc12"]
+[ext_resource type="Script" path="res://scripts/cga_renderer.gd" id="2_cga"]
+[ext_resource type="PackedScene" uid="uid://save_load_screen_uid" path="res://scenes/save_load_screen.tscn" id="3_saveload"]
+[ext_resource type="PackedScene" uid="uid://credits_screen_uid" path="res://scenes/credits_screen.tscn" id="4_credits"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.07, 0.09, 0.12, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.4, 0.5, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 6
+shadow_color = Color(0, 0, 0, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_gold"]
+bg_color = Color(0.06, 0.07, 0.1, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.72, 0.3, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 14
+shadow_color = Color(0, 0, 0, 0.55)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
+bg_color = Color(0.04, 0.05, 0.07, 0.8)
+border_width_bottom = 1
+border_color = Color(0.85, 0.72, 0.3, 0.5)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_subcard"]
+bg_color = Color(0.05, 0.06, 0.08, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.85, 0.72, 0.3, 0.3)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_log"]
+bg_color = Color(0.05, 0.06, 0.08, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.45, 0.55, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings"]
+bg_color = Color(0.07, 0.09, 0.12, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.75, 0.35, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 24
+shadow_color = Color(0, 0, 0, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_modern"]
+bg_color = Color(0.08, 0.1, 0.14, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.78, 0.32, 0.85)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 18
+shadow_color = Color(0, 0, 0, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_vga"]
+bg_color = Color(0.07, 0.09, 0.13, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.78, 0.88, 0.85)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 18
+shadow_color = Color(0, 0, 0, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_zx"]
+bg_color = Color(0.09, 0.08, 0.13, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.82, 0.22, 0.85)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_size = 18
+shadow_color = Color(0, 0, 0, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_img_modern"]
+bg_color = Color(0.04, 0.05, 0.08, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9, 0.78, 0.32, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_img_vga"]
+bg_color = Color(0.04, 0.05, 0.08, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.78, 0.88, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_img_zx"]
+bg_color = Color(0.04, 0.05, 0.08, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.98, 0.82, 0.22, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_abc12")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.06, 0.08, 1)
+
+[node name="RootMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxMain" type="VBoxContainer" parent="RootMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopRow" type="HBoxContainer" parent="RootMargin/VBoxMain"]
+custom_minimum_size = Vector2(0, 620)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="LeftMovePanel" type="PanelContainer" parent="RootMargin/VBoxMain/TopRow"]
+custom_minimum_size = Vector2(360, 620)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxMove" type="VBoxContainer" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MoveHeader" type="Label" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "🧭 ПУТИ И НАПРАВЛЕНИЯ"
+horizontal_alignment = 1
+
+[node name="MoveSub" type="Label" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.75, 1)
+theme_override_font_sizes/font_size = 13
+text = "Выберите направление пути:"
+horizontal_alignment = 1
+
+[node name="HSep1" type="HSeparator" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+
+[node name="Spacer1" type="Control" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CompassGrid" type="GridContainer" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="BtnNW" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "СЗ"
+
+[node name="BtnN" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Север"
+
+[node name="BtnNE" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "СВ"
+
+[node name="BtnW" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Запад"
+
+[node name="CenterMark" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 20
+disabled = true
+text = "✦"
+flat = true
+
+[node name="BtnE" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Восток"
+
+[node name="BtnSW" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "ЮЗ"
+
+[node name="BtnS" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Юг"
+
+[node name="BtnSE" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
+custom_minimum_size = Vector2(100, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "ЮВ"
+
+[node name="VerticalGrid" type="GridContainer" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="BtnUP" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/VerticalGrid"]
+custom_minimum_size = Vector2(152, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Вверх ▲"
+
+[node name="BtnDN" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/VerticalGrid"]
+custom_minimum_size = Vector2(152, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Вниз ▼"
+
+[node name="Spacer2" type="Control" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ExitsInfoCard" type="PanelContainer" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_subcard")
+
+[node name="Margin" type="MarginContainer" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/ExitsInfoCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="ExitsInfoLabel" type="Label" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/ExitsInfoCard/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 16
+text = "Пути: восток"
+autowrap_mode = 2
+
+[node name="MoveLegendLabel" type="Label" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.6, 0.65, 1)
+theme_override_font_sizes/font_size = 12
+text = "🟢 Открыто   🟡 Дверь   ⚫ Нет пути"
+horizontal_alignment = 1
+
+[node name="CenterImagePanel" type="PanelContainer" parent="RootMargin/VBoxMain/TopRow"]
+custom_minimum_size = Vector2(0, 620)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_gold")
+
+[node name="ImageContainer" type="Control" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 620)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ImageDisplay" type="TextureRect" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel/ImageContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("2_cga")
+
+[node name="HeaderOverlay" type="PanelContainer" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel/ImageContainer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_overlay")
+
+[node name="Margin" type="MarginContainer" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel/ImageContainer/HeaderOverlay"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxHeader" type="HBoxContainer" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel/ImageContainer/HeaderOverlay/Margin"]
+layout_mode = 2
+
+[node name="VBoxTitle" type="VBoxContainer" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel/ImageContainer/HeaderOverlay/Margin/HBoxHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LocationTitle" type="Label" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel/ImageContainer/HeaderOverlay/Margin/HBoxHeader/VBoxTitle"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 28
+text = "Уютная прихожая"
+vertical_alignment = 1
+
+[node name="LocationSub" type="Label" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel/ImageContainer/HeaderOverlay/Margin/HBoxHeader/VBoxTitle"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 13
+text = "01 Tunnel Like Hall"
+
+[node name="StatusInfo" type="Label" parent="RootMargin/VBoxMain/TopRow/CenterImagePanel/ImageContainer/HeaderOverlay/Margin/HBoxHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 17
+text = "Время: День | Здоровье: 100 | Видимость: Норма"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RightActionPanel" type="PanelContainer" parent="RootMargin/VBoxMain/TopRow"]
+custom_minimum_size = Vector2(360, 620)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="RootMargin/VBoxMain/TopRow/RightActionPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxAction" type="VBoxContainer" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ActionHeader" type="Label" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "📜 ДЕЙСТВИЯ"
+horizontal_alignment = 1
+
+[node name="ActionSub" type="Label" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.75, 1)
+theme_override_font_sizes/font_size = 13
+text = "Быстрое управление:"
+horizontal_alignment = 1
+
+[node name="HSep2" type="HSeparator" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
+layout_mode = 2
+
+[node name="ActionGrid" type="GridContainer" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="BtnLook" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
+custom_minimum_size = Vector2(158, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "🔍 Осмотр"
+
+[node name="BtnInv" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
+custom_minimum_size = Vector2(158, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "🎒 Вещи"
+
+[node name="BtnWait" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
+custom_minimum_size = Vector2(158, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "⏳ Ждать"
+
+[node name="BtnTakeAll" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
+custom_minimum_size = Vector2(158, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "🤲 Взять всё"
+
+[node name="BtnSave" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
+custom_minimum_size = Vector2(158, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "💾 Сохранить"
+
+[node name="BtnLoad" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
+custom_minimum_size = Vector2(158, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "📂 Загрузить"
+
+[node name="BtnSettingsGame" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "⚙ Настройки игры"
+
+[node name="Spacer3" type="Control" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatusCard" type="PanelContainer" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_subcard")
+
+[node name="Margin" type="MarginContainer" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxCard" type="VBoxContainer" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="CardTitle" type="Label" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard/Margin/VBoxCard"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "СОСТОЯНИЕ ХОББИТА:"
+autowrap_mode = 2
+
+[node name="ModeInfoLabel" type="Label" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard/Margin/VBoxCard"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 15
+text = "Режим: Современный"
+autowrap_mode = 2
+
+[node name="HealthInfoLabel" type="Label" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard/Margin/VBoxCard"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 15
+text = "Здоровье: 100 / 100"
+autowrap_mode = 2
+
+[node name="VisInfoLabel" type="Label" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard/Margin/VBoxCard"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 15
+text = "Видимость: Обычная"
+autowrap_mode = 2
+
+[node name="CompanionInfoLabel" type="Label" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard/Margin/VBoxCard"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 15
+text = "Спутники: Рядом нет"
+autowrap_mode = 2
+
+[node name="BottomSection" type="VBoxContainer" parent="RootMargin/VBoxMain"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="OutputLogPanel" type="PanelContainer" parent="RootMargin/VBoxMain/BottomSection"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_log")
+
+[node name="Margin" type="MarginContainer" parent="RootMargin/VBoxMain/BottomSection/OutputLogPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 10
+
+[node name="OutputLog" type="RichTextLabel" parent="RootMargin/VBoxMain/BottomSection/OutputLogPanel/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/line_separation = 4
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true
+scroll_following = true
+
+[node name="HBoxInput" type="HBoxContainer" parent="RootMargin/VBoxMain/BottomSection"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PromptLabel" type="Label" parent="RootMargin/VBoxMain/BottomSection/HBoxInput"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 24
+text = " > "
+
+[node name="InputLine" type="LineEdit" parent="RootMargin/VBoxMain/BottomSection/HBoxInput"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+placeholder_text = "Введите команду (например: 'север', 'взять меч', 'осмотреть сундук')..."
+context_menu_enabled = false
+caret_blink = true
+
+[node name="CommandDropdown" type="OptionButton" parent="RootMargin/VBoxMain/BottomSection/HBoxInput"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+
+[node name="TitleScreen" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleBg" type="ColorRect" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VideoFreezeFrame" type="TextureRect" parent="TitleScreen"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 0
+
+[node name="IntroVideo" type="VideoStreamPlayer" parent="TitleScreen"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand = true
+
+[node name="TitleImage" type="TextureRect" parent="TitleScreen"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 0
+
+[node name="MenuContainer" type="VBoxContainer" parent="TitleScreen"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = -420.0
+offset_right = 540.0
+offset_bottom = -50.0
+grow_vertical = 0
+theme_override_constants/separation = 12
+
+[node name="BtnStartGame" type="Button" parent="TitleScreen/MenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+text = "Начать путешествие"
+flat = true
+alignment = 0
+
+[node name="BtnTitleLoad" type="Button" parent="TitleScreen/MenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.5, 0.55, 0.6, 0.4)
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_outline_color = Color(0, 0, 0, 0.6)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+text = "Загрузка"
+flat = true
+alignment = 0
+
+[node name="BtnChangeMode" type="Button" parent="TitleScreen/MenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+text = "Сменить режим игры"
+flat = true
+alignment = 0
+
+[node name="BtnSettings" type="Button" parent="TitleScreen/MenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+text = "Настройки"
+flat = true
+alignment = 0
+
+[node name="BtnCredits" type="Button" parent="TitleScreen/MenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+text = "Об игре"
+flat = true
+alignment = 0
+
+[node name="BtnExit" type="Button" parent="TitleScreen/MenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+text = "Выход"
+flat = true
+alignment = 0
+
+[node name="VersionLabel" type="Label" parent="TitleScreen"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -360.0
+offset_top = 28.0
+offset_right = -40.0
+offset_bottom = 70.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.88, 0.45, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.75)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 20
+text = "v 0.9 Beta Test"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SaveLoadScreen" parent="." instance=ExtResource("3_saveload")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="CreditsScreen" parent="." instance=ExtResource("4_credits")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="SettingsPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -190.0
+offset_right = 260.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_settings")
+
+[node name="Margin" type="MarginContainer" parent="SettingsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 22
+
+[node name="VBox" type="VBoxContainer" parent="SettingsPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="SettingsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 22
+text = "НАСТРОЙКИ"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SettingsPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="VBoxVolume" type="VBoxContainer" parent="SettingsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBoxVolLabels" type="HBoxContainer" parent="SettingsPanel/Margin/VBox/VBoxVolume"]
+layout_mode = 2
+
+[node name="VolTitle" type="Label" parent="SettingsPanel/Margin/VBox/VBoxVolume/HBoxVolLabels"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "Громкость музыки:"
+
+[node name="VolValue" type="Label" parent="SettingsPanel/Margin/VBox/VBoxVolume/HBoxVolLabels"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "75%"
+
+[node name="VolumeSlider" type="HSlider" parent="SettingsPanel/Margin/VBox/VBoxVolume"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.75
+
+[node name="CheckFullscreen" type="CheckBox" parent="SettingsPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 17
+text = " На весь экран"
+
+[node name="Spacer" type="Control" parent="SettingsPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnSettingsMainMenu" type="Button" parent="SettingsPanel/Margin/VBox"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Выход в главное меню"
+
+[node name="BtnSettingsBack" type="Button" parent="SettingsPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Назад"
+
+[node name="ModeSelectScreen" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModeBg" type="ColorRect" parent="ModeSelectScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.05, 0.07, 1)
+
+[node name="ModeSelectVersion" type="Label" parent="ModeSelectScreen"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -360.0
+offset_top = 28.0
+offset_right = -40.0
+offset_bottom = 70.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.88, 0.45, 0.8)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 19
+text = "v 0.9 Beta Test"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Margin" type="MarginContainer" parent="ModeSelectScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxModes" type="VBoxContainer" parent="ModeSelectScreen/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleSection" type="VBoxContainer" parent="ModeSelectScreen/Margin/VBoxModes"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MainTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/TitleSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 46
+text = "Х О Б Б И Т"
+horizontal_alignment = 1
+
+[node name="SubTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/TitleSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.75, 0.5, 1)
+theme_override_font_sizes/font_size = 18
+text = "РЕМЕЙК ЛЕГЕНДАРНОЙ ИГРЫ 1982 ГОДА"
+horizontal_alignment = 1
+
+[node name="PromptTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/TitleSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.92, 0.95, 1)
+theme_override_font_sizes/font_size = 22
+text = "ВЫБЕРИТЕ РЕЖИМ ИГРЫ:"
+horizontal_alignment = 1
+
+[node name="SpacerTop" type="Control" parent="ModeSelectScreen/Margin/VBoxModes"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="HBoxCards" type="HBoxContainer" parent="ModeSelectScreen/Margin/VBoxModes"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="CardModern" type="PanelContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards"]
+custom_minimum_size = Vector2(480, 720)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_modern")
+
+[node name="Margin" type="MarginContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Badge" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "✦ ВЫСОКОЕ РАЗРЕШЕНИЕ"
+horizontal_alignment = 1
+
+[node name="CardTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 34
+text = "СОВРЕМЕННЫЙ"
+horizontal_alignment = 1
+
+[node name="CardSub" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 18
+text = "Modern Remake Edition"
+horizontal_alignment = 1
+
+[node name="ImageFrame" type="PanelContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 190)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_img_modern")
+
+[node name="ImagePreviewModern" type="TextureRect" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox/ImageFrame"]
+unique_name_in_owner = true
+texture_filter = 2
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HSep" type="HSeparator" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
+layout_mode = 2
+
+[node name="Desc" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.88, 0.92, 1)
+theme_override_constants/line_spacing = 8
+theme_override_font_sizes/font_size = 21
+text = "• Детализированная графика высокого разрешения
+• Оркестровая музыка и живые инструменты
+• Кинематографическая заставка
+• Современные визуальные эффекты и плавная фильтрация"
+autowrap_mode = 2
+
+[node name="CardSpacer" type="Control" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnSelectModern" type="Button" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.9, 0.35, 1)
+theme_override_font_sizes/font_size = 24
+text = "ИГРАТЬ В MODERN"
+
+[node name="CardVGA" type="PanelContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards"]
+custom_minimum_size = Vector2(480, 720)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_vga")
+
+[node name="Margin" type="MarginContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Badge" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 0.95, 1)
+theme_override_font_sizes/font_size = 14
+text = "💾 ЭПОХА DOS"
+horizontal_alignment = 1
+
+[node name="CardTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 26
+text = "РЕТРО (VGA)"
+horizontal_alignment = 1
+
+[node name="CardSub" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 15
+text = "256-Color DOS Retro Edition"
+horizontal_alignment = 1
+
+[node name="ImageFrame" type="PanelContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 190)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_img_vga")
+
+[node name="ImagePreviewVGA" type="TextureRect" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox/ImageFrame"]
+unique_name_in_owner = true
+texture_filter = 2
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HSep" type="HSeparator" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
+layout_mode = 2
+
+[node name="Desc" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.88, 0.92, 1)
+theme_override_font_sizes/font_size = 16
+text = "• Аутентичная 256-цветная VGA палитра MS-DOS
+• Аранжировки Sound Blaster (SB)
+• Ретро-заставка VGA эпохи 90-х
+• Четкая пиксельная графика с аутентичным шармом"
+autowrap_mode = 2
+
+[node name="CardSpacer" type="Control" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnSelectVGA" type="Button" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.5, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "ИГРАТЬ В VGA"
+
+[node name="CardZX" type="PanelContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards"]
+custom_minimum_size = Vector2(480, 720)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_zx")
+
+[node name="Margin" type="MarginContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Badge" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 14
+text = "🕹 ОРИГИНАЛ 1982"
+horizontal_alignment = 1
+
+[node name="CardTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_font_sizes/font_size = 26
+text = "КЛАССИЧЕСКИЙ (ZX)"
+horizontal_alignment = 1
+
+[node name="CardSub" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 15
+text = "ZX Spectrum & C64 Edition"
+horizontal_alignment = 1
+
+[node name="ImageFrame" type="PanelContainer" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 190)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_img_zx")
+
+[node name="ImagePreviewZX" type="TextureRect" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox/ImageFrame"]
+unique_name_in_owner = true
+texture_filter = 2
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HSep" type="HSeparator" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
+layout_mode = 2
+
+[node name="Desc" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.88, 0.92, 1)
+theme_override_font_sizes/font_size = 16
+text = "• Оригинальная графика ZX Spectrum 1982 года
+• Легендарный чиптюн Neil Brennan (SID)
+  (музыка от версии игры для Commodore 64)
+• Аутентичная ретро-заставка
+• Та самая легендарная игра от Melbourne House,
+  но с небольшими доработками"
+autowrap_mode = 2
+
+[node name="CardSpacer" type="Control" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnSelectZX" type="Button" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.4, 1)
+theme_override_font_sizes/font_size = 20
+text = "ИГРАТЬ В КЛАССИКУ"
+
+[node name="SpacerBottom" type="Control" parent="ModeSelectScreen/Margin/VBoxModes"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="FooterHint" type="Label" parent="ModeSelectScreen/Margin/VBoxModes"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.7, 0.75, 1)
+theme_override_font_sizes/font_size = 15
+text = "💡 Вы сможете изменить режим из главного меню."
+horizontal_alignment = 1
