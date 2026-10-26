@@ -179,6 +179,8 @@ func _ready() -> void:
 	if btn_credits:
 		btn_credits.pressed.connect(_on_credits_pressed)
 	btn_exit.pressed.connect(_on_exit_pressed)
+	if OS.has_feature("web"):
+		btn_exit.visible = false
 	
 	# 4. Инициализация окна настроек
 	if am:
@@ -679,7 +681,8 @@ func _on_exit_pressed() -> void:
 	var am = _get_audio_manager()
 	if am:
 		am.save_current_settings()
-	get_tree().quit()
+	if not OS.has_feature("web"):
+		get_tree().quit()
 
 func _on_volume_changed(val: float) -> void:
 	var am = _get_audio_manager()
