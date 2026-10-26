@@ -5,6 +5,7 @@
 [![Genre](https://img.shields.io/badge/genre-Text--Graphic_Adventure-darkgreen)](#)
 [![Platform](https://img.shields.io/badge/platform-Windows_%7C_Linux_%7C_macOS-lightgrey)](#)
 [![Author](https://img.shields.io/badge/Author-Freeonce_(aka_MrTEK)-blue)](#)
+[![AI](https://img.shields.io/badge/AI_Pair_Programming-Gemini_3.8_Flash-8E75C2?logo=google&logoColor=white)](#)
 
 Современный кроссплатформенный ремейк легендарной текстово-графической адвенчуры **«Хоббит» (The Hobbit)** 1982 года от *Melbourne House* (авторы оригинала: **Philip Mitchell** и **Veronika Megler**), воссозданный на движке **Godot 4.3+**.
 
@@ -111,6 +112,7 @@ godot --headless -s res://scripts/test_runner.gd
 ## 📜 Авторы и благодарности
 
 - **Автор ремейка:** Freeonce (aka MrTEK)
+- **ИИ-партнер разработки:** Сделано с помощью **Gemini 3.8 Flash**
 - **Оригинальная игра (1982):** Philip Mitchell, Veronika Megler (Melbourne House)
 - **Музыкальные темы оригинала:** Neil Brennan
 - **Литературная основа:** Дж. Р. Р. Толкин, повесть «Хоббит, или Туда и обратно»
