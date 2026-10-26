@@ -1263,7 +1263,7 @@ func _update_command_dropdown() -> void:
 		return
 		
 	command_dropdown.clear()
-	command_dropdown.add_item("⚡ Выбрать команду...", 0)
+	command_dropdown.add_item("Выбрать команду...", 0)
 	command_dropdown.set_item_disabled(0, true)
 	
 	var gs = _get_game_state()
@@ -1279,7 +1279,7 @@ func _update_command_dropdown() -> void:
 		if dest_id > 0 and gs.rooms.has(dest_id):
 			var dir_ru = ex.get("direction_ru", ex["direction"])
 			var idx = command_dropdown.item_count
-			command_dropdown.add_item("🧭 Идти: " + dir_ru, idx)
+			command_dropdown.add_item("Идти: " + dir_ru, idx)
 			command_dropdown.set_item_metadata(idx, dir_ru)
 			
 	# Особые действия у Заколдованной реки на берегу 66
@@ -1288,25 +1288,25 @@ func _update_command_dropdown() -> void:
 		var rope = gs.items.get(18)
 		if boat and boat.get("location") == 67 and rope and (rope.get("location") == 0 or rope.get("location") == 66):
 			var idx_rope = command_dropdown.item_count
-			command_dropdown.add_item("🪢 Зацепить и притянуть лодку веревкой", idx_rope)
+			command_dropdown.add_item("Зацепить и притянуть лодку веревкой", idx_rope)
 			command_dropdown.set_item_metadata(idx_rope, "притянуть лодку веревкой")
 
 	# Действия внутри лодки / бочки
 	if gs.inside_container_id == 41:
 		var idx_exit = command_dropdown.item_count
-		command_dropdown.add_item("🚶 Вылезти из лодки на берег", idx_exit)
+		command_dropdown.add_item("Вылезти из лодки на берег", idx_exit)
 		command_dropdown.set_item_metadata(idx_exit, "вылезти")
 		if gs.current_room_id == 66:
 			var idx_row = command_dropdown.item_count
-			command_dropdown.add_item("🚣 Плыть на восток (к восточному берегу)", idx_row)
+			command_dropdown.add_item("Плыть на восток (к восточному берегу)", idx_row)
 			command_dropdown.set_item_metadata(idx_row, "восток")
 		elif gs.current_room_id == 67:
 			var idx_row = command_dropdown.item_count
-			command_dropdown.add_item("🚣 Плыть на запад (к западному берегу)", idx_row)
+			command_dropdown.add_item("Плыть на запад (к западному берегу)", idx_row)
 			command_dropdown.set_item_metadata(idx_row, "запад")
 	elif gs.inside_container_id != -1:
 		var idx_exit = command_dropdown.item_count
-		command_dropdown.add_item("🚶 Вылезти наружу", idx_exit)
+		command_dropdown.add_item("Вылезти наружу", idx_exit)
 		command_dropdown.set_item_metadata(idx_exit, "вылезти")
 		
 	# 2. Предметы в текущей локации
@@ -1322,31 +1322,31 @@ func _update_command_dropdown() -> void:
 		
 		if can_take:
 			var idx_take = command_dropdown.item_count
-			command_dropdown.add_item("🤲 Взять: " + name_ru, idx_take)
+			command_dropdown.add_item("Взять: " + name_ru, idx_take)
 			command_dropdown.set_item_metadata(idx_take, "взять " + name_ru)
 			
 		var idx_look = command_dropdown.item_count
-		command_dropdown.add_item("🔍 Осмотреть: " + name_ru, idx_look)
+		command_dropdown.add_item("Осмотреть: " + name_ru, idx_look)
 		command_dropdown.set_item_metadata(idx_look, "осмотреть " + name_ru)
 		
 		if it["id"] in [19, 41] and gs.inside_container_id == -1:
 			var idx_enter = command_dropdown.item_count
-			command_dropdown.add_item("🧗 Залезть в: " + name_ru, idx_enter)
+			command_dropdown.add_item("Залезть в: " + name_ru, idx_enter)
 			command_dropdown.set_item_metadata(idx_enter, "залезть в " + name_ru)
 		
 		if it.get("is_container", false) or "двер" in name_ru.to_lower():
 			if not it.get("is_open", false):
 				var idx_open = command_dropdown.item_count
-				command_dropdown.add_item("🔓 Открыть: " + name_ru, idx_open)
+				command_dropdown.add_item("Открыть: " + name_ru, idx_open)
 				command_dropdown.set_item_metadata(idx_open, "открыть " + name_ru)
 			else:
 				var idx_close = command_dropdown.item_count
-				command_dropdown.add_item("🔒 Закрыть: " + name_ru, idx_close)
+				command_dropdown.add_item("Закрыть: " + name_ru, idx_close)
 				command_dropdown.set_item_metadata(idx_close, "закрыть " + name_ru)
 				
 				if it.get("is_container", false):
 					var idx_in = command_dropdown.item_count
-					command_dropdown.add_item("📦 Заглянуть в: " + name_ru, idx_in)
+					command_dropdown.add_item("Заглянуть в: " + name_ru, idx_in)
 					command_dropdown.set_item_metadata(idx_in, "осмотреть внутри " + name_ru)
 					
 	# 3. Предметы в инвентаре
@@ -1355,20 +1355,20 @@ func _update_command_dropdown() -> void:
 		if it.get("location", -999) == 0:
 			var name_ru = it.get("name_ru", it["name"])
 			var idx_drop = command_dropdown.item_count
-			command_dropdown.add_item("🔻 Бросить: " + name_ru, idx_drop)
+			command_dropdown.add_item("Бросить: " + name_ru, idx_drop)
 			command_dropdown.set_item_metadata(idx_drop, "бросить " + name_ru)
 			
 			var idx_ex = command_dropdown.item_count
-			command_dropdown.add_item("🔎 Осмотреть в сумке: " + name_ru, idx_ex)
+			command_dropdown.add_item("Осмотреть в сумке: " + name_ru, idx_ex)
 			command_dropdown.set_item_metadata(idx_ex, "осмотреть " + name_ru)
 			
 			if it_id == 16:
 				var idx_ring = command_dropdown.item_count
 				if not gs.is_invisible:
-					command_dropdown.add_item("💍 Надеть Кольцо (невидимость)", idx_ring)
+					command_dropdown.add_item("Надеть Кольцо (невидимость)", idx_ring)
 					command_dropdown.set_item_metadata(idx_ring, "надеть кольцо")
 				else:
-					command_dropdown.add_item("💍 Снять Кольцо (стать видимым)", idx_ring)
+					command_dropdown.add_item("Снять Кольцо (стать видимым)", idx_ring)
 					command_dropdown.set_item_metadata(idx_ring, "снять кольцо")
 					
 	# 4. Персонажи в комнате
@@ -1377,38 +1377,38 @@ func _update_command_dropdown() -> void:
 		if n.get("location", -999) == gs.current_room_id and not n.get("is_dead", false):
 			var n_name = n.get("name_ru", n["name"])
 			var idx_talk = command_dropdown.item_count
-			command_dropdown.add_item("💬 Говорить с: " + n_name, idx_talk)
+			command_dropdown.add_item("Говорить с: " + n_name, idx_talk)
 			command_dropdown.set_item_metadata(idx_talk, "говорить с " + n_name)
 			
 			var idx_ex_n = command_dropdown.item_count
-			command_dropdown.add_item("👁 Осмотреть: " + n_name, idx_ex_n)
+			command_dropdown.add_item("Осмотреть: " + n_name, idx_ex_n)
 			command_dropdown.set_item_metadata(idx_ex_n, "осмотреть " + n_name)
 			
 			if n_id == 1:
 				var idx_th1 = command_dropdown.item_count
-				command_dropdown.add_item("👑 Торин, следуй за мной", idx_th1)
+				command_dropdown.add_item("Торин, следуй за мной", idx_th1)
 				command_dropdown.set_item_metadata(idx_th1, "Торин, следуй за мной")
 				
 				var idx_th2 = command_dropdown.item_count
-				command_dropdown.add_item("🚪 Торин, открой дверь", idx_th2)
+				command_dropdown.add_item("Торин, открой дверь", idx_th2)
 				command_dropdown.set_item_metadata(idx_th2, "Торин, открой дверь")
 				
 			elif n_id == 2:
 				var idx_g = command_dropdown.item_count
-				command_dropdown.add_item("🧙‍♂️ Гэндальф, дай совет", idx_g)
+				command_dropdown.add_item("Гэндальф, дай совет", idx_g)
 				command_dropdown.set_item_metadata(idx_g, "Гэндальф, дай совет")
 				
 			elif n_id == 7:
 				var idx_gol = command_dropdown.item_count
-				command_dropdown.add_item("❓ Загадать загадку Голлуму", idx_gol)
+				command_dropdown.add_item("Загадать загадку Голлуму", idx_gol)
 				command_dropdown.set_item_metadata(idx_gol, "загадать загадку")
 				
 	# 5. Базовые действия
 	var base_actions = [
-		["👀 Осмотреться вокруг", "осмотреться"],
-		["🎒 Инвентарь (вещи)", "инвентарь"],
-		["⏳ Подождать ход", "ждать"],
-		["🤲 Взять всё на локации", "взять всё"]
+		["Осмотреться вокруг", "осмотреться"],
+		["Инвентарь (вещи)", "инвентарь"],
+		["Подождать ход", "ждать"],
+		["Взять всё на локации", "взять всё"]
 	]
 	for ba in base_actions:
 		var idx_ba = command_dropdown.item_count

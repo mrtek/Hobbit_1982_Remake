@@ -130,7 +130,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 18
-text = "💾 СОХРАНИТЬ"
+text = "СОХРАНИТЬ"
 
 [node name="BtnTabLoad" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow/HBoxTabs"]
 unique_name_in_owner = true
@@ -140,7 +140,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 18
-text = "📂 ЗАГРУЗИТЬ"
+text = "ЗАГРУЗИТЬ"
 
 [node name="SaveLoadTitle" type="Label" parent="MainPanel/Margin/VBoxMain/TopRow"]
 unique_name_in_owner = true
@@ -161,7 +161,7 @@ custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 18
-text = "◀"
+text = "<"
 
 [node name="BtnPage1" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow/HBoxPages"]
 unique_name_in_owner = true
@@ -185,7 +185,7 @@ custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 18
-text = "▶"
+text = ">"
 
 [node name="BtnClose" type="Button" parent="MainPanel/Margin/VBoxMain/TopRow"]
 unique_name_in_owner = true
@@ -195,7 +195,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 20
-text = "✕"
+text = "X"
 
 [node name="HSeparator" type="HSeparator" parent="MainPanel/Margin/VBoxMain"]
 layout_mode = 2
@@ -254,7 +254,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 15
-text = "🗑"
+text = "[X]"
 tooltip_text = "Удалить сохранение"
 
 [node name="Body1" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox"]
@@ -312,7 +312,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
 theme_override_font_sizes/font_size = 14
-text = "✚ Сохранить"
+text = "+ Сохранить"
 horizontal_alignment = 2
 
 [node name="BtnCardAction1" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard1/Margin/VBox/Body1"]
@@ -368,7 +368,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 15
-text = "🗑"
+text = "[X]"
 tooltip_text = "Удалить сохранение"
 
 [node name="Body2" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox"]
@@ -426,7 +426,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
 theme_override_font_sizes/font_size = 14
-text = "✚ Сохранить"
+text = "+ Сохранить"
 horizontal_alignment = 2
 
 [node name="BtnCardAction2" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard2/Margin/VBox/Body2"]
@@ -482,7 +482,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 15
-text = "🗑"
+text = "[X]"
 tooltip_text = "Удалить сохранение"
 
 [node name="Body3" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox"]
@@ -540,7 +540,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
 theme_override_font_sizes/font_size = 14
-text = "✚ Сохранить"
+text = "+ Сохранить"
 horizontal_alignment = 2
 
 [node name="BtnCardAction3" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard3/Margin/VBox/Body3"]
@@ -596,7 +596,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 15
-text = "🗑"
+text = "[X]"
 tooltip_text = "Удалить сохранение"
 
 [node name="Body4" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox"]
@@ -654,7 +654,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
 theme_override_font_sizes/font_size = 14
-text = "✚ Сохранить"
+text = "+ Сохранить"
 horizontal_alignment = 2
 
 [node name="BtnCardAction4" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard4/Margin/VBox/Body4"]
@@ -710,7 +710,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 15
-text = "🗑"
+text = "[X]"
 tooltip_text = "Удалить сохранение"
 
 [node name="Body5" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox"]
@@ -768,7 +768,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
 theme_override_font_sizes/font_size = 14
-text = "✚ Сохранить"
+text = "+ Сохранить"
 horizontal_alignment = 2
 
 [node name="BtnCardAction5" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard5/Margin/VBox/Body5"]
@@ -824,7 +824,7 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.3, 0.3, 1)
 theme_override_colors/font_focus_color = Color(1, 0.3, 0.3, 1)
 theme_override_font_sizes/font_size = 15
-text = "🗑"
+text = "[X]"
 tooltip_text = "Удалить сохранение"
 
 [node name="Body6" type="MarginContainer" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox"]
@@ -882,7 +882,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
 theme_override_font_sizes/font_size = 14
-text = "✚ Сохранить"
+text = "+ Сохранить"
 horizontal_alignment = 2
 
 [node name="BtnCardAction6" type="Button" parent="MainPanel/Margin/VBoxMain/GridSlots/SlotCard6/Margin/VBox/Body6"]

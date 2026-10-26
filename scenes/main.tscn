@@ -216,7 +216,7 @@ theme_override_constants/separation = 8
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 18
-text = "🧭 ПУТИ И НАПРАВЛЕНИЯ"
+text = "ПУТИ И НАПРАВЛЕНИЯ"
 horizontal_alignment = 1
 
 [node name="MoveSub" type="Label" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
@@ -270,7 +270,7 @@ layout_mode = 2
 theme_override_colors/font_disabled_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 20
 disabled = true
-text = "✦"
+text = "+"
 flat = true
 
 [node name="BtnE" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/CompassGrid"]
@@ -308,13 +308,13 @@ columns = 2
 custom_minimum_size = Vector2(152, 46)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "Вверх ▲"
+text = "Вверх"
 
 [node name="BtnDN" type="Button" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/VerticalGrid"]
 custom_minimum_size = Vector2(152, 46)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "Вниз ▼"
+text = "Вниз"
 
 [node name="Spacer2" type="Control" parent="RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove"]
 layout_mode = 2
@@ -344,7 +344,7 @@ autowrap_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.6, 0.65, 1)
 theme_override_font_sizes/font_size = 12
-text = "🟢 Открыто   🟡 Дверь   ⚫ Нет пути"
+text = "[+] Открыто   [!] Дверь   [-] Нет пути"
 horizontal_alignment = 1
 
 [node name="CenterImagePanel" type="PanelContainer" parent="RootMargin/VBoxMain/TopRow"]
@@ -439,7 +439,7 @@ theme_override_constants/separation = 8
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 18
-text = "📜 ДЕЙСТВИЯ"
+text = "ДЕЙСТВИЯ"
 horizontal_alignment = 1
 
 [node name="ActionSub" type="Label" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
@@ -462,44 +462,44 @@ columns = 2
 custom_minimum_size = Vector2(158, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "🔍 Осмотр"
+text = "Осмотр"
 
 [node name="BtnInv" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
 custom_minimum_size = Vector2(158, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "🎒 Вещи"
+text = "Вещи"
 
 [node name="BtnWait" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
 custom_minimum_size = Vector2(158, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "⏳ Ждать"
+text = "Ждать"
 
 [node name="BtnTakeAll" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
 custom_minimum_size = Vector2(158, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "🤲 Взять всё"
+text = "Взять всё"
 
 [node name="BtnSave" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
 custom_minimum_size = Vector2(158, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "💾 Сохранить"
+text = "Сохранить"
 
 [node name="BtnLoad" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid"]
 custom_minimum_size = Vector2(158, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "📂 Загрузить"
+text = "Загрузить"
 
 [node name="BtnSettingsGame" type="Button" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "⚙ Настройки игры"
+text = "Настройки игры"
 
 [node name="Spacer3" type="Control" parent="RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction"]
 layout_mode = 2
@@ -1020,7 +1020,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 16
-text = "✦ ВЫСОКОЕ РАЗРЕШЕНИЕ"
+text = "ВЫСОКОЕ РАЗРЕШЕНИЕ"
 horizontal_alignment = 1
 
 [node name="CardTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
@@ -1058,10 +1058,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.88, 0.92, 1)
 theme_override_constants/line_spacing = 8
 theme_override_font_sizes/font_size = 21
-text = "• Детализированная графика высокого разрешения
-• Оркестровая музыка и живые инструменты
-• Кинематографическая заставка
-• Современные визуальные эффекты и плавная фильтрация"
+text = "- Детализированная графика высокого разрешения
+- Оркестровая музыка и живые инструменты
+- Кинематографическая заставка
+- Современные визуальные эффекты и плавная фильтрация"
 autowrap_mode = 2
 
 [node name="CardSpacer" type="Control" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox"]
@@ -1096,7 +1096,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.85, 0.95, 1)
 theme_override_font_sizes/font_size = 14
-text = "💾 ЭПОХА DOS"
+text = "ЭПОХА DOS"
 horizontal_alignment = 1
 
 [node name="CardTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
@@ -1133,10 +1133,10 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.88, 0.92, 1)
 theme_override_font_sizes/font_size = 16
-text = "• Аутентичная 256-цветная VGA палитра MS-DOS
-• Аранжировки Sound Blaster (SB)
-• Ретро-заставка VGA эпохи 90-х
-• Четкая пиксельная графика с аутентичным шармом"
+text = "- Аутентичная 256-цветная VGA палитра MS-DOS
+- Аранжировки Sound Blaster (SB)
+- Ретро-заставка VGA эпохи 90-х
+- Четкая пиксельная графика с аутентичным шармом"
 autowrap_mode = 2
 
 [node name="CardSpacer" type="Control" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox"]
@@ -1171,7 +1171,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
 theme_override_font_sizes/font_size = 14
-text = "🕹 ОРИГИНАЛ 1982"
+text = "ОРИГИНАЛ 1982"
 horizontal_alignment = 1
 
 [node name="CardTitle" type="Label" parent="ModeSelectScreen/Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox"]
@@ -1208,11 +1208,11 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.88, 0.92, 1)
 theme_override_font_sizes/font_size = 16
-text = "• Оригинальная графика ZX Spectrum 1982 года
-• Легендарный чиптюн Neil Brennan (SID)
+text = "- Оригинальная графика ZX Spectrum 1982 года
+- Легендарный чиптюн Neil Brennan (SID)
   (музыка от версии игры для Commodore 64)
-• Аутентичная ретро-заставка
-• Та самая легендарная игра от Melbourne House,
+- Аутентичная ретро-заставка
+- Та самая легендарная игра от Melbourne House,
   но с небольшими доработками"
 autowrap_mode = 2
 
@@ -1236,5 +1236,5 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.65, 0.7, 0.75, 1)
 theme_override_font_sizes/font_size = 15
-text = "💡 Вы сможете изменить режим из главного меню."
+text = "Вы сможете изменить режим из главного меню."
 horizontal_alignment = 1

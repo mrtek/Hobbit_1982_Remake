@@ -211,7 +211,7 @@ func refresh_slots() -> void:
 			stats_lbl.text = "Нет сохранённых данных"
 			
 			if current_mode == Mode.SAVE:
-				action_hint.text = "✚ Сохранить"
+				action_hint.text = "+ Сохранить"
 				action_hint.modulate = Color(0.4, 0.9, 0.5)
 			else:
 				action_hint.text = ""
@@ -225,7 +225,7 @@ func refresh_slots() -> void:
 			var hp = info.get("player_health", 100)
 			var phase = info.get("day_phase_name", "День")
 			var mode_n = info.get("game_mode_name", "Modern")
-			stats_lbl.text = "%s • %d HP • %s" % [phase, hp, mode_n]
+			stats_lbl.text = "%s | %d HP | %s" % [phase, hp, mode_n]
 			
 			var img_path = ""
 			if gs and gs.has_method("get_slot_image_path"):
@@ -246,10 +246,10 @@ func refresh_slots() -> void:
 				empty_lbl.text = "НЕТ МИНИАТЮРЫ"
 				
 			if current_mode == Mode.SAVE:
-				action_hint.text = "✎ Перезаписать"
+				action_hint.text = "Перезаписать"
 				action_hint.modulate = Color(1.0, 0.85, 0.3)
 			else:
-				action_hint.text = "▶ Загрузить"
+				action_hint.text = "Загрузить"
 				action_hint.modulate = Color(0.4, 0.85, 1.0)
 
 func _get_slot_id_for_card(card_index: int) -> int:
@@ -290,7 +290,7 @@ func _execute_save_to_slot(slot_id: int) -> void:
 	if gs and gs.has_method("save_to_slot"):
 		var ok = gs.save_to_slot(slot_id, current_screenshot)
 		if ok:
-			show_toast("✓ Игра успешно сохранена в Слот %d!" % slot_id, Color(0.4, 1.0, 0.5))
+			show_toast("Игра успешно сохранена в Слот %d!" % slot_id, Color(0.4, 1.0, 0.5))
 			refresh_slots()
 		else:
 			show_toast("Ошибка при сохранении в Слот %d" % slot_id, Color.RED)
