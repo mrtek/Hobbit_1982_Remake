@@ -35,3 +35,6 @@ user/
 *.save
 savegame.json
 settings.json
+
+# Internal developer logs
+WORK_LOG.md
