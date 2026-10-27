@@ -93,6 +93,22 @@ var current_video_cutoff: float = 9.85
 @onready var btn_save: Button = $RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid/BtnSave
 @onready var btn_load: Button = $RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionGrid/BtnLoad
 
+# Панели для высококонтрастного режима слабовидящих
+@onready var left_move_panel: PanelContainer = $RootMargin/VBoxMain/TopRow/LeftMovePanel
+@onready var right_action_panel: PanelContainer = $RootMargin/VBoxMain/TopRow/RightActionPanel
+@onready var center_image_panel: PanelContainer = $RootMargin/VBoxMain/TopRow/CenterImagePanel
+@onready var output_log_panel: PanelContainer = $RootMargin/VBoxMain/BottomSection/OutputLogPanel
+@onready var prompt_label: Label = $RootMargin/VBoxMain/BottomSection/HBoxInput/PromptLabel
+@onready var status_card: PanelContainer = $RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard
+
+var _orig_left_panel_style: StyleBox = null
+var _orig_right_panel_style: StyleBox = null
+var _orig_output_panel_style: StyleBox = null
+var _orig_center_panel_style: StyleBox = null
+var _orig_status_card_style: StyleBox = null
+var _orig_input_line_style: StyleBox = null
+var _orig_settings_panel_style: StyleBox = null
+
 var history: Array[String] = []
 var history_index: int = -1
 var game_started: bool = false
@@ -200,6 +216,8 @@ func _ready() -> void:
 	
 	if gs:
 		check_accessibility.button_pressed = gs.is_accessibility_mode
+		if gs.is_accessibility_mode:
+			_apply_accessibility_theme(true)
 	check_accessibility.toggled.connect(_on_accessibility_toggled)
 		
 	btn_settings_back.pressed.connect(_on_settings_back_pressed)
@@ -740,8 +758,8 @@ func _on_accessibility_toggled(enabled: bool) -> void:
 		_is_syncing_volume_slider = true
 		if enabled:
 			am._on_accessibility_mode_changed(true)
-			volume_slider.value = 0.20
-			_update_volume_label(0.20)
+			volume_slider.value = 0.10
+			_update_volume_label(0.10)
 		else:
 			am._on_accessibility_mode_changed(false)
 			var restored_vol = am.get_music_volume()
@@ -749,8 +767,113 @@ func _on_accessibility_toggled(enabled: bool) -> void:
 			_update_volume_label(restored_vol)
 		_is_syncing_volume_slider = false
 		am.save_settings(check_fullscreen.button_pressed)
+		
+	_apply_accessibility_theme(enabled)
+	
 	if enabled:
 		_speak_text("Режим для слабовидящих включен.")
+
+func _save_original_panel_styles() -> void:
+	if _orig_left_panel_style != null:
+		return
+	if left_move_panel:
+		_orig_left_panel_style = left_move_panel.get_theme_stylebox("panel")
+	if right_action_panel:
+		_orig_right_panel_style = right_action_panel.get_theme_stylebox("panel")
+	if center_image_panel:
+		_orig_center_panel_style = center_image_panel.get_theme_stylebox("panel")
+	if output_log_panel:
+		_orig_output_panel_style = output_log_panel.get_theme_stylebox("panel")
+	if status_card:
+		_orig_status_card_style = status_card.get_theme_stylebox("panel")
+	if input_line:
+		_orig_input_line_style = input_line.get_theme_stylebox("normal")
+	if settings_panel:
+		_orig_settings_panel_style = settings_panel.get_theme_stylebox("panel")
+
+func _apply_accessibility_theme(enabled: bool) -> void:
+	_save_original_panel_styles()
+	var gs = _get_game_state()
+	var mode = int(gs.game_mode) if gs else Mode.MODERN
+	
+	if enabled:
+		# Высококонтрастные сплошные черные панели с четкими рамками цвета яркого золота (3px)
+		var hc_panel = StyleBoxFlat.new()
+		hc_panel.bg_color = Color(0.0, 0.0, 0.0, 1.0)
+		hc_panel.set_border_width_all(3)
+		hc_panel.border_color = Color(1.0, 0.88, 0.1, 1.0)
+		hc_panel.set_corner_radius_all(8)
+		hc_panel.shadow_size = 0
+		
+		var hc_center = StyleBoxFlat.new()
+		hc_center.bg_color = Color(0.0, 0.0, 0.0, 1.0)
+		hc_center.set_border_width_all(3)
+		hc_center.border_color = Color(1.0, 0.88, 0.1, 1.0)
+		hc_center.set_corner_radius_all(8)
+		hc_center.shadow_size = 0
+		
+		var hc_log = StyleBoxFlat.new()
+		hc_log.bg_color = Color(0.0, 0.0, 0.0, 1.0)
+		hc_log.set_border_width_all(3)
+		hc_log.border_color = Color(1.0, 0.88, 0.1, 1.0)
+		hc_log.set_corner_radius_all(8)
+		hc_log.shadow_size = 0
+		
+		var hc_card = StyleBoxFlat.new()
+		hc_card.bg_color = Color(0.0, 0.0, 0.0, 1.0)
+		hc_card.set_border_width_all(2)
+		hc_card.border_color = Color(0.25, 0.9, 1.0, 1.0)
+		hc_card.set_corner_radius_all(6)
+		
+		var hc_input = StyleBoxFlat.new()
+		hc_input.bg_color = Color(0.0, 0.0, 0.0, 1.0)
+		hc_input.set_border_width_all(3)
+		hc_input.border_color = Color(1.0, 0.88, 0.1, 1.0)
+		hc_input.set_corner_radius_all(6)
+		
+		if left_move_panel:
+			left_move_panel.add_theme_stylebox_override("panel", hc_panel)
+		if right_action_panel:
+			right_action_panel.add_theme_stylebox_override("panel", hc_panel)
+		if center_image_panel:
+			center_image_panel.add_theme_stylebox_override("panel", hc_center)
+		if output_log_panel:
+			output_log_panel.add_theme_stylebox_override("panel", hc_log)
+		if status_card:
+			status_card.add_theme_stylebox_override("panel", hc_card)
+		if input_line:
+			input_line.add_theme_stylebox_override("normal", hc_input)
+			input_line.add_theme_stylebox_override("focus", hc_input)
+			input_line.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
+			input_line.add_theme_color_override("caret_color", Color(1.0, 0.9, 0.0, 1.0))
+		if settings_panel:
+			settings_panel.add_theme_stylebox_override("panel", hc_panel)
+	else:
+		if left_move_panel and _orig_left_panel_style:
+			left_move_panel.add_theme_stylebox_override("panel", _orig_left_panel_style)
+		if right_action_panel and _orig_right_panel_style:
+			right_action_panel.add_theme_stylebox_override("panel", _orig_right_panel_style)
+		if center_image_panel and _orig_center_panel_style:
+			center_image_panel.add_theme_stylebox_override("panel", _orig_center_panel_style)
+		if output_log_panel and _orig_output_panel_style:
+			output_log_panel.add_theme_stylebox_override("panel", _orig_output_panel_style)
+		if status_card and _orig_status_card_style:
+			status_card.add_theme_stylebox_override("panel", _orig_status_card_style)
+		if input_line:
+			if _orig_input_line_style:
+				input_line.add_theme_stylebox_override("normal", _orig_input_line_style)
+				input_line.add_theme_stylebox_override("focus", _orig_input_line_style)
+			else:
+				input_line.remove_theme_stylebox_override("normal")
+				input_line.remove_theme_stylebox_override("focus")
+			input_line.remove_theme_color_override("font_color")
+			input_line.remove_theme_color_override("caret_color")
+		if settings_panel and _orig_settings_panel_style:
+			settings_panel.add_theme_stylebox_override("panel", _orig_settings_panel_style)
+			
+	_apply_game_mode_font(mode)
+	_update_compass_buttons()
+	_update_status_bar()
 
 func _setup_fullscreen_checkbox() -> void:
 	var tex_un: Texture2D = _load_texture_file("res://assets/images/checkbox_unchecked.png")
@@ -941,13 +1064,27 @@ func _speak_text(text: String) -> void:
 	DisplayServer.tts_speak(clean_text, v_id, 100, 1.0, 1.0, 0, false)
 
 func _on_text_printed(text: String, color: Color) -> void:
+	var gs = _get_game_state()
+	var final_color = color
+	if gs and gs.is_accessibility_mode:
+		# Высококонтрастная палитра: исключаем темные, блеклые или трудноразличимые оттенки
+		if color.r < 0.5 and color.g < 0.5 and color.b < 0.5:
+			final_color = Color(1.0, 1.0, 1.0, 1.0) # белый вместо темного
+		elif color.r > 0.7 and color.g > 0.7 and color.b < 0.4:
+			final_color = Color(1.0, 0.95, 0.1, 1.0) # сверхяркое золото
+		elif color.g > 0.6 and color.r < 0.6:
+			final_color = Color(0.2, 1.0, 0.45, 1.0) # яркий мятно-зеленый
+		elif color.r > 0.7 and color.g < 0.4:
+			final_color = Color(1.0, 0.35, 0.35, 1.0) # яркий красный
+		elif color.b > 0.6 and color.r < 0.6:
+			final_color = Color(0.4, 0.95, 1.0, 1.0) # яркий циан
+			
 	if text.begins_with("[color"):
 		output_log.append_text(text + "\n")
 	else:
-		var hex = color.to_html(false)
+		var hex = final_color.to_html(false)
 		output_log.append_text("[color=#" + hex + "]" + text + "[/color]\n")
 	
-	var gs = _get_game_state()
 	if gs and gs.is_accessibility_mode:
 		_speak_text(text)
 
@@ -1088,6 +1225,7 @@ func _apply_game_mode_font(mode: int) -> void:
 	# Настройка масштаба и размеров шрифта под начертание каждого режима игры:
 	var log_sz = 24
 	var input_sz = 22
+	var prompt_sz = 24
 	var drop_sz = 18
 	var title_sz = 28
 	var status_sz = 17
@@ -1098,11 +1236,13 @@ func _apply_game_mode_font(mode: int) -> void:
 	var sub_sz = 14
 	var btn_action_sz = 16
 	var btn_dir_sz = 17
+	var check_sz = 17
 	var line_sep = 4
 	
 	if mode == Mode.ZX:
 		log_sz = 16
 		input_sz = 15
+		prompt_sz = 16
 		drop_sz = 14
 		title_sz = 18
 		status_sz = 13
@@ -1113,10 +1253,12 @@ func _apply_game_mode_font(mode: int) -> void:
 		sub_sz = 12
 		btn_action_sz = 13
 		btn_dir_sz = 14
+		check_sz = 14
 		line_sep = 2
 	elif mode == Mode.VGA:
 		log_sz = 20
 		input_sz = 19
+		prompt_sz = 20
 		drop_sz = 16
 		title_sz = 24
 		status_sz = 15
@@ -1127,11 +1269,13 @@ func _apply_game_mode_font(mode: int) -> void:
 		sub_sz = 13
 		btn_action_sz = 15
 		btn_dir_sz = 16
+		check_sz = 16
 		line_sep = 3
 	else: # Mode.MODERN (шрифт Greengoth_Regular.ttf)
 		# В режиме Modern готический шрифт увеличен, чтобы текст читался легко, четко и без напряжения глаз
 		log_sz = 24
 		input_sz = 22
+		prompt_sz = 24
 		drop_sz = 18
 		title_sz = 28
 		status_sz = 17
@@ -1142,7 +1286,28 @@ func _apply_game_mode_font(mode: int) -> void:
 		sub_sz = 14
 		btn_action_sz = 16
 		btn_dir_sz = 17
+		check_sz = 17
 		line_sep = 4
+		
+	var gs = _get_game_state()
+	var is_acc = gs.is_accessibility_mode if gs else false
+	if is_acc:
+		# Специально адаптированный крупный шрифт для слабовидящих
+		log_sz = 30
+		input_sz = 26
+		prompt_sz = 28
+		drop_sz = 22
+		title_sz = 34
+		status_sz = 22
+		exits_sz = 20
+		card_info_sz = 18
+		card_title_sz = 20
+		header_sz = 24
+		sub_sz = 16
+		btn_action_sz = 19
+		btn_dir_sz = 22
+		check_sz = 20
+		line_sep = 6
 		
 	if version_label:
 		version_label.add_theme_font_size_override("font_size", 16 if mode == Mode.ZX else 20)
@@ -1156,6 +1321,8 @@ func _apply_game_mode_font(mode: int) -> void:
 		output_log.add_theme_constant_override("line_separation", line_sep)
 	if input_line:
 		input_line.add_theme_font_size_override("font_size", input_sz)
+	if prompt_label:
+		prompt_label.add_theme_font_size_override("font_size", prompt_sz)
 	if command_dropdown:
 		command_dropdown.add_theme_font_size_override("font_size", drop_sz)
 		var pop = command_dropdown.get_popup()
@@ -1205,9 +1372,9 @@ func _apply_game_mode_font(mode: int) -> void:
 			b.add_theme_font_size_override("font_size", btn_action_sz)
 			
 	if check_fullscreen:
-		check_fullscreen.add_theme_font_size_override("font_size", 14 if mode == Mode.ZX else 17)
+		check_fullscreen.add_theme_font_size_override("font_size", check_sz)
 	if check_accessibility:
-		check_accessibility.add_theme_font_size_override("font_size", 14 if mode == Mode.ZX else 17)
+		check_accessibility.add_theme_font_size_override("font_size", check_sz)
 			
 	# Черная окантовка шрифта для кнопок главного меню (чтобы шрифт четко читался на пестром фоне заставки)
 	var title_btns = [btn_start_game, btn_title_load, btn_change_mode, btn_settings, btn_exit]
@@ -1374,36 +1541,36 @@ func _update_compass_buttons() -> void:
 			if not is_valid_dest:
 				var via_obj = gs.items.get(via_id) if via_id > 0 else null
 				var vname = via_obj.get("name_ru", "препятствие") if via_obj else "препятствие"
-				btn.modulate = Color(0.9, 0.4, 0.4, 0.9)
+				btn.modulate = Color(1.0, 0.25, 0.25, 1.0) if gs.is_accessibility_mode else Color(0.9, 0.4, 0.4, 0.9)
 				btn.tooltip_text = "Путь прегражден: " + vname
 			elif via_id > 0:
 				var via_obj = gs.items.get(via_id)
 				if via_obj and not via_obj.get("is_open", true):
-					btn.modulate = Color(1.0, 0.82, 0.2, 1.0)
+					btn.modulate = Color(1.0, 0.9, 0.0, 1.0) if gs.is_accessibility_mode else Color(1.0, 0.82, 0.2, 1.0)
 					btn.tooltip_text = "Путь закрыт: " + via_obj.get("name_ru", "дверь") + " (закрыто)"
 				else:
-					btn.modulate = Color(0.3, 1.0, 0.5, 1.0)
+					btn.modulate = Color(0.2, 1.0, 0.4, 1.0) if gs.is_accessibility_mode else Color(0.3, 1.0, 0.5, 1.0)
 					btn.tooltip_text = "Идти на " + ex.get("direction_ru", dir_code)
 			else:
-				btn.modulate = Color(0.3, 1.0, 0.5, 1.0)
+				btn.modulate = Color(0.2, 1.0, 0.4, 1.0) if gs.is_accessibility_mode else Color(0.3, 1.0, 0.5, 1.0)
 				btn.tooltip_text = "Идти на " + ex.get("direction_ru", dir_code)
 		else:
 			btn.disabled = true
-			btn.modulate = Color(0.4, 0.45, 0.5, 0.35)
+			btn.modulate = Color(0.3, 0.35, 0.4, 0.25) if gs.is_accessibility_mode else Color(0.4, 0.45, 0.5, 0.35)
 			btn.tooltip_text = "Путь недоступен"
 
 
 	if is_dark:
-		btn_look.modulate = Color(0.8, 0.6, 0.3, 0.8)
+		btn_look.modulate = Color(1.0, 0.7, 0.1, 1.0) if gs.is_accessibility_mode else Color(0.8, 0.6, 0.3, 0.8)
 		btn_look.tooltip_text = "Вокруг темнота (нужен свет)"
 	else:
-		btn_look.modulate = Color(0.6, 0.9, 1.0, 1.0)
+		btn_look.modulate = Color(0.4, 0.95, 1.0, 1.0) if gs.is_accessibility_mode else Color(0.6, 0.9, 1.0, 1.0)
 		btn_look.tooltip_text = "Осмотреться вокруг (О)"
 		
-	btn_wait.modulate = Color(1.0, 0.95, 0.6, 1.0)
-	btn_inv.modulate = Color(0.7, 0.85, 1.0, 1.0)
-	btn_take_all.modulate = Color(0.75, 1.0, 0.75, 1.0)
-	btn_save.modulate = Color(0.65, 1.0, 0.75, 1.0)
+	btn_wait.modulate = Color(1.0, 1.0, 0.2, 1.0) if gs.is_accessibility_mode else Color(1.0, 0.95, 0.6, 1.0)
+	btn_inv.modulate = Color(0.3, 0.8, 1.0, 1.0) if gs.is_accessibility_mode else Color(0.7, 0.85, 1.0, 1.0)
+	btn_take_all.modulate = Color(0.4, 1.0, 0.5, 1.0) if gs.is_accessibility_mode else Color(0.75, 1.0, 0.75, 1.0)
+	btn_save.modulate = Color(0.3, 1.0, 0.6, 1.0) if gs.is_accessibility_mode else Color(0.65, 1.0, 0.75, 1.0)
 	
 	var has_save: bool = false
 	if gs and gs.has_method("has_any_saves"):

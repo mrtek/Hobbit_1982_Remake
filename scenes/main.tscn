@@ -802,7 +802,7 @@ theme_override_constants/outline_size = 6
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 20
-text = "v 0.9 Beta Test"
+text = "v 0.94 Beta"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -953,7 +953,7 @@ theme_override_colors/font_color = Color(1, 0.88, 0.45, 0.8)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 19
-text = "v 0.9 Beta Test"
+text = "v 0.94 Beta"
 horizontal_alignment = 2
 vertical_alignment = 1
 

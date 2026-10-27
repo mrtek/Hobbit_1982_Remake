@@ -65,9 +65,9 @@ func _ready() -> void:
 
 func _on_accessibility_mode_changed(enabled: bool) -> void:
 	if enabled:
-		if music_volume > 0.25:
+		if music_volume > 0.15:
 			_pre_accessibility_volume = music_volume
-		set_music_volume(0.20)
+		set_music_volume(0.10)
 	else:
 		set_music_volume(_pre_accessibility_volume)
 
@@ -174,7 +174,7 @@ func _load_settings() -> void:
 				if gs:
 					gs.is_accessibility_mode = is_acc
 				if is_acc:
-					music_volume = 0.20
+					music_volume = 0.10
 
 func apply_fullscreen(fs: bool) -> void:
 	if fs:

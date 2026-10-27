@@ -573,17 +573,23 @@ func _initialize() -> void:
 	assert(am.current_theme == "fanfare", "Fanfare theme must continue/restart on title screen")
 	print("[PASS] CreditsScreen integration, shaders, textures, scrolling & music verified.")
 
-	# 21. Проверка надписи версии (v 0.9 Beta Test) в главном меню во всех режимах
+	# 21. Проверка надписи версии (v 0.94 Beta) в главном меню во всех режимах
 	assert(main_instance.version_label != null, "VersionLabel node must be present in TitleScreen")
-	assert(main_instance.version_label.text == "v 0.9 Beta Test", "VersionLabel text must be 'v 0.9 Beta Test'")
+	assert(main_instance.version_label.text == "v 0.94 Beta", "VersionLabel text must be 'v 0.94 Beta'")
 	var mode_ver = main_instance.get_node("ModeSelectScreen/ModeSelectVersion")
 	assert(mode_ver != null, "ModeSelectVersion must exist in ModeSelectScreen")
-	assert(mode_ver.text == "v 0.9 Beta Test", "ModeSelectVersion text must be 'v 0.9 Beta Test'")
-	print("[PASS] Version info 'v 0.9 Beta Test' verified across TitleScreen and ModeSelectScreen.")
+	assert(mode_ver.text == "v 0.94 Beta", "ModeSelectVersion text must be 'v 0.94 Beta'")
+	print("[PASS] Version info 'v 0.94 Beta' verified across TitleScreen and ModeSelectScreen.")
 
-	# 22. Проверка режима для слабовидящих (Accessibility Mode) и синхронизации громкости музыки
+	# 22. Проверка режима для слабовидящих (Accessibility Mode), контрастного UI, шрифтов и громкости музыки (10%)
 	assert(main_instance.check_accessibility != null, "CheckAccessibility node must exist in SettingsPanel")
 	assert("Режим для слабовидящих" in main_instance.check_accessibility.text, "CheckAccessibility label must match")
+	
+	# Проверка базового режима MODERN (шрифты 24 и 22)
+	gs.set_game_mode(gs.GameMode.MODERN)
+	main_instance._apply_game_mode_font(main_instance.Mode.MODERN)
+	assert(main_instance.output_log.get_theme_font_size("normal_font_size") == 24, "Log font size in Modern mode must be 24")
+	assert(main_instance.input_line.get_theme_font_size("font_size") == 22, "Input line font size in Modern mode must be 22")
 	
 	# Проверка исходной громкости (по умолчанию 0.75)
 	am.set_music_volume(0.75)
@@ -597,21 +603,29 @@ func _initialize() -> void:
 	main_instance.check_accessibility.button_pressed = true
 	main_instance._on_accessibility_toggled(true)
 	assert(gs.is_accessibility_mode == true, "GameState.is_accessibility_mode must be true")
-	assert(is_equal_approx(am.get_music_volume(), 0.20), "Music volume must be attenuated to 0.20 when accessibility mode is enabled")
-	assert(is_equal_approx(main_instance.volume_slider.value, 0.20), "Volume slider must visually update to 0.20")
-	assert(main_instance.vol_value_label.text == "20%", "Volume label must show 20%")
+	assert(is_equal_approx(am.get_music_volume(), 0.10), "Music volume must be attenuated to 0.10 when accessibility mode is enabled")
+	assert(is_equal_approx(main_instance.volume_slider.value, 0.10), "Volume slider must visually update to 0.10")
+	assert(main_instance.vol_value_label.text == "10%", "Volume label must show 10%")
 	
-	# Отключаем режим для слабовидящих - громкость музыки и ползунок должны вернуться к 0.75!
+	# Проверяем увеличение шрифтов для слабовидящих
+	assert(main_instance.output_log.get_theme_font_size("normal_font_size") == 30, "Log font size must be 30 in accessibility mode")
+	assert(main_instance.input_line.get_theme_font_size("font_size") == 26, "Input line font size must be 26 in accessibility mode")
+	assert(main_instance.prompt_label.get_theme_font_size("font_size") == 28, "Prompt label font size must be 28 in accessibility mode")
+	assert(main_instance.loc_title.get_theme_font_size("font_size") == 34, "Title font size must be 34 in accessibility mode")
+	
+	# Отключаем режим для слабовидящих - громкость музыки, ползунок и шрифты должны вернуться в стандартное состояние
 	main_instance.check_accessibility.button_pressed = false
 	main_instance._on_accessibility_toggled(false)
 	assert(gs.is_accessibility_mode == false, "GameState.is_accessibility_mode must be false")
 	assert(is_equal_approx(am.get_music_volume(), 0.75), "Music volume must be restored to 0.75 when accessibility mode is disabled")
 	assert(is_equal_approx(main_instance.volume_slider.value, 0.75), "Volume slider must visually restore to 0.75")
 	assert(main_instance.vol_value_label.text == "75%", "Volume label must restore to 75%")
+	assert(main_instance.output_log.get_theme_font_size("normal_font_size") == 24, "Log font size must restore to 24 in Modern mode")
+	assert(main_instance.input_line.get_theme_font_size("font_size") == 22, "Input line font size must restore to 22 in Modern mode")
 	
 	# Проверка обработки текста для озвучки (очистка BBCode)
 	main_instance._speak_text("[b][color=#ffff00]Тестовый текст озвучки[/color][/b]")
-	print("[PASS] Accessibility Mode (Режим для слабовидящих): volume auto-attenuation, visual slider sync & volume restore verified.")
+	print("[PASS] Accessibility Mode (Режим для слабовидящих): volume auto-attenuation to 10%, high contrast UI, enlarged fonts & restore verified.")
 
 	print("\n--- ALL TESTS PASSED SUCCESSFULLY! ---")
 	main_instance.free()

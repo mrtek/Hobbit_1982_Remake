@@ -3,7 +3,7 @@
 [![Play Online](https://img.shields.io/badge/▶_ИГРАТЬ_ОНЛАЙН-GitHub_Pages-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white)](https://mrtek.github.io/Hobbit_1982_Remake/)
 
 [![Godot Engine](https://img.shields.io/badge/Godot-4.3+-478CBF?logo=godotengine&logoColor=white)](https://godotengine.org)
-[![Version](https://img.shields.io/badge/version-v0.9_Beta_Test-gold)](#)
+[![Version](https://img.shields.io/badge/version-v0.94_Beta-gold)](#)
 [![Genre](https://img.shields.io/badge/genre-Text--Graphic_Adventure-darkgreen)](#)
 [![Platform](https://img.shields.io/badge/platform-Web_%7C_Windows_%7C_Linux_%7C_macOS-lightgrey)](#)
 [![Author](https://img.shields.io/badge/Author-Freeonce_(aka_MrTEK)-blue)](#)
@@ -48,6 +48,11 @@
 - **Система сохранений (Ren'Py Style)**: 6 независимых слотов сохранения с автоматическими скриншотами локации, временными метками, режимом игры и корзиной для безопасного удаления с диалогом подтверждения.
 - **Динамическая музыка**: 18 музыкальных тем с бесшовным плавным затуханием (fade-out/fade-in) при смене локаций и сюжетных событий.
 - **Кинематографический экран «Об игре»**: плавно бегущие снизу вверх титры с историей создания игры, ускорением по зажатию Пробела, поддержкой ручной прокрутки колесиком мыши / стрелками и процедурным шейдером мягких рваных краев для меняющихся иллюстраций.
+- **👁️ Режим для слабовидящих (Accessibility Mode)**:
+  - Высококонтрастный адаптивный интерфейс (глубокий сплошной черный фон панелей, четкие золотые и бирюзовые границы).
+  - Значительно увеличенный кегль шрифта (журнал действий до 30px, строка ввода до 26px, заголовок локации до 34px, увеличенные кнопки компаса и панели действий).
+  - Автоматическое приглушение громкости фоновой музыки до 10% для идеальной разборчивости речи и комфорта слуха.
+  - Синтез речи в реальном времени (Text-to-Speech) — голосовое озвучивание текста локаций и событий (нативный голос в Windows и Web Speech API в браузере).
 
 ---
 
