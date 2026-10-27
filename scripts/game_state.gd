@@ -361,7 +361,7 @@ func process_command(cmd_text: String) -> void:
 		"help":
 			_show_help()
 		_:
-			print_to_log("Вы не можете сделать это сейчас.", Color.GRAY)
+			print_to_log(tr_text("Вы не можете сделать это сейчас.", "You can't do that now."), Color.GRAY)
 			
 	_end_turn()
 
@@ -1228,10 +1228,10 @@ func save_to_slot(slot_id: int, screenshot_img: Image = null) -> bool:
 	if am and "current_theme" in am:
 		cur_theme = am.current_theme
 		
-	var r_name = rooms.get(current_room_id, {}).get("name", "Неизвестная локация")
-	var phase_names = ["День", "Закат", "Ночь", "Рассвет"]
+	var r_name = get_room_name(rooms.get(current_room_id, {}))
+	var phase_names = ["Day", "Dusk", "Night", "Dawn"] if is_english() else ["День", "Закат", "Ночь", "Рассвет"]
 	var phase_name = phase_names[day_phase % 4]
-	var mode_names = ["Современный (Modern)", "Ретро (VGA)", "Классический (ZX)"]
+	var mode_names = ["Modern", "Retro (VGA)", "Classic (ZX)"] if is_english() else ["Современный (Modern)", "Ретро (VGA)", "Классический (ZX)"]
 	var mode_name = mode_names[int(game_mode) % 3]
 	
 	var dt = Time.get_datetime_dict_from_system()
@@ -1408,7 +1408,7 @@ func load_from_slot(slot_id: int) -> bool:
 	world_updated.emit()
 	inventory_changed.emit()
 	look()
-	print_to_log("[color=green]Игра успешно загружена из Слота %d![/color]" % slot_id, Color.GREEN)
+	print_to_log(tr_text("[color=green]Игра успешно загружена из Слота %d![/color]" % slot_id, "[color=green]Game successfully loaded from Slot %d![/color]" % slot_id), Color.GREEN)
 	return true
 
 func delete_slot(slot_id: int) -> bool:
@@ -1460,7 +1460,13 @@ func get_slot_info(slot_id: int) -> Dictionary:
 		parsed["room_id"] = rid
 		parsed["room_name"] = get_room_name(rooms.get(rid, {}))
 		parsed["health"] = int(parsed.get("player_health", 100))
-		parsed["mode_name"] = str(parsed.get("game_mode_name", "Modern"))
+		var d_phase = int(parsed.get("day_phase", 0))
+		var p_names = ["Day", "Dusk", "Night", "Dawn"] if is_english() else ["День", "Закат", "Ночь", "Рассвет"]
+		parsed["day_phase_name"] = p_names[d_phase % 4]
+		var gm = int(parsed.get("game_mode", 0))
+		var m_names = ["Modern", "Retro (VGA)", "Classic (ZX)"] if is_english() else ["Современный (Modern)", "Ретро (VGA)", "Классический (ZX)"]
+		parsed["game_mode_name"] = m_names[gm % 3]
+		parsed["mode_name"] = parsed["game_mode_name"]
 		var img_path = get_slot_image_path(slot_id)
 		if FileAccess.file_exists(img_path):
 			parsed["screenshot_path"] = img_path

@@ -76,6 +76,16 @@ const FONT_PATH_ZX: String = "res://assets/fonts/ZX/zx_spectrum-7.ttf"
 @onready var btn_lang_ru: Button = %BtnLangRU
 @onready var btn_lang_en: Button = %BtnLangEN
 
+# Заголовки панелей, настроек и легенды
+@onready var settings_title_label: Label = $SettingsPanel/Margin/VBox/TitleLabel
+@onready var settings_vol_title: Label = $SettingsPanel/Margin/VBox/VBoxVolume/HBoxVolLabels/VolTitle
+@onready var move_header: Label = $RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/MoveHeader
+@onready var move_sub: Label = $RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/MoveSub
+@onready var move_legend_label: Label = $RootMargin/VBoxMain/TopRow/LeftMovePanel/Margin/VBoxMove/MoveLegendLabel
+@onready var action_header: Label = $RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionHeader
+@onready var action_sub: Label = $RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/ActionSub
+@onready var status_card_title: Label = $RootMargin/VBoxMain/TopRow/RightActionPanel/Margin/VBoxAction/StatusCard/Margin/VBoxCard/CardTitle
+
 enum IntroPhase { VIDEO, FADING, READY }
 var intro_phase: IntroPhase = IntroPhase.VIDEO
 var intro_tween: Tween = null
@@ -285,7 +295,7 @@ func _ready() -> void:
 		btn_select_modern.grab_focus()
 		
 	if gs and gs.is_accessibility_mode:
-		var intro_text = "The Hobbit: Remake, version 0.99 Beta. Game mode selection screen. 1 — Modern, 2 — Retro VGA, 3 — Classic ZX Spectrum. Press 1, 2 or 3, or use arrow keys and Enter. Key V to toggle voice." if (gs.current_language == HobbitGameState.Language.EN) else "Хоббит: Ремейк, версия 0.99 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания."
+		var intro_text = "The Hobbit: Remake, version 0.99.01 Beta. Game mode selection screen. 1 — Modern, 2 — Retro VGA, 3 — Classic ZX Spectrum. Press 1, 2 or 3, or use arrow keys and Enter. Key V to toggle voice." if (gs.current_language == HobbitGameState.Language.EN) else "Хоббит: Ремейк, версия 0.99.01 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания."
 		_speak_text(intro_text, true)
 
 func _notification(what: int) -> void:
@@ -1383,50 +1393,58 @@ func _get_control_accessibility_description(c: Control) -> String:
 	if not c:
 		return ""
 		
+	var gs = _get_game_state()
+	var is_en = (gs and gs.is_english())
+		
 	# 0. Окно журнала событий (OutputLog)
 	if c == output_log or c == output_log_panel:
 		var last = _last_event_log_text
 		if last.is_empty():
-			last = "новых событий пока нет"
-		return "Окно событий игры. Последнее сообщение: %s. Клавиша F4 для повтора, PageUp и PageDown для истории событий." % last
+			last = "no new events yet" if is_en else "новых событий пока нет"
+		return ("Game Event Log. Last message: %s. Press F4 to repeat, PageUp and PageDown for event history." if is_en else "Окно событий игры. Последнее сообщение: %s. Клавиша F4 для повтора, PageUp и PageDown для истории событий.") % last
 		
 	# 1. CheckBox
 	if c is CheckBox:
-		var state_str = "отмечено" if c.button_pressed else "не отмечено"
+		var state_str = ("checked" if c.button_pressed else "not checked") if is_en else ("отмечено" if c.button_pressed else "не отмечено")
 		var txt = c.text.strip_edges()
-		if c == check_fullscreen or "экран" in txt.to_lower():
-			txt = "Полноэкранный режим"
-		elif c == check_accessibility or "слабовидящ" in txt.to_lower():
-			txt = "Режим для слабовидящих"
+		if c == check_fullscreen or "fullscreen" in txt.to_lower() or "экран" in txt.to_lower():
+			txt = "Fullscreen mode" if is_en else "Полноэкранный режим"
+		elif c == check_accessibility or "access" in txt.to_lower() or "слабовидящ" in txt.to_lower():
+			txt = "Accessibility mode" if is_en else "Режим для слабовидящих"
 		elif txt.is_empty() and c.tooltip_text:
 			txt = c.tooltip_text
-		return "%s, флажок, %s. Нажмите Пробел для переключения." % [txt, state_str]
+		return ("%s, checkbox, %s. Press Space to toggle." if is_en else "%s, флажок, %s. Нажмите Пробел для переключения.") % [txt, state_str]
 		
 	# 2. HSlider
 	if c is HSlider:
 		var val_pct = int(round(c.value * 100))
-		return "Громкость музыки, ползунок, %d процентов. Изменяйте стрелками влево и вправо." % val_pct
+		return ("Music volume slider, %d percent. Adjust with left and right arrow keys." if is_en else "Громкость музыки, ползунок, %d процентов. Изменяйте стрелками влево и вправо.") % val_pct
 		
 	# 3. LineEdit
 	if c is LineEdit:
 		var cur = c.text.strip_edges()
 		if cur.is_empty():
-			return "Строка ввода команды. Введите текст и нажмите Enter."
+			return "Command input line. Type command and press Enter." if is_en else "Строка ввода команды. Введите текст и нажмите Enter."
 		else:
-			return "Строка ввода команды. Введено: %s." % cur
+			return ("Command input line. Current text: %s." if is_en else "Строка ввода команды. Введено: %s.") % cur
 			
 	# 4. OptionButton
 	if c is OptionButton:
 		var idx = c.selected
-		var item_txt = c.get_item_text(idx) if idx >= 0 else "нет"
-		return "Выпадающий список быстрых команд. Выбрано: %s. Изменяйте стрелками вверх и вниз, активируйте Enter." % item_txt
+		var item_txt = c.get_item_text(idx) if idx >= 0 else ("none" if is_en else "нет")
+		return ("Quick commands dropdown. Selected: %s. Use up and down arrow keys to navigate, Enter to activate." if is_en else "Выпадающий список быстрых команд. Выбрано: %s. Изменяйте стрелками вверх и вниз, активируйте Enter.") % item_txt
 		
 	# 5. Button
 	if c is Button:
-		var dis_str = ", недоступно" if c.disabled else ""
+		var dis_str = (", unavailable" if is_en else ", недоступно") if c.disabled else ""
 		
 		# Кнопки компаса (направления)
 		var dir_map = {
+			btn_nw: "northwest", btn_n: "north", btn_ne: "northeast",
+			btn_w: "west", btn_e: "east",
+			btn_sw: "southwest", btn_s: "south", btn_se: "southeast",
+			btn_up: "up", btn_dn: "down"
+		} if is_en else {
 			btn_nw: "северо-запад", btn_n: "север", btn_ne: "северо-восток",
 			btn_w: "запад", btn_e: "восток",
 			btn_sw: "юго-запад", btn_s: "юг", btn_se: "юго-восток",
@@ -1436,54 +1454,54 @@ func _get_control_accessibility_description(c: Control) -> String:
 			var dname = dir_map[c]
 			var hint = c.tooltip_text
 			if hint.is_empty():
-				hint = "Путь свободен" if not c.disabled else "Путь недоступен"
-			return "Кнопка направления %s: %s%s." % [dname, hint, dis_str]
+				hint = ("Way is open" if not c.disabled else "Way unavailable") if is_en else ("Путь свободен" if not c.disabled else "Путь недоступен")
+			return ("Direction %s: %s%s." if is_en else "Кнопка направления %s: %s%s.") % [dname, hint, dis_str]
 			
 		# Кнопки действий игрового экрана
 		if c == btn_look:
-			return "Осмотр, кнопка. Осмотреть локацию и видимые предметы."
+			return "Look, button. Examine location and visible items." if is_en else "Осмотр, кнопка. Осмотреть локацию и видимые предметы."
 		elif c == btn_inv:
-			return "Инвентарь, кнопка. Проверить вещи Бильбо."
+			return "Inventory, button. Check items carried by Bilbo." if is_en else "Инвентарь, кнопка. Проверить вещи Бильбо."
 		elif c == btn_wait:
-			return "Ждать, кнопка. Пропустить ход."
+			return "Wait, button. Pass 1 turn." if is_en else "Ждать, кнопка. Пропустить ход."
 		elif c == btn_take_all:
-			return "Взять всё, кнопка. Собрать все доступные предметы."
+			return "Take all, button. Collect all available items." if is_en else "Взять всё, кнопка. Собрать все доступные предметы."
 		elif c == btn_save:
-			return "Сохранить игру, кнопка. Открыть меню сохранений."
+			return "Save game, button. Open save menu." if is_en else "Сохранить игру, кнопка. Открыть меню сохранений."
 		elif c == btn_load:
-			return "Загрузить игру, кнопка%s." % dis_str
+			return ("Load game, button%s." if is_en else "Загрузить игру, кнопка%s.") % dis_str
 		elif c == btn_settings_game:
-			return "Настройки игры, кнопка."
+			return "Game settings, button." if is_en else "Настройки игры, кнопка."
 			
 		# Кнопки выбора режима игры
 		if c == btn_select_modern:
-			return "Современный режим Modern Edition, кнопка. Высокое разрешение, оркестровая музыка и атмосферный шрифт. Нажмите Enter или клавишу 1."
+			return "Modern Edition mode, button. High resolution, orchestral score and modern visuals. Press Enter or key 1." if is_en else "Современный режим Modern Edition, кнопка. Высокое разрешение, оркестровая музыка и атмосферный шрифт. Нажмите Enter или клавишу 1."
 		elif c == btn_select_vga:
-			return "Ретро режим VGA Edition, кнопка. Пиксель-арт MS-DOS, музыка AdLib Sound Blaster и шрифт DOS. Нажмите Enter или клавишу 2."
+			return "Retro VGA Edition mode, button. MS-DOS pixel art, Sound Blaster music and DOS font. Press Enter or key 2." if is_en else "Ретро режим VGA Edition, кнопка. Пиксель-арт MS-DOS, музыка AdLib Sound Blaster и шрифт DOS. Нажмите Enter или клавишу 2."
 		elif c == btn_select_zx:
-			return "Классический режим ZX Spectrum Edition, кнопка. Оригинальная 8-битная графика 1982 года, чиптюн Neil Brennan и шрифт Спектрума. Нажмите Enter или клавишу 3."
+			return "Classic ZX Spectrum Edition mode, button. Original 1982 8-bit graphics, Neil Brennan chiptune and Spectrum font. Press Enter or key 3." if is_en else "Классический режим ZX Spectrum Edition, кнопка. Оригинальная 8-битная графика 1982 года, чиптюн Neil Brennan и шрифт Спектрума. Нажмите Enter или клавишу 3."
 			
 		# Кнопки главного меню
 		if c == btn_start_game:
-			return "Начать игру, кнопка. Нажмите Enter для старта."
+			return "New Game, button. Press Enter to start." if is_en else "Начать игру, кнопка. Нажмите Enter для старта."
 		elif c == btn_title_load:
-			return "Загрузить игру, кнопка%s." % (", недоступно, нет сохраненных игр" if c.disabled else "")
+			return ("Load Game, button%s." if is_en else "Загрузить игру, кнопка%s.") % ((", disabled, no saved games" if is_en else ", недоступно, нет сохраненных игр") if c.disabled else "")
 		elif c == btn_change_mode:
-			return "Сменить режим оформления, кнопка. Выбрать Modern, VGA или ZX."
+			return "Change game mode, button. Choose Modern, VGA or ZX." if is_en else "Сменить режим оформления, кнопка. Выбрать Modern, VGA или ZX."
 		elif c == btn_settings:
-			return "Настройки, кнопка. Настройка звука, экрана и доступности."
+			return "Settings, button. Adjust audio, display and accessibility." if is_en else "Настройки, кнопка. Настройка звука, экрана и доступности."
 		elif c == btn_credits:
-			return "Об игре, титры, кнопка. История создания игры и авторы."
+			return "About the game, credits, button. Game history and credits." if is_en else "Об игре, титры, кнопка. История создания игры и авторы."
 		elif c == btn_star:
-			return "Поставить звезду на GitHub, кнопка. Открыть страницу проекта в браузере."
+			return "Star on GitHub, button. Open project repository in browser." if is_en else "Поставить звезду на GitHub, кнопка. Открыть страницу проекта в браузере."
 		elif c == btn_exit:
-			return "Выход из игры, кнопка."
+			return "Exit game, button." if is_en else "Выход из игры, кнопка."
 			
 		# Кнопки настроек
 		if c == btn_settings_main_menu:
-			return "Выход в главное меню, кнопка."
+			return "Quit to Main Menu, button." if is_en else "Выход в главное меню, кнопка."
 		elif c == btn_settings_back:
-			return "Назад, кнопка. Закрыть меню настроек."
+			return "Back, button. Close settings." if is_en else "Назад, кнопка. Закрыть меню настроек."
 			
 		# Кнопки слотов сохранения (SaveLoadScreen)
 		var cname = c.name
@@ -1491,31 +1509,30 @@ func _get_control_accessibility_description(c: Control) -> String:
 			var card_idx = cname.replace("BtnCardAction", "").to_int() - 1
 			if save_load_screen:
 				var slot_id = (save_load_screen.current_page - 1) * 6 + (card_idx + 1)
-				var gs = _get_game_state()
 				var info: Dictionary = gs.get_slot_info(slot_id) if (gs and gs.has_method("get_slot_info")) else {}
 				var is_save = (save_load_screen.current_mode == save_load_screen.Mode.SAVE)
 				if info.get("exists", false):
-					var rname = info.get("room_name", "Локация")
+					var rname = info.get("room_name", "Location" if is_en else "Локация")
 					var date = info.get("timestamp", "")
 					var hp = info.get("player_health", 100)
-					return "Слот %d: %s, %d здоровья, %s. Нажмите Enter для %s." % [slot_id, rname, hp, date, "перезаписи" if is_save else "загрузки"]
+					return ("Slot %d: %s, %d HP, %s. Press Enter to %s." if is_en else "Слот %d: %s, %d здоровья, %s. Нажмите Enter для %s.") % [slot_id, rname, hp, date, ("overwrite" if is_save else "load") if is_en else ("перезаписи" if is_save else "загрузки")]
 				else:
-					return "Слот %d: Пустой слот. %s." % [slot_id, "Нажмите Enter для сохранения" if is_save else "Недоступно для загрузки"]
+					return ("Slot %d: Empty slot. %s." if is_en else "Слот %d: Пустой слот. %s.") % [slot_id, ("Press Enter to save" if is_save else "Cannot load empty slot") if is_en else ("Нажмите Enter для сохранения" if is_save else "Недоступно для загрузки")]
 		elif cname.begins_with("BtnDelete"):
 			var card_idx = cname.replace("BtnDelete", "").to_int() - 1
 			if save_load_screen:
 				var slot_id = (save_load_screen.current_page - 1) * 6 + (card_idx + 1)
-				return "Удалить сохранение в слоте %d, кнопка." % slot_id
+				return ("Delete save in Slot %d, button." if is_en else "Удалить сохранение в слоте %d, кнопка.") % slot_id
 		elif cname == "BtnTabSave":
-			return "Вкладка Сохранить, кнопка."
+			return "Save Tab, button." if is_en else "Вкладка Сохранить, кнопка."
 		elif cname == "BtnTabLoad":
-			return "Вкладка Загрузить, кнопка."
+			return "Load Tab, button." if is_en else "Вкладка Загрузить, кнопка."
 		elif cname in ["BtnClose", "BtnBackBottom", "BtnBack"]:
-			return "Назад, закрыть окно, кнопка."
+			return "Back, close window, button." if is_en else "Назад, закрыть окно, кнопка."
 		elif cname == "BtnConfirmYes":
-			return "Да, подтвердить, кнопка."
+			return "Yes, confirm, button." if is_en else "Да, подтвердить, кнопка."
 		elif cname == "BtnConfirmNo":
-			return "Отмена, кнопка."
+			return "Cancel, button." if is_en else "Отмена, кнопка."
 			
 		# Обычный текст кнопки
 		var btext = c.text.strip_edges()
@@ -1523,7 +1540,7 @@ func _get_control_accessibility_description(c: Control) -> String:
 			btext = c.tooltip_text
 		if btext.is_empty():
 			btext = c.name
-		return "%s, кнопка%s." % [btext, dis_str]
+		return ("%s, button%s." if is_en else "%s, кнопка%s.") % [btext, dis_str]
 		
 	return ""
 
@@ -1933,19 +1950,17 @@ func _update_header(room_id: int) -> void:
 		loc_sub.visible = false
 		loc_sub.text = ""
 		
+	var is_en = gs.is_english()
 	if gs.game_won:
-		loc_title.text = "ВЕЛИКАЯ ПОБЕДА! ВОЗВРАЩЕНИЕ В ХОББИТОН"
+		loc_title.text = "GREAT VICTORY! RETURN TO HOBBITON" if is_en else "ВЕЛИКАЯ ПОБЕДА! ВОЗВРАЩЕНИЕ В ХОББИТОН"
 		return
 		
 	var room = gs.rooms.get(room_id, {})
 	if room.is_empty():
-		loc_title.text = "Неизвестная земля"
+		loc_title.text = "Unknown Land" if is_en else "Неизвестная земля"
 		return
 		
-	if gs:
-		loc_title.text = gs.get_room_name(room)
-	else:
-		loc_title.text = room.get("name_ru", room.get("name", ""))
+	loc_title.text = gs.get_room_name(room)
 
 func _set_ui_language(lang: HobbitGameState.Language) -> void:
 	var gs = _get_game_state()
@@ -2062,13 +2077,23 @@ func apply_language(lang: HobbitGameState.Language) -> void:
 	if btn_exit: btn_exit.text = "Exit" if is_en else "Выход"
 	
 	# 4. Панель настроек (SettingsPanel)
+	if settings_title_label: settings_title_label.text = "SETTINGS" if is_en else "НАСТРОЙКИ"
+	if settings_vol_title: settings_vol_title.text = "Music volume:" if is_en else "Громкость музыки:"
 	if check_fullscreen: check_fullscreen.text = " Fullscreen mode" if is_en else " Полноэкранный режим"
-	if check_accessibility: check_accessibility.text = " Accessibility mode (High Contrast & Large Text)" if is_en else " Режим для слабовидящих"
+	if check_accessibility: check_accessibility.text = " Accessibility mode (High Contrast & Speech)" if is_en else " Режим для слабовидящих"
 	if label_language: label_language.text = " Language / Язык:" if is_en else " Язык / Language:"
 	if btn_settings_main_menu: btn_settings_main_menu.text = "MAIN MENU" if is_en else "ГЛАВНОЕ МЕНЮ"
 	if btn_settings_back: btn_settings_back.text = "BACK" if is_en else "НАЗАД"
 	
 	# 5. Игровой HUD
+	if move_header: move_header.text = "PATHS & EXITS" if is_en else "ПУТИ И НАПРАВЛЕНИЯ"
+	if move_sub: move_sub.text = "Choose direction:" if is_en else "Выберите направление пути:"
+	if move_legend_label: move_legend_label.text = "[+] Open   [!] Door   [-] Blocked" if is_en else "[+] Открыто   [!] Дверь   [-] Нет пути"
+	
+	if action_header: action_header.text = "ACTIONS" if is_en else "ДЕЙСТВИЯ"
+	if action_sub: action_sub.text = "Quick commands:" if is_en else "Быстрое управление:"
+	if status_card_title: status_card_title.text = "HOBBIT STATUS:" if is_en else "СОСТОЯНИЕ ХОББИТА:"
+
 	if btn_look: btn_look.text = "LOOK" if is_en else "ОСМОТРЕТЬСЯ"
 	if btn_inv: btn_inv.text = "INVENTORY" if is_en else "ИНВЕНТАРЬ"
 	if btn_wait: btn_wait.text = "WAIT" if is_en else "ЖДАТЬ"
@@ -2090,6 +2115,11 @@ func apply_language(lang: HobbitGameState.Language) -> void:
 	
 	if input_line:
 		input_line.placeholder_text = "Enter command... (e.g. look, north, take sword)" if is_en else "Введите команду... (например: осмотреться, север, взять меч)"
+		
+	if credits_screen and credits_screen.has_method("apply_language"):
+		credits_screen.apply_language(is_en)
+	if save_load_screen and save_load_screen.has_method("set_mode"):
+		save_load_screen.set_mode(save_load_screen.current_mode)
 		
 	if gs:
 		_update_header(gs.current_room_id)
@@ -2222,17 +2252,22 @@ func _update_compass_buttons() -> void:
 			btn.tooltip_text = "Way unavailable" if is_en else "Путь недоступен"
 
 
+	var is_en = gs.is_english()
 	if is_dark:
 		btn_look.modulate = Color(1.0, 0.7, 0.1, 1.0) if gs.is_accessibility_mode else Color(0.8, 0.6, 0.3, 0.8)
-		btn_look.tooltip_text = "Вокруг темнота (нужен свет)"
+		btn_look.tooltip_text = "Pitch black (light needed)" if is_en else "Вокруг темнота (нужен свет)"
 	else:
 		btn_look.modulate = Color(0.4, 0.95, 1.0, 1.0) if gs.is_accessibility_mode else Color(0.6, 0.9, 1.0, 1.0)
-		btn_look.tooltip_text = "Осмотреться вокруг (О)"
+		btn_look.tooltip_text = "Look around (L)" if is_en else "Осмотреться вокруг (О)"
 		
 	btn_wait.modulate = Color(1.0, 1.0, 0.2, 1.0) if gs.is_accessibility_mode else Color(1.0, 0.95, 0.6, 1.0)
+	btn_wait.tooltip_text = "Wait 1 turn (W)" if is_en else "Ждать 1 ход (Ж)"
 	btn_inv.modulate = Color(0.3, 0.8, 1.0, 1.0) if gs.is_accessibility_mode else Color(0.7, 0.85, 1.0, 1.0)
+	btn_inv.tooltip_text = "Show inventory (I)" if is_en else "Показать инвентарь (И)"
 	btn_take_all.modulate = Color(0.4, 1.0, 0.5, 1.0) if gs.is_accessibility_mode else Color(0.75, 1.0, 0.75, 1.0)
+	btn_take_all.tooltip_text = "Take all items here" if is_en else "Взять все предметы в локации"
 	btn_save.modulate = Color(0.3, 1.0, 0.6, 1.0) if gs.is_accessibility_mode else Color(0.65, 1.0, 0.75, 1.0)
+	btn_save.tooltip_text = "Save game" if is_en else "Сохранить игру"
 	
 	var has_save: bool = false
 	if gs and gs.has_method("has_any_saves"):
@@ -2242,8 +2277,12 @@ func _update_compass_buttons() -> void:
 	btn_load.disabled = not has_save
 	if has_save:
 		btn_load.modulate = Color(0.5, 0.85, 1.0, 1.0)
+		btn_load.tooltip_text = "Load game" if is_en else "Загрузить игру"
 	else:
 		btn_load.modulate = Color(0.4, 0.45, 0.5, 0.35)
+		btn_load.tooltip_text = "No saved games" if is_en else "Нет сохранений"
+		
+	btn_settings_game.tooltip_text = "Game settings" if is_en else "Настройки игры"
 
 func _update_command_dropdown() -> void:
 	if not command_dropdown:

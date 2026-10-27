@@ -573,18 +573,18 @@ func _initialize() -> void:
 	assert(am.current_theme == "fanfare", "Fanfare theme must continue/restart on title screen")
 	print("[PASS] CreditsScreen integration, shaders, textures, scrolling & music verified.")
 
-	# 21. Проверка кнопки 'Поставить звезду на GitHub' и надписи версии (v 0.99 Beta) в главном меню
+	# 21. Проверка кнопки 'Поставить звезду на GitHub' и надписи версии (v 0.99.01 Beta) в главном меню
 	assert(main_instance.btn_star != null, "BtnStar must exist in TitleScreen MenuContainer")
 	assert("GitHub" in main_instance.btn_star.text and ("звезд" in main_instance.btn_star.text.to_lower() or "star" in main_instance.btn_star.text.to_lower()), "BtnStar text must invite to star on GitHub")
 	var desc_star = main_instance._get_control_accessibility_description(main_instance.btn_star)
 	assert("GitHub" in desc_star, "BtnStar speech description must mention GitHub")
 	
 	assert(main_instance.version_label != null, "VersionLabel node must be present in TitleScreen")
-	assert(main_instance.version_label.text == "v 0.99 Beta", "VersionLabel text must be 'v 0.99 Beta'")
+	assert(main_instance.version_label.text == "v 0.99.01 Beta", "VersionLabel text must be 'v 0.99.01 Beta'")
 	var mode_ver = main_instance.get_node("ModeSelectScreen/ModeSelectVersion")
 	assert(mode_ver != null, "ModeSelectVersion must exist in ModeSelectScreen")
-	assert(mode_ver.text == "v 0.99 Beta", "ModeSelectVersion text must be 'v 0.99 Beta'")
-	print("[PASS] BtnStar ('Поставить звезду на GitHub') and Version info 'v 0.99 Beta' verified across TitleScreen and ModeSelectScreen.")
+	assert(mode_ver.text == "v 0.99.01 Beta", "ModeSelectVersion text must be 'v 0.99.01 Beta'")
+	print("[PASS] BtnStar ('Поставить звезду на GitHub') and Version info 'v 0.99.01 Beta' verified across TitleScreen and ModeSelectScreen.")
 
 	# 22. Проверка режима для слабовидящих (Accessibility Mode), синтеза речи UI (self-voicing), контрастного интерфейса и громкости 10%
 	assert(main_instance.check_accessibility != null, "CheckAccessibility node must exist in SettingsPanel")
@@ -702,6 +702,14 @@ func _initialize() -> void:
 	assert(main_instance.btn_n.text == "N", "Compass N button text in EN")
 	assert(main_instance.btn_s.text == "S", "Compass S button text in EN")
 	assert("command" in main_instance.command_dropdown.get_item_text(0).to_lower(), "Dropdown prompt in EN")
+	assert(main_instance.move_header.text == "PATHS & EXITS", "move_header text in EN")
+	assert(main_instance.move_sub.text == "Choose direction:", "move_sub text in EN")
+	assert(main_instance.move_legend_label.text == "[+] Open   [!] Door   [-] Blocked", "move_legend_label in EN")
+	assert(main_instance.action_header.text == "ACTIONS", "action_header text in EN")
+	assert(main_instance.action_sub.text == "Quick commands:", "action_sub text in EN")
+	assert(main_instance.status_card_title.text == "HOBBIT STATUS:", "status_card_title in EN")
+	assert(main_instance.settings_title_label.text == "SETTINGS", "settings_title_label in EN")
+	assert(main_instance.settings_vol_title.text == "Music volume:", "settings_vol_title in EN")
 	
 	# Проверка английских команд парсера
 	gs.current_room_id = 1
@@ -714,6 +722,13 @@ func _initialize() -> void:
 	assert(main_instance.btn_start_game.text == "Начать игру", "BtnStartGame text restored to RU")
 	assert(main_instance.btn_look.text == "ОСМОТРЕТЬСЯ", "BtnLook text restored to RU")
 	assert(main_instance.btn_n.text == "С", "Compass N button text restored to RU")
+	assert(main_instance.move_header.text == "ПУТИ И НАПРАВЛЕНИЯ", "move_header restored to RU")
+	assert(main_instance.move_sub.text == "Выберите направление пути:", "move_sub restored to RU")
+	assert(main_instance.action_header.text == "ДЕЙСТВИЯ", "action_header restored to RU")
+	assert(main_instance.action_sub.text == "Быстрое управление:", "action_sub restored to RU")
+	assert(main_instance.status_card_title.text == "СОСТОЯНИЕ ХОББИТА:", "status_card_title restored to RU")
+	assert(main_instance.settings_title_label.text == "НАСТРОЙКИ", "settings_title_label restored to RU")
+	assert(main_instance.settings_vol_title.text == "Громкость музыки:", "settings_vol_title restored to RU")
 
 	# Проверка кнопок переключения языка на экране выбора режима (ModeSelectScreen)
 	assert(main_instance.btn_lang_ru != null, "BtnLangRU must exist")

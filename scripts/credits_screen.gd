@@ -64,10 +64,7 @@ func open_credits() -> void:
 	if is_inside_tree() and get_tree().root and get_tree().root.has_node("GameState"):
 		gs = get_tree().root.get_node("GameState")
 	var is_en = gs.is_english() if (gs and gs.has_method("is_english")) else false
-	if btn_back:
-		btn_back.text = "← MENU" if is_en else "← В МЕНЮ"
-	if speed_hint:
-		speed_hint.text = "[SPACE] Speed up / [ESC] Exit" if is_en else "[ПРОБЕЛ] Ускорить / [ESC] Выйти"
+	apply_language(is_en)
 
 	if btn_back and btn_back.is_inside_tree():
 		btn_back.grab_focus()
@@ -266,3 +263,45 @@ func _load_texture_from_path(path: String) -> Texture2D:
 		if img:
 			return ImageTexture.create_from_image(img)
 	return null
+
+func apply_language(is_en: bool) -> void:
+	if btn_back:
+		btn_back.text = "← MENU" if is_en else "← В МЕНЮ"
+	if speed_hint:
+		speed_hint.text = "[SPACE] Speed up / [ESC] Exit" if is_en else "[ПРОБЕЛ] Ускорить / [ESC] Выйти"
+	var subtitle = get_node_or_null("ScrollArea/ScrollContent/TextVBox/GameSubtitle")
+	if subtitle:
+		subtitle.text = "REMAKE OF THE CULT ADVENTURE (1982)" if is_en else "РЕМЕЙК КУЛЬТОВОГО ПРИКЛЮЧЕНИЯ (1982)"
+	var ha = get_node_or_null("ScrollArea/ScrollContent/TextVBox/HeaderAuthor")
+	if ha:
+		ha.text = "REMAKE AUTHOR" if is_en else "АВТОР РЕМЕЙКА"
+	var hh = get_node_or_null("ScrollArea/ScrollContent/TextVBox/HeaderHistory")
+	if hh:
+		hh.text = "ABOUT THE ORIGINAL GAME" if is_en else "О СОЗДАНИИ ЭТОЙ ИГРЫ"
+	var ht = get_node_or_null("ScrollArea/ScrollContent/TextVBox/HistoryText")
+	if ht:
+		ht.text = ("This project is a tribute to one of the most revolutionary and significant games in computer gaming history.\n\nReleased in 1982 by Melbourne House for the ZX Spectrum, Commodore 64 and other platforms, 'The Hobbit' became a true masterpiece of the golden age of interactive fiction.\n\nThe original creators — Philip Mitchell and Veronika Megler — were decades ahead of their time. Their natural language parser 'Inglish' allowed players to formulate complex commands, converse with companions, and interact with a living physics-driven world like no other game of that era." if is_en else "Этот проект — дань уважения одной из самых революционных и значимых игр в истории компьютерных развлечений.\n\nВыпущенная в 1982 году австралийской студией Melbourne House для ZX Spectrum, Commodore 64 и других платформ, «The Hobbit» стала настоящим шедевром золотого века интерактивной литературы.\n\nСоздатели оригинала — Филип Митчелл (Philip Mitchell) и Вероника Меглер (Veronika Megler) — опередили своё время на десятилетия. Их парсер естественного языка «Inglish» позволял формулировать сложные команды, общаться со спутниками и взаимодействовать с физическим миром так, как не могла ни одна другая игра той эпохи.")
+	var hr = get_node_or_null("ScrollArea/ScrollContent/TextVBox/HeaderRemake")
+	if hr:
+		hr.text = "REMAKE PHILOSOPHY" if is_en else "ФИЛОСОФИЯ РЕМЕЙКА"
+	var rt = get_node_or_null("ScrollArea/ScrollContent/TextVBox/RemakeText")
+	if rt:
+		rt.text = ("The goal of this Godot 4.3 remake is to preserve the unforgettable atmosphere of the original while pairing authentic simulation with modern conveniences:\n\n- Living Autonomous World (WorldSim): Thorin Oakenshield, Gandalf, Elrond, Bard the Bowman, Gollum and ferocious trolls live their own lives, moving across Middle-earth and reacting to events independently of Bilbo.\n\n- Physics Model: Every item has weight, size and unique properties. Containers can be opened, examined, used to store items, or even climbed into!\n\n- Bilingual Natural Language Parser: Full support for both English (the authentic 1982 syntax) and Russian grammar.\n\n- 79 canonical locations, 43 interactive items and 17 characters from the Professor's timeless tale." if is_en else "Цель ремейка на движке Godot 4.3 — сохранить ту самую неповторимую атмосферу оригинала, соединив аутентичную симуляцию с комфортом современных технологий:\n\n- Живой автономный мир (WorldSim): Торин Оукеншильд, Гэндальф, Элронд, Бард Лучник, Голлум и свирепые тролли живут своей жизнью, перемещаются по Средиземью и реагируют на события независимо от присутствия игрока.\n\n- Физическая модель: каждый предмет обладает весом, объёмом и уникальными свойствами. Контейнеры можно открывать, заглядывать внутрь, прятать в них вещи и даже залезать в них самому!\n\n- Умный двуязычный парсер: поддержка оригинального синтаксиса 1982 года и русской грамматики.\n\n- 79 канонических локаций, 43 интерактивных предмета и 17 персонажей из повести Профессора.")
+	var hm = get_node_or_null("ScrollArea/ScrollContent/TextVBox/HeaderModes")
+	if hm:
+		hm.text = "THREE ERAS IN ONE GAME" if is_en else "ТРИ ЭПОХИ В ОДНОЙ ИГРЕ"
+	var mt = get_node_or_null("ScrollArea/ScrollContent/TextVBox/ModesText")
+	if mt:
+		mt.text = ("Players can switch between three eras at any time:\n\n- 'MODERN EDITION'\nHigh-definition detailed artwork, Greengoth fantasy typography and an orchestral score.\n\n- 'RETRO (VGA)'\nThe atmosphere of the 90s MS-DOS golden era: 256-color palette, DOS2000 font and Sound Blaster music.\n\n- 'CLASSIC (ZX SPECTRUM)'\nPrimal 1982 nostalgia: genuine 8-bit graphics, ZX Spectrum font and warm analog SID / AY chiptunes." if is_en else "Игрок может в любой момент переключиться между тремя эпохами:\n\n- «СОВРЕМЕННЫЙ (MODERN)»\nДетализированные полноцветные HD-иллюстрации, фэнтезийный шрифт Greengoth и богатый оркестровый саундтрек.\n\n- «РЕТРО (VGA)»\nАтмосфера золотой эры MS-DOS 90-х: 256-цветная палитра, шрифт DOS2000 и аутентичное звучание звуковых карт Sound Blaster.\n\n- «КЛАССИЧЕСКИЙ (ZX SPECTRUM)»\nПервозданная романтика 1982 года: подлинная 8-битная графика, шрифт ZX Spectrum 7 и тёплый аналоговый чиптюн-звук SID / AY.")
+	var ht_th = get_node_or_null("ScrollArea/ScrollContent/TextVBox/HeaderThanks")
+	if ht_th:
+		ht_th.text = "SPECIAL THANKS" if is_en else "БЛАГОДАРНОСТИ"
+	var tt = get_node_or_null("ScrollArea/ScrollContent/TextVBox/ThanksText")
+	if tt:
+		tt.text = ("To J.R.R. Tolkien — for the immortal world of Middle-earth.\n\nTo Philip Mitchell and Veronika Megler — for pioneering interactive fiction and crafting the 1982 masterpiece.\n\nTo the Godot Engine community.\n\nTo the retro-gaming community and fans of interactive adventures.\n\nAnd to YOU, adventurer, for embarking on this journey There and Back Again!" if is_en else "Дж. Р. Р. Толкину — за бессмертный мир Средиземья, в который хочется возвращаться снова и снова.\n\nФилипу Митчеллу и Веронике Меглер — за дерзость первопроходцев и создание шедевра 1982 года.\n\nСоздателям и сообществу игрового движка Godot Engine.\n\nРетро-сообществу и всем преданным любителям текстовых квестов.\n\nИ вам, дорогой игрок, за то, что отправились в это приключение «Туда и Обратно»!")
+	var qt = get_node_or_null("ScrollArea/ScrollContent/TextVBox/QuoteText")
+	if qt:
+		qt.text = ("«In a hole in the ground there lived a hobbit.\nNot a nasty, dirty, wet hole, filled with the ends of worms,\nnor yet a dry, bare, sandy hole with nothing in it to sit down on...\nIt was a hobbit-hole, and that means comfort.»" if is_en else "«В норе под землёй жил хоббит.\nНе в сырой и затхлой норе, где полно червей,\nи не в сухой песчаной, где не на что сесть...\nЭто была хоббичья нора, а значит — уютная во всех отношениях.»")
+	var ft = get_node_or_null("ScrollArea/ScrollContent/TextVBox/FooterText")
+	if ft:
+		ft.text = "— End of Records —" if is_en else "— Конец записей —"

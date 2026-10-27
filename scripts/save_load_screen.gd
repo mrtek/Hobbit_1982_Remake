@@ -260,6 +260,7 @@ func refresh_slots() -> void:
 			# Занятый слот
 			date_lbl.text = info.get("timestamp", "")
 			del_btn.visible = true
+			del_btn.tooltip_text = "Delete save" if is_en else "Удалить сохранение"
 			room_lbl.text = info.get("room_name", "Unknown Location" if is_en else "Неизвестная локация")
 			
 			var hp = info.get("player_health", 100)
@@ -369,13 +370,19 @@ func _execute_delete_slot(slot_id: int) -> void:
 func _ask_confirm(prompt_text: String, action: Callable) -> void:
 	_ensure_nodes()
 	pending_confirm_action = action
+	var gs = _get_game_state()
+	var is_en = (gs and gs.has_method("is_english") and gs.is_english())
+	var header_lbl = confirm_overlay.get_node_or_null("Card/Margin/VBox/Header") if confirm_overlay else null
+	if header_lbl:
+		header_lbl.text = "CONFIRMATION" if is_en else "ПОДТВЕРЖДЕНИЕ"
 	if confirm_prompt:
 		confirm_prompt.text = prompt_text
 	if confirm_overlay:
 		confirm_overlay.visible = true
 	if btn_confirm_yes and btn_confirm_yes.is_inside_tree():
 		btn_confirm_yes.grab_focus()
-	_speak_accessibility(prompt_text.replace("\n", " ") + " Кнопка Да или Отмена.")
+	var suffix = " Yes or Cancel button." if is_en else " Кнопка Да или Отмена."
+	_speak_accessibility(prompt_text.replace("\n", " ") + suffix)
 
 func _on_confirm_yes() -> void:
 	if confirm_overlay:
