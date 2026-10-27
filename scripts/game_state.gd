@@ -53,6 +53,49 @@ signal inventory_changed()
 signal world_updated()
 signal game_mode_changed(new_mode: GameMode)
 signal accessibility_mode_changed(enabled: bool)
+signal language_changed(new_lang: Language)
+
+# Языки интерфейса и текста
+enum Language {
+	RU = 0,
+	EN = 1
+}
+var current_language: Language = Language.RU
+
+func set_language(lang: Language) -> void:
+	if current_language != lang:
+		current_language = lang
+		language_changed.emit(lang)
+
+func is_english() -> bool:
+	return current_language == Language.EN
+
+func tr_text(ru_text: String, en_text: String) -> String:
+	return en_text if current_language == Language.EN else ru_text
+
+func get_item_name(it: Dictionary) -> String:
+	return it.get("name", "") if current_language == Language.EN else it.get("name_ru", it.get("name", ""))
+
+func get_npc_name(n: Dictionary) -> String:
+	return n.get("name", "") if current_language == Language.EN else n.get("name_ru", n.get("name", ""))
+
+func get_room_name(r: Dictionary) -> String:
+	return r.get("name", "") if current_language == Language.EN else r.get("name_ru", r.get("name", ""))
+
+func get_room_desc(r: Dictionary) -> String:
+	if current_language == Language.EN:
+		return r.get("description_en", r.get("description", r.get("description_ru", "")))
+	return r.get("description_ru", r.get("description", ""))
+
+func get_item_desc(it: Dictionary) -> String:
+	if current_language == Language.EN:
+		return it.get("desc_en", it.get("desc_ru", ""))
+	return it.get("desc_ru", "")
+
+func get_npc_desc(n: Dictionary) -> String:
+	if current_language == Language.EN:
+		return n.get("desc_en", n.get("desc_ru", ""))
+	return n.get("desc_ru", "")
 
 var is_accessibility_mode: bool = false
 
@@ -80,11 +123,11 @@ func get_image_file_for_mode(base_file_name: String) -> String:
 func get_current_mode_name() -> String:
 	match game_mode:
 		GameMode.VGA:
-			return "Ретро (VGA)"
+			return tr_text("Ретро (VGA)", "Retro (VGA)")
 		GameMode.ZX:
-			return "Классический (ZX)"
+			return tr_text("Классический (ZX)", "Classic (ZX)")
 		_:
-			return "Современный (Modern)"
+			return tr_text("Современный (Modern)", "Modern")
 
 var _mode_fonts_cache: Dictionary = {}
 
@@ -266,7 +309,7 @@ func process_command(cmd_text: String) -> void:
 		return
 		
 	if parsed["verb"] == "":
-		print_to_log("Я не понимаю команду '" + cmd_text + "'.", Color.SALMON)
+		print_to_log(tr_text("Я не понимаю команду '" + cmd_text + "'.", "I do not understand the command '" + cmd_text + "'."), Color.SALMON)
 		return
 		
 	match parsed["verb"]:
@@ -332,22 +375,22 @@ func _end_turn() -> void:
 	if day_phase != old_phase:
 		match day_phase:
 			0:
-				print_to_log("\n[color=yellow]Встает солнце. Наступает ясный день.[/color]", Color.YELLOW)
+				print_to_log(tr_text("\n[color=yellow]Встает солнце. Наступает ясный день.[/color]", "\n[color=yellow]The sun rises. Day dawns.[/color]"), Color.YELLOW)
 				_trigger_trolls_dawn()
 			1:
-				print_to_log("\n[color=orange]Солнце клонится к закату. Наступают сумерки.[/color]", Color.ORANGE)
+				print_to_log(tr_text("\n[color=orange]Солнце клонится к закату. Наступают сумерки.[/color]", "\n[color=orange]The sun sinks in the west. Dusk falls.[/color]"), Color.ORANGE)
 				if current_room_id == 42 or current_room_id == 47:
 					_trigger_thrush_event()
 			2:
-				print_to_log("\n[color=royalblue]Сгущается тьма. Настала глухая ночь.[/color]", Color.ROYAL_BLUE)
+				print_to_log(tr_text("\n[color=royalblue]Сгущается тьма. Настала глухая ночь.[/color]", "\n[color=royalblue]Darkness gathers. It is night.[/color]"), Color.ROYAL_BLUE)
 			3:
-				print_to_log("\n[color=cornflowerblue]Небо на востоке начинает светлеть. Близится рассвет.[/color]", Color.CORNFLOWER_BLUE)
+				print_to_log(tr_text("\n[color=cornflowerblue]Небо на востоке начинает светлеть. Близится рассвет.[/color]", "\n[color=cornflowerblue]The sky lightens in the east. Dawn approaches.[/color]"), Color.CORNFLOWER_BLUE)
 				
 	# Проверка свечения меча Жало
 	var sting = items.get(14)
 	if sting and (sting["location"] == 0 or sting["location"] == current_room_id):
 		if is_enemy_nearby():
-			print_to_log("[color=cyan]Клинок меча Жало ярко сияет холодным голубым пламенем![/color]", Color.CYAN)
+			print_to_log(tr_text("[color=cyan]Клинок меча Жало ярко сияет холодным голубым пламенем![/color]", "[color=cyan]The blade of Sting glows with a bright cold blue light![/color]"), Color.CYAN)
 			
 	if world_sim:
 		world_sim.process_turn()
@@ -363,38 +406,40 @@ func _trigger_trolls_dawn() -> void:
 				t["is_stone"] = true
 				t["is_dead"] = true
 				t["name_ru"] = "Каменное изваяние тролля"
+				t["name"] = "Stone statue of troll"
 		if current_room_id == 5:
-			print_to_log("[color=yellow]Первый луч солнца падает на троллей! Они застывают и превращаются в неподвижные каменные глыбы![/color]", Color.YELLOW)
+			print_to_log(tr_text("[color=yellow]Первый луч солнца падает на троллей! Они застывают и превращаются в неподвижные каменные глыбы![/color]", "[color=yellow]The first rays of sunlight fall upon the trolls! They turn to stone![/color]"), Color.YELLOW)
 		var key = items.get(4)
 		if key:
 			key["location"] = 5
 
 func _trigger_thrush_event() -> void:
 	thrush_knocked = true
-	print_to_log("[color=yellow]Старый дрозд громко застучал улиткой о серый камень![/color]", Color.YELLOW)
-	print_to_log("[color=gold]Последний луч заходящего солнца пронзает скалу и озаряет замочную скважину потайной двери![/color]", Color.GOLD)
+	print_to_log(tr_text("[color=yellow]Старый дрозд громко застучал улиткой о серый камень![/color]", "[color=yellow]An old thrush knocks a snail loudly against the grey rock![/color]"), Color.YELLOW)
+	print_to_log(tr_text("[color=gold]Последний луч заходящего солнца пронзает скалу и озаряет замочную скважину потайной двери![/color]", "[color=gold]The last ray of the setting sun shines upon the rock, illuminating the hidden keyhole![/color]"), Color.GOLD)
 
 func look() -> void:
 	if current_room_id <= 0 or not rooms.has(current_room_id):
 		current_room_id = 1
 	var room = rooms.get(current_room_id)
 	if not room:
-		print_to_log("Вы находитесь в пустоте.", Color.RED)
+		print_to_log(tr_text("Вы находитесь в пустоте.", "You are in the void."), Color.RED)
 		return
 		
 	if is_dark_here():
-		print_to_log("[color=gray]Здесь абсолютно темно. Вы ничего не видите во мраке.[/color]", Color.GRAY)
+		print_to_log(tr_text("[color=gray]Здесь абсолютно темно. Вы ничего не видите во мраке.[/color]", "[color=gray]It is pitch dark. You see nothing in the shadows.[/color]"), Color.GRAY)
 		return
 		
-	# Заголовок локации (название на русском и оригинальное имя из 128K)
-	var title = "[color=gold][b]" + room.get("name_ru", room["name"]) + "[/b][/color]"
-	var orig_name = room.get("name", "")
-	if orig_name != "":
-		title += " [color=dim_gray](" + orig_name + ")[/color]"
+	# Заголовок локации
+	var title = "[color=gold][b]" + get_room_name(room) + "[/b][/color]"
+	if current_language == Language.RU:
+		var orig_name = room.get("name", "")
+		if orig_name != "":
+			title += " [color=dim_gray](" + orig_name + ")[/color]"
 	print_to_log(title)
 	
 	# Описание
-	var desc = room.get("description_ru", room.get("description", ""))
+	var desc = get_room_desc(room)
 	if desc != "":
 		print_to_log(desc, Color.ANTIQUE_WHITE)
 		
@@ -402,91 +447,107 @@ func look() -> void:
 	if current_room_id == 66:
 		var boat = items.get(41)
 		if boat and boat.get("location") == 67:
-			print_to_log("[color=cyan]На противоположном (восточном) берегу виднеется пустая лодка. Если зацепить ее веревкой, можно притянуть ее сюда.[/color]", Color.CYAN)
+			print_to_log(tr_text(
+				"[color=cyan]На противоположном (восточном) берегу виднеется пустая лодка. Если зацепить ее веревкой, можно притянуть ее сюда.[/color]",
+				"[color=cyan]An empty boat is moored on the opposite (eastern) bank. If you snag it with a rope, you can pull it here.[/color]"
+			), Color.CYAN)
 		
 	# Выходы
 	var exits_text = []
 	for ex in room.get("exits", []):
 		var dest_id = int(ex.get("dest", 0))
-		var dir_ru = ex.get("direction_ru", ex["direction"])
+		var dir_str = ex["direction"] if current_language == Language.EN else ex.get("direction_ru", ex["direction"])
 		var via_id = int(ex.get("via_obj", 0))
 		if dest_id > 0 and rooms.has(dest_id):
 			if via_id > 0:
 				var via_obj = items.get(via_id)
-				var via_name = via_obj.get("name_ru", "дверь") if via_obj else "дверь"
-				var state = "закрыто" if (via_obj and not via_obj.get("is_open", true)) else "открыто"
-				exits_text.append("%s [%s (%s)]" % [dir_ru, via_name, state])
+				var via_name = get_item_name(via_obj) if via_obj else tr_text("дверь", "door")
+				var is_open = via_obj and via_obj.get("is_open", true)
+				var state = tr_text("открыто", "open") if is_open else tr_text("закрыто", "closed")
+				exits_text.append("%s [%s (%s)]" % [dir_str, via_name, state])
 			else:
-				exits_text.append(dir_ru)
+				exits_text.append(dir_str)
 		elif via_id > 0:
 			var via_obj = items.get(via_id)
-			var via_name = via_obj.get("name_ru", via_obj["name"]) if via_obj else "преграда"
-			exits_text.append("%s [%s (преграждает путь)]" % [dir_ru, via_name])
+			var via_name = get_item_name(via_obj) if via_obj else tr_text("преграда", "obstacle")
+			exits_text.append("%s [%s (%s)]" % [dir_str, via_name, tr_text("преграждает путь", "blocks the way")])
 	if exits_text.size() > 0:
-		print_to_log("[color=sea_green]Видимые пути: " + ", ".join(exits_text) + "[/color]")
+		print_to_log("[color=sea_green]" + tr_text("Видимые пути: ", "Visible paths: ") + ", ".join(exits_text) + "[/color]")
 		
 	# Предметы на локации
 	var room_items = []
 	for it_id in items.keys():
 		var it = items[it_id]
 		if it["location"] == current_room_id:
-			var item_title = it.get("name_ru", it["name"])
+			var item_title = get_item_name(it)
 			if it.get("is_container", false):
 				if it.get("is_open", false):
 					var inside_items = []
 					for sub_id in items.keys():
 						if items[sub_id]["location"] == -it["id"]:
-							inside_items.append(items[sub_id].get("name_ru", items[sub_id]["name"]))
+							inside_items.append(get_item_name(items[sub_id]))
 					if inside_items.size() > 0:
-						item_title += " [открыт, внутри: " + ", ".join(inside_items) + "]"
+						item_title += " [" + tr_text("открыт, внутри: ", "open, inside: ") + ", ".join(inside_items) + "]"
 					else:
-						item_title += " [открыт, внутри пусто]"
+						item_title += " [" + tr_text("открыт, внутри пусто", "open, empty inside") + "]"
 				else:
-					item_title += " [закрыт]"
+					item_title += " [" + tr_text("закрыт", "closed") + "]"
 			elif it.get("is_locked", false):
-				item_title += " [заперто]"
+				item_title += " [" + tr_text("заперто", "locked") + "]"
 			room_items.append(item_title)
 			
 	if room_items.size() > 0:
-		print_to_log("[color=deep_sky_blue]Вы видите здесь: " + ", ".join(room_items) + "[/color]")
+		print_to_log("[color=deep_sky_blue]" + tr_text("Вы видите здесь: ", "You see here: ") + ", ".join(room_items) + "[/color]")
 		
 	# Персонажи на локации
 	var room_npcs = []
 	for n_id in npcs.keys():
 		var n = npcs[n_id]
 		if n["location"] == current_room_id:
-			room_npcs.append(n.get("name_ru", n["name"]))
+			room_npcs.append(get_npc_name(n))
 	if room_npcs.size() > 0:
-		print_to_log("[color=coral]Здесь находится: " + ", ".join(room_npcs) + "[/color]")
+		print_to_log("[color=coral]" + tr_text("Здесь находится: ", "Here is: ") + ", ".join(room_npcs) + "[/color]")
 
 func _go(direction: String) -> void:
 	if direction == "":
-		print_to_log("Куда именно вы хотите пойти?", Color.KHAKI)
+		print_to_log(tr_text("Куда именно вы хотите пойти?", "Which way do you want to go?"), Color.KHAKI)
 		return
 		
 	# Особый случай: переправа на лодке (id=41) через Заколдованную реку (между Западным берегом 66 и Восточным берегом 67)
 	if inside_container_id == 41:
 		var dir_l = direction.to_lower()
-		if current_room_id == 66 and (dir_l == "east" or dir_l == "восток" or dir_l == "в"):
+		if current_room_id == 66 and (dir_l == "east" or dir_l == "восток" or dir_l == "в" or dir_l == "e"):
 			current_room_id = 67
 			items[41]["location"] = 67
-			print_to_log("[color=cyan]Вы на веслах переплываете быструю темную реку на лодке и благополучно причаливаете к восточному берегу.[/color]", Color.CYAN)
+			print_to_log(tr_text(
+				"[color=cyan]Вы на веслах переплываете быструю темную реку на лодке и благополучно причаливаете к восточному берегу.[/color]",
+				"[color=cyan]You row across the swift dark river in the boat and land safely on the eastern bank.[/color]"
+			), Color.CYAN)
 			room_changed.emit(current_room_id)
 			look()
 			return
-		elif current_room_id == 67 and (dir_l == "west" or dir_l == "запад" or dir_l == "з"):
+		elif current_room_id == 67 and (dir_l == "west" or dir_l == "запад" or dir_l == "з" or dir_l == "w"):
 			current_room_id = 66
 			items[41]["location"] = 66
-			print_to_log("[color=cyan]Вы на веслах переплываете быструю темную реку на лодке и благополучно причаливаете к западному берегу.[/color]", Color.CYAN)
+			print_to_log(tr_text(
+				"[color=cyan]Вы на веслах переплываете быструю темную реку на лодке и благополучно причаливаете к западному берегу.[/color]",
+				"[color=cyan]You row across the swift dark river in the boat and land safely on the western bank.[/color]"
+			), Color.CYAN)
 			room_changed.emit(current_room_id)
 			look()
 			return
 		else:
-			print_to_log("Вы находитесь в лодке! Чтобы идти пешком, сначала выберитесь наружу ('вылезти').", Color.KHAKI)
+			print_to_log(tr_text(
+				"Вы находитесь в лодке! Чтобы идти пешком, сначала выберитесь наружу ('вылезти').",
+				"You are in the boat! To walk on foot, first climb out ('exit')."
+			), Color.KHAKI)
 			return
 
 	if inside_container_id != -1:
-		print_to_log("Вы находитесь внутри бочки/лодки! Сначала выберитесь наружу ('вылезти').", Color.KHAKI)
+		print_to_log(tr_text(
+			"Вы находитесь внутри бочки/лодки! Сначала выберитесь наружу ('вылезти').",
+			"You are inside a barrel or boat! First climb out ('exit')."
+		), Color.KHAKI)
 		return
 		
 	var room = rooms.get(current_room_id, {})
@@ -501,22 +562,26 @@ func _go(direction: String) -> void:
 			if dest_id <= 0 or not rooms.has(dest_id):
 				if via_id > 0:
 					var via_obj = items.get(via_id)
-					var via_name = via_obj.get("name_ru", via_obj["name"]) if via_obj else "Препятствие"
-					print_to_log(via_name + " преграждает путь.", Color.SALMON)
+					var via_name = get_item_name(via_obj) if via_obj else tr_text("Препятствие", "Obstacle")
+					print_to_log(via_name + tr_text(" преграждает путь.", " blocks the way."), Color.SALMON)
 				else:
-					print_to_log("Вы не можете идти в этом направлении.", Color.KHAKI)
+					print_to_log(tr_text("Вы не можете идти в этом направлении.", "You cannot go in that direction."), Color.KHAKI)
 				return
 				
 			# Проверка закрытых дверей
 			if via_id > 0:
 				var via_obj = items.get(via_id)
 				if via_obj and not via_obj.get("is_open", true):
-					print_to_log(via_obj.get("name_ru", via_obj["name"]) + " преграждает путь (закрыто).", Color.SALMON)
+					var via_name = get_item_name(via_obj)
+					print_to_log(via_name + tr_text(" преграждает путь (закрыто).", " blocks the way (closed)."), Color.SALMON)
 					return
 					
 			# Особая проверка для смертоносной Заколдованной реки на берегах 66 и 67 без лодки
 			if via_id == 9:
-				print_to_log("Заколдованная Черная река преграждает путь! Ее темные воды смертоносны — вам нужна лодка, чтобы переправиться.", Color.SALMON)
+				print_to_log(tr_text(
+					"Заколдованная Черная река преграждает путь! Ее темные воды смертоносны — вам нужна лодка, чтобы переправиться.",
+					"The Enchanted Black River blocks the way! Its waters carry a magic slumber — you need a boat to cross."
+				), Color.SALMON)
 				return
 					
 			current_room_id = dest_id
@@ -524,7 +589,7 @@ func _go(direction: String) -> void:
 			look()
 			return
 			
-	print_to_log("Вы не можете идти в этом направлении.", Color.KHAKI)
+	print_to_log(tr_text("Вы не можете идти в этом направлении.", "You cannot go in that direction."), Color.KHAKI)
 
 func _show_inventory() -> void:
 	var carrying = []
@@ -534,15 +599,15 @@ func _show_inventory() -> void:
 		if it["location"] == 0:
 			var note = ""
 			if it_id == 16 and is_invisible:
-				note = " [надето, вы невидимы!]"
-			carrying.append(it.get("name_ru", it["name"]) + note)
+				note = tr_text(" [надето, вы невидимы!]", " [worn, you are invisible!]")
+			carrying.append(get_item_name(it) + note)
 			total_mass += it.get("mass", 0)
 			
 	if carrying.size() > 0:
-		print_to_log("[color=sky_blue]Вы несете:[/color]\n- " + "\n- ".join(carrying), Color.SKY_BLUE)
-		print_to_log("Общий вес: %d / %d" % [total_mass, player_max_mass], Color.GRAY)
+		print_to_log("[color=sky_blue]" + tr_text("Вы несете:", "You are carrying:") + "[/color]\n- " + "\n- ".join(carrying), Color.SKY_BLUE)
+		print_to_log(tr_text("Общий вес: %d / %d", "Total weight: %d / %d") % [total_mass, player_max_mass], Color.GRAY)
 	else:
-		print_to_log("У вас ничего нет в руках.", Color.SKY_BLUE)
+		print_to_log(tr_text("У вас ничего нет в руках.", "You are not carrying anything."), Color.SKY_BLUE)
 
 func _find_item_by_alias(alias: String, search_loc: int) -> Dictionary:
 	alias = alias.to_lower().strip_edges()
@@ -607,71 +672,85 @@ func _examine(object_name: String, indirect_object: String = "", prep: String = 
 	if not it.is_empty():
 		# Если это контейнер (сундук, шкаф, бочка, тайник)
 		if it.get("is_container", false):
+			var it_name = get_item_name(it)
 			var is_open = it.get("is_open", false)
 			if not is_open:
-				print_to_log(it.get("name_ru", it["name"]) + " закрыт. Сначала откройте его командой: ОТКРЫТЬ " + it.get("name_ru", it["name"]).to_upper() + ".", Color.KHAKI)
+				print_to_log(tr_text(
+					it_name + " закрыт. Сначала откройте его командой: ОТКРЫТЬ " + it_name.to_upper() + ".",
+					it_name + " is closed. First open it with command: OPEN " + it_name.to_upper() + "."
+				), Color.KHAKI)
 				return
 				
 			var inside_items = []
 			for sub_id in items.keys():
 				if items[sub_id]["location"] == -it["id"]:
-					inside_items.append(items[sub_id].get("name_ru", items[sub_id]["name"]))
+					inside_items.append(get_item_name(items[sub_id]))
 					
 			if inside_items.size() > 0:
-				print_to_log("[color=deep_sky_blue]Вы заглядываете в " + it.get("name_ru", it["name"]) + ".\nВнутри лежит: " + ", ".join(inside_items) + ".[/color]", Color.DEEP_SKY_BLUE)
-				print_to_log("[color=gray](Чтобы забрать: ВЗЯТЬ <предмет> ИЗ " + it.get("name_ru", it["name"]).to_upper() + ")[/color]", Color.GRAY)
+				print_to_log(tr_text(
+					"[color=deep_sky_blue]Вы заглядываете в " + it_name + ".\nВнутри лежит: " + ", ".join(inside_items) + ".[/color]",
+					"[color=deep_sky_blue]You look inside " + it_name + ".\nInside you see: " + ", ".join(inside_items) + ".[/color]"
+				), Color.DEEP_SKY_BLUE)
 			else:
-				print_to_log("[color=deep_sky_blue]Вы заглядываете в " + it.get("name_ru", it["name"]) + ".\nВнутри сейчас пусто.[/color]", Color.DEEP_SKY_BLUE)
-				print_to_log("[color=gray](Вы можете сложить сюда добычу командой: ПОЛОЖИТЬ <предмет> В " + it.get("name_ru", it["name"]).to_upper() + ")[/color]", Color.GRAY)
+				print_to_log(tr_text(
+					"[color=deep_sky_blue]Вы заглядываете в " + it_name + ".\nВнутри сейчас пусто.[/color]",
+					"[color=deep_sky_blue]You look inside " + it_name + ".\nIt is currently empty inside.[/color]"
+				), Color.DEEP_SKY_BLUE)
 			return
 			
 		# Если это дверь / преграда
-		if "двер" in it.get("name_ru", "").to_lower() or "люк" in it.get("name_ru", "").to_lower() or "врата" in it.get("name_ru", "").to_lower():
-			var state_str = "открыта" if it.get("is_open", false) else "закрыта"
-			if it.get("is_locked", false):
-				state_str += " (заперта на ключ)"
-			print_to_log(it.get("name_ru", it["name"]) + ": " + state_str + ".", Color.WHITE)
+		var nm_l = it.get("name", "").to_lower() + " " + it.get("name_ru", "").to_lower()
+		if "двер" in nm_l or "door" in nm_l or "люк" in nm_l or "trapdoor" in nm_l or "gate" in nm_l or "врата" in nm_l:
+			var it_name = get_item_name(it)
+			var is_op = it.get("is_open", false)
+			var is_loc = it.get("is_locked", false)
+			var state_str = tr_text("открыта", "open") if is_op else tr_text("закрыта", "closed")
+			if is_loc:
+				state_str += tr_text(" (заперта на ключ)", " (locked)")
+			print_to_log(it_name + ": " + state_str + ".", Color.WHITE)
 			return
 			
 		# Обычный предмет
-		var desc = it.get("desc_ru", "")
+		var desc = get_item_desc(it)
+		var it_name = get_item_name(it)
 		if desc != "":
-			print_to_log(it.get("name_ru", it["name"]) + ": " + desc, Color.WHITE)
+			print_to_log(it_name + ": " + desc, Color.WHITE)
 		else:
-			print_to_log("Вы внимательно осматриваете " + it.get("name_ru", it["name"]) + ". Ничего необычного.", Color.WHITE)
+			print_to_log(tr_text("Вы внимательно осматриваете " + it_name + ". Ничего необычного.", "You examine the " + it_name + ". Nothing unusual."), Color.WHITE)
 		return
 		
 	# 2. Поиск персонажа
 	var npc = _find_npc_by_alias(target_query, current_room_id)
 	if not npc.is_empty():
-		var desc = npc.get("desc_ru", "")
+		var desc = get_npc_desc(npc)
+		var n_name = get_npc_name(npc)
 		if desc != "":
-			print_to_log("[color=coral]" + npc.get("name_ru", npc["name"]) + ": " + desc + "[/color]", Color.CORAL)
+			print_to_log("[color=coral]" + n_name + ": " + desc + "[/color]", Color.CORAL)
 		else:
-			print_to_log("Вы осматриваете " + npc.get("name_ru", npc["name"]) + ".", Color.CORAL)
+			print_to_log(tr_text("Вы осматриваете " + n_name + ".", "You look at " + n_name + "."), Color.CORAL)
 		return
 		
-	print_to_log("Вы не видите здесь ничего с названием '" + target_query + "'.", Color.KHAKI)
+	print_to_log(tr_text("Вы не видите здесь ничего с названием '" + target_query + "'.", "You do not see '" + target_query + "' here."), Color.KHAKI)
 
 func _take(object_name: String, from_container: String = "") -> void:
 	if object_name == "":
-		print_to_log("Что именно вы хотите взять?", Color.KHAKI)
+		print_to_log(tr_text("Что именно вы хотите взять?", "What do you want to take?"), Color.KHAKI)
 		return
 		
 	if is_dark_here():
-		print_to_log("В кромешной тьме ничего не видно.", Color.GRAY)
+		print_to_log(tr_text("В кромешной тьме ничего не видно.", "You see nothing in the dark."), Color.GRAY)
 		return
 		
-	# Если игрок указал конкретный контейнер (например "взять еду из шкафа" или "взять меч из сундука")
+	# Если игрок указал конкретный контейнер
 	if from_container != "":
 		var cont = _find_item_by_alias(from_container, current_room_id)
 		if cont.is_empty():
 			cont = _find_item_by_alias(from_container, 0)
 		if cont.is_empty():
-			print_to_log("Вы не видите здесь " + from_container + ".", Color.KHAKI)
+			print_to_log(tr_text("Вы не видите здесь " + from_container + ".", "You do not see " + from_container + " here."), Color.KHAKI)
 			return
 		if not cont.get("is_open", true):
-			print_to_log(cont.get("name_ru", cont["name"]) + " закрыт! Сначала откройте его.", Color.KHAKI)
+			print_to_log(get_item_name(cont) + tr_text(" закрыт! Сначала откройте его.", " is closed! Open it first."), Color.KHAKI)
 			return
 			
 		for sub_id in items.keys():
@@ -680,10 +759,10 @@ func _take(object_name: String, from_container: String = "") -> void:
 				for a in sub_it.get("aliases", []):
 					if a in object_name or object_name in a:
 						sub_it["location"] = 0
-						print_to_log("Вы достали " + sub_it.get("name_ru", sub_it["name"]) + " из " + cont.get("name_ru", cont["name"]) + ".", Color.WHITE)
+						print_to_log(tr_text("Вы достали " + get_item_name(sub_it) + " из " + get_item_name(cont) + ".", "You take the " + get_item_name(sub_it) + " from the " + get_item_name(cont) + "."), Color.WHITE)
 						inventory_changed.emit()
 						return
-		print_to_log("Внутри " + cont.get("name_ru", cont["name"]) + " нет такого предмета.", Color.KHAKI)
+		print_to_log(tr_text("Внутри " + get_item_name(cont) + " нет такого предмета.", "There is no such item in " + get_item_name(cont) + "."), Color.KHAKI)
 		return
 
 	# Команда "взять всё"
@@ -693,10 +772,10 @@ func _take(object_name: String, from_container: String = "") -> void:
 			var it = items[it_id]
 			if it["location"] == current_room_id:
 				it["location"] = 0
-				print_to_log("Вы взяли " + it.get("name_ru", it["name"]) + ".", Color.WHITE)
+				print_to_log(tr_text("Вы взяли " + get_item_name(it) + ".", "You take the " + get_item_name(it) + "."), Color.WHITE)
 				count += 1
 		if count == 0:
-			print_to_log("Здесь нечего брать.", Color.KHAKI)
+			print_to_log(tr_text("Здесь нечего брать.", "There is nothing to take here."), Color.KHAKI)
 		else:
 			inventory_changed.emit()
 		return
@@ -704,7 +783,7 @@ func _take(object_name: String, from_container: String = "") -> void:
 	# Ищем предмет на полу
 	var it = _find_item_by_alias(object_name, current_room_id)
 	if it.is_empty():
-		# Если на полу нет, проверяем открытые контейнеры в комнате!
+		# Если на полу нет, проверяем открытые контейнеры в комнате
 		for cont_id in items.keys():
 			var cont = items[cont_id]
 			if cont["location"] == current_room_id and cont.get("is_container", false) and cont.get("is_open", false):
@@ -714,23 +793,23 @@ func _take(object_name: String, from_container: String = "") -> void:
 						for a in sub_it.get("aliases", []):
 							if a in object_name or object_name in a:
 								sub_it["location"] = 0
-								print_to_log("Вы достали " + sub_it.get("name_ru", sub_it["name"]) + " из " + cont.get("name_ru", cont["name"]) + ".", Color.WHITE)
+								print_to_log(tr_text("Вы достали " + get_item_name(sub_it) + " из " + get_item_name(cont) + ".", "You take the " + get_item_name(sub_it) + " from the " + get_item_name(cont) + "."), Color.WHITE)
 								inventory_changed.emit()
 								return
-		print_to_log("Вы не видите здесь такого предмета.", Color.KHAKI)
+		print_to_log(tr_text("Вы не видите здесь такого предмета.", "You do not see that item here."), Color.KHAKI)
 		return
 		
 	if it.get("mass", 0) > player_max_mass:
-		print_to_log("Это слишком тяжело для хоббита!", Color.SALMON)
+		print_to_log(tr_text("Это слишком тяжело для хоббита!", "That is too heavy for a hobbit to carry!"), Color.SALMON)
 		return
 		
 	it["location"] = 0
-	print_to_log("Вы взяли " + it.get("name_ru", it["name"]) + ".", Color.WHITE)
+	print_to_log(tr_text("Вы взяли " + get_item_name(it) + ".", "You take the " + get_item_name(it) + "."), Color.WHITE)
 	inventory_changed.emit()
 
 func _drop(object_name: String, into_container: String = "") -> void:
 	if object_name == "":
-		print_to_log("Что вы хотите положить или бросить?", Color.KHAKI)
+		print_to_log(tr_text("Что вы хотите положить или бросить?", "What do you want to drop or put down?"), Color.KHAKI)
 		return
 		
 	if object_name in ["всё", "все", "all"]:
@@ -741,17 +820,17 @@ func _drop(object_name: String, into_container: String = "") -> void:
 				it["location"] = current_room_id
 				if it["id"] == 16:
 					is_invisible = false
-				print_to_log("Вы бросили " + it.get("name_ru", it["name"]) + ".", Color.WHITE)
+				print_to_log(tr_text("Вы бросили " + get_item_name(it) + ".", "You drop the " + get_item_name(it) + "."), Color.WHITE)
 				count += 1
 		if count == 0:
-			print_to_log("У вас ничего нет.", Color.KHAKI)
+			print_to_log(tr_text("У вас ничего нет.", "You are carrying nothing."), Color.KHAKI)
 		else:
 			inventory_changed.emit()
 		return
 		
 	var it = _find_item_by_alias(object_name, 0)
 	if it.is_empty():
-		print_to_log("У вас нет этого предмета.", Color.KHAKI)
+		print_to_log(tr_text("У вас нет этого предмета.", "You are not carrying that item."), Color.KHAKI)
 		return
 		
 	# Если кладем в контейнер
@@ -759,10 +838,10 @@ func _drop(object_name: String, into_container: String = "") -> void:
 		var cont = _find_item_by_alias(into_container, current_room_id)
 		if not cont.is_empty() and cont.get("is_container", false):
 			if not cont.get("is_open", true):
-				print_to_log(cont.get("name_ru", cont["name"]) + " закрыт!", Color.SALMON)
+				print_to_log(get_item_name(cont) + tr_text(" закрыт!", " is closed!"), Color.SALMON)
 				return
 			it["location"] = -cont["id"]
-			print_to_log("Вы положили " + it.get("name_ru", it["name"]) + " в " + cont.get("name_ru", cont["name"]) + ".", Color.WHITE)
+			print_to_log(tr_text("Вы положили " + get_item_name(it) + " в " + get_item_name(cont) + ".", "You put the " + get_item_name(it) + " into the " + get_item_name(cont) + "."), Color.WHITE)
 			
 			if it["id"] == 35 and cont["id"] == 37 and current_room_id == 1:
 				_win_game()
@@ -773,21 +852,22 @@ func _drop(object_name: String, into_container: String = "") -> void:
 	it["location"] = current_room_id
 	if it["id"] == 16:
 		is_invisible = false
-	print_to_log("Вы бросили " + it.get("name_ru", it["name"]) + ".", Color.WHITE)
+	print_to_log(tr_text("Вы бросили " + get_item_name(it) + ".", "You drop the " + get_item_name(it) + "."), Color.WHITE)
 	inventory_changed.emit()
 
 func _open(object_name: String, with_key_name: String = "") -> void:
 	if object_name == "":
-		print_to_log("Что вы хотите открыть?", Color.KHAKI)
+		print_to_log(tr_text("Что вы хотите открыть?", "What do you want to open?"), Color.KHAKI)
 		return
 		
 	var it = _find_item_by_alias(object_name, current_room_id)
 	if it.is_empty():
-		print_to_log("Вы не видите этого здесь.", Color.KHAKI)
+		print_to_log(tr_text("Вы не видите этого здесь.", "You do not see that here."), Color.KHAKI)
 		return
 		
+	var it_name = get_item_name(it)
 	if it.get("is_open", false):
-		print_to_log("Это уже открыто.", Color.WHITE)
+		print_to_log(tr_text("Это уже открыто.", "It is already open."), Color.WHITE)
 		return
 		
 	# Если заперто на ключ
@@ -802,106 +882,115 @@ func _open(object_name: String, with_key_name: String = "") -> void:
 		if has_key:
 			it["is_locked"] = false
 			it["is_open"] = true
-			print_to_log("Вы вставили ключ в замочную скважину. Раздался щелчок, и " + it.get("name_ru", it["name"]) + " распахнулась!", Color.GREEN)
+			print_to_log(tr_text("Вы вставили ключ в замочную скважину. Раздался щелчок, и " + it_name + " распахнулась!", "You turn the key in the lock. With a click, the " + it_name + " opens!"), Color.GREEN)
 		else:
-			print_to_log("Заперто! Вам нужен подходящий ключ.", Color.SALMON)
+			print_to_log(tr_text("Заперто! Вам нужен подходящий ключ.", "It is locked! You need the right key."), Color.SALMON)
 			return
 	else:
 		it["is_open"] = true
-		print_to_log("Вы открыли " + it.get("name_ru", it["name"]) + ".", Color.WHITE)
+		print_to_log(tr_text("Вы открыли " + it_name + ".", "You open the " + it_name + "."), Color.WHITE)
 		
 	# Если это контейнер, сразу сообщаем, что внутри!
 	if it.get("is_container", false):
 		var inside_items = []
 		for sub_id in items.keys():
 			if items[sub_id]["location"] == -it["id"]:
-				inside_items.append(items[sub_id].get("name_ru", items[sub_id]["name"]))
+				inside_items.append(get_item_name(items[sub_id]))
 		if inside_items.size() > 0:
-			print_to_log("[color=deep_sky_blue]Внутри лежит: " + ", ".join(inside_items) + ".[/color]", Color.DEEP_SKY_BLUE)
+			print_to_log(tr_text("[color=deep_sky_blue]Внутри лежит: " + ", ".join(inside_items) + ".[/color]", "[color=deep_sky_blue]Inside you see: " + ", ".join(inside_items) + ".[/color]"), Color.DEEP_SKY_BLUE)
 		else:
-			print_to_log("[color=deep_sky_blue]Внутри пока пусто (вы можете положить сюда вещи командой: ПОЛОЖИТЬ <предмет> В " + it.get("name_ru", it["name"]).to_upper() + ").[/color]", Color.DEEP_SKY_BLUE)
+			print_to_log(tr_text("[color=deep_sky_blue]Внутри пока пусто.[/color]", "[color=deep_sky_blue]It is empty inside.[/color]"), Color.DEEP_SKY_BLUE)
 
 func _close(object_name: String) -> void:
 	if object_name == "":
-		print_to_log("Что вы хотите закрыть?", Color.KHAKI)
+		print_to_log(tr_text("Что вы хотите закрыть?", "What do you want to close?"), Color.KHAKI)
 		return
 	var it = _find_item_by_alias(object_name, current_room_id)
 	if it.is_empty():
-		print_to_log("Вы не видите этого здесь.", Color.KHAKI)
+		print_to_log(tr_text("Вы не видите этого здесь.", "You do not see that here."), Color.KHAKI)
 		return
 	it["is_open"] = false
-	print_to_log("Вы закрыли " + it.get("name_ru", it["name"]) + ".", Color.WHITE)
+	print_to_log(tr_text("Вы закрыли " + get_item_name(it) + ".", "You close the " + get_item_name(it) + "."), Color.WHITE)
 
 func _read(object_name: String) -> void:
 	var it = _find_item_by_alias(object_name, 0)
 	if it.is_empty():
 		it = _find_item_by_alias(object_name, current_room_id)
 	if it.is_empty():
-		print_to_log("Что вы хотите прочесть?", Color.KHAKI)
+		print_to_log(tr_text("Что вы хотите прочесть?", "What do you want to read?"), Color.KHAKI)
 		return
 		
-	if it["id"] == 3: # Карта Трора
+	if it["id"] == 13 or it["id"] == 3: # Карта Трора
 		if day_phase == 2 and current_room_id == 9: # Ночь в Ривенделле
-			print_to_log("[color=cyan]При серебряном свете луны на карте проявляются тайные лунные руны:\n'Встань у серого камня, когда застучит дрозд, и заходящее солнце осветит замочную скважину.'[/color]", Color.CYAN)
+			print_to_log(tr_text(
+				"[color=cyan]При серебряном свете луны на карте проявляются тайные лунные руны:\n'Встань у серого камня, когда застучит дрозд, и заходящее солнце осветит замочную скважину.'[/color]",
+				"[color=cyan]By the silver light of the moon, secret moon-runes appear on the map:\n'Stand by the grey stone when the thrush knocks, and the setting sun with the last light of Durin's Day will shine upon the key-hole.'[/color]"
+			), Color.CYAN)
 		else:
-			print_to_log("На карте гномов начертаны контуры Одинокой Горы, река и рунические надписи на древнем наречии.", Color.WHITE)
+			print_to_log(tr_text(
+				"На карте гномов начертаны контуры Одинокой Горы, река и рунические надписи на древнем наречии.",
+				"The dwarven map shows the contours of the Lonely Mountain, the River Running, and ancient runes."
+			), Color.WHITE)
 	else:
-		print_to_log("Здесь нет текста для чтения.", Color.WHITE)
+		print_to_log(tr_text("Здесь нет текста для чтения.", "There is no text to read on this."), Color.WHITE)
 
 func _wear(object_name: String) -> void:
 	var it = _find_item_by_alias(object_name, 0)
 	if it.is_empty() or it["id"] != 16:
-		print_to_log("Вы можете надеть только волшебное Кольцо.", Color.KHAKI)
+		print_to_log(tr_text("Вы можете надеть только волшебное Кольцо.", "You can only wear the magic Ring."), Color.KHAKI)
 		return
 		
 	is_invisible = true
-	print_to_log("[color=gold]Вы надели Единое Кольцо на палец! Воздух задрожал, и вы стали абсолютно невидимы для окружающих![/color]", Color.GOLD)
+	print_to_log(tr_text(
+		"[color=gold]Вы надели волшебное Кольцо на палец! Воздух задрожал, и вы стали абсолютно невидимы для окружающих![/color]",
+		"[color=gold]You slip the magic Ring onto your finger! The world shimmers, and you vanish from sight![/color]"
+	), Color.GOLD)
 
 func _unwear(object_name: String) -> void:
 	if not is_invisible:
-		print_to_log("Вы ничего не носите.", Color.KHAKI)
+		print_to_log(tr_text("Вы ничего не носите.", "You are not wearing anything."), Color.KHAKI)
 		return
 	is_invisible = false
-	print_to_log("Вы сняли Кольцо и вновь стали видимы для всех.", Color.WHITE)
+	print_to_log(tr_text("Вы сняли Кольцо и вновь стали видимы для всех.", "You take off the Ring and reappear before everyone."), Color.WHITE)
 
 func _eat(object_name: String) -> void:
 	var it = _find_item_by_alias(object_name, 0)
 	if it.is_empty() or not it["id"] in [34, 38]:
-		print_to_log("Это нельзя съесть.", Color.KHAKI)
+		print_to_log(tr_text("Это нельзя съесть.", "You cannot eat that."), Color.KHAKI)
 		return
 	it["location"] = -999
 	player_health = min(100, player_health + 30)
 	player_strength = min(100, player_strength + 30)
-	print_to_log("Вы с наслаждением подкрепились. Силы вернулись к вам!", Color.GREEN)
+	print_to_log(tr_text("Вы с наслаждением подкрепились. Силы вернулись к вам!", "You eat with relish. Your strength returns!"), Color.GREEN)
 	inventory_changed.emit()
 
 func _drink(object_name: String) -> void:
 	var it = _find_item_by_alias(object_name, 0)
 	if it.is_empty():
 		it = _find_item_by_alias(object_name, current_room_id)
-	if it.is_empty() or not it["id"] in [20, 21, 23]:
-		print_to_log("Вы не можете это выпить.", Color.KHAKI)
+	if it.is_empty() or not it["id"] in [20, 21, 23, 39]:
+		print_to_log(tr_text("Вы не можете это выпить.", "You cannot drink that."), Color.KHAKI)
 		return
-	print_to_log("Вы сделали большой глоток. Прекрасно утоляет жажду!", Color.GREEN)
+	print_to_log(tr_text("Вы сделали большой глоток. Прекрасно утоляет жажду!", "You take a hearty drink. It quenches your thirst!"), Color.GREEN)
 
 func _enter(object_name: String) -> void:
 	var target_l = object_name.to_lower()
 	if current_room_id == 66 and ("лодк" in target_l or "boat" in target_l):
 		var boat = items.get(41)
 		if boat and boat["location"] == 67:
-			print_to_log("Лодка находится на противоположном берегу! Сначала притяните ее веревкой.", Color.KHAKI)
+			print_to_log(tr_text("Лодка находится на противоположном берегу! Сначала притяните ее веревкой.", "The boat is on the far bank! First pull it across with a rope."), Color.KHAKI)
 			return
 
 	var it = _find_item_by_alias(object_name, current_room_id)
 	var item_id = int(it.get("id", -1))
 	if it.is_empty() or not (item_id in [19, 41]):
-		print_to_log("Вы не можете забраться внутрь этого.", Color.KHAKI)
+		print_to_log(tr_text("Вы не можете забраться внутрь этого.", "You cannot enter that."), Color.KHAKI)
 		return
 	inside_container_id = item_id
-	print_to_log("Вы ловко залезли внутрь " + it.get("name_ru", it["name"]) + ".", Color.WHITE)
+	print_to_log(tr_text("Вы ловко залезли внутрь " + get_item_name(it) + ".", "You climb inside the " + get_item_name(it) + "."), Color.WHITE)
 	
 	if item_id == 19 and current_room_id == 32:
-		var trapdoor = items.get(12)
+		var trapdoor = items.get(40) # люк в погребе
 		if trapdoor and trapdoor.get("is_open", false):
 			_trigger_barrel_escape()
 
@@ -911,27 +1000,41 @@ func _pull_boat_with_rope() -> void:
 	if not boat:
 		return
 	if boat["location"] == 66:
-		print_to_log("Лодка уже причалена к этому берегу.", Color.KHAKI)
+		print_to_log(tr_text("Лодка уже причалена к этому берегу.", "The boat is already moored at this bank."), Color.KHAKI)
 		return
 	if not rope or (rope["location"] != 0 and rope["location"] != current_room_id):
-		print_to_log("Лодка находится на дальнем берегу. Вам нужна прочная веревка с крюком, чтобы зацепить ее и притянуть.", Color.KHAKI)
+		print_to_log(tr_text(
+			"Лодка находится на дальнем берегу. Вам нужна прочная веревка, чтобы зацепить ее и притянуть.",
+			"The boat is on the far bank. You need a strong rope to snag and pull it across."
+		), Color.KHAKI)
 		return
 	boat["location"] = 66
-	print_to_log("[color=cyan]Вы ловко забрасываете веревку через реку. Крюк цепляется за борт лодки, и вы плавно подтягиваете ее к западному берегу![/color]", Color.CYAN)
-	print_to_log("[color=white]Теперь лодка у вашего берега. Вы можете залезть в нее ('сесть в лодку') и переправиться на восток.[/color]", Color.WHITE)
+	print_to_log(tr_text(
+		"[color=cyan]Вы ловко забрасываете веревку через реку. Крюк цепляется за борт лодки, и вы плавно подтягиваете ее к западному берегу![/color]",
+		"[color=cyan]You skillfully cast the rope across the water. It catches the boat, and you pull it safely to the western bank![/color]"
+	), Color.CYAN)
+	print_to_log(tr_text(
+		"[color=white]Теперь лодка у вашего берега. Вы можете залезть в нее ('сесть в лодку') и переправиться на восток.[/color]",
+		"[color=white]The boat is now at your shore. You can climb in ('enter boat') and row east.[/color]"
+	), Color.WHITE)
 	world_updated.emit()
-
 
 func _exit_container() -> void:
 	if inside_container_id == -1:
-		print_to_log("Вы не находитесь ни в чем.", Color.KHAKI)
+		print_to_log(tr_text("Вы не находитесь ни в чем.", "You are not inside anything."), Color.KHAKI)
 		return
 	inside_container_id = -1
-	print_to_log("Вы выбрались наружу на твердую землю.", Color.WHITE)
+	print_to_log(tr_text("Вы выбрались наружу на твердую землю.", "You climb out onto solid ground."), Color.WHITE)
 
 func _trigger_barrel_escape() -> void:
-	print_to_log("\n[color=cyan]Бочка с грохотом падает сквозь открытый люк прямо в бурные воды Лесной реки![/color]", Color.CYAN)
-	print_to_log("[color=sky_blue]Течение подхватывает вас и несет мимо крутых берегов Лихолесья, сквозь Долгое озеро... прямо к Озерному городу![/color]", Color.SKY_BLUE)
+	print_to_log(tr_text(
+		"\n[color=cyan]Бочка с грохотом падает сквозь открытый люк прямо в бурные воды Лесной реки![/color]",
+		"\n[color=cyan]The barrel tumbles through the open trapdoor into the churning waters of Forest River![/color]"
+	), Color.CYAN)
+	print_to_log(tr_text(
+		"[color=sky_blue]Течение подхватывает вас и несет мимо крутых берегов Лихолесья, сквозь Долгое озеро... прямо к Озерному городу![/color]",
+		"[color=sky_blue]The current sweeps you past the steep banks of Mirkwood, across Long Lake... straight to Lake-town![/color]"
+	), Color.SKY_BLUE)
 	current_room_id = 35
 	inside_container_id = -1
 	room_changed.emit(current_room_id)
@@ -939,68 +1042,90 @@ func _trigger_barrel_escape() -> void:
 
 func _attack(target_name: String, weapon_name: String = "") -> void:
 	if target_name == "":
-		print_to_log("Кого вы хотите атаковать?", Color.KHAKI)
+		print_to_log(tr_text("Кого вы хотите атаковать?", "Who do you want to attack?"), Color.KHAKI)
 		return
 		
 	var enemy = _find_npc_by_alias(target_name, current_room_id)
 	if enemy.is_empty():
-		print_to_log("Здесь нет такого врага.", Color.KHAKI)
+		print_to_log(tr_text("Здесь нет такого врага.", "You see no such enemy here."), Color.KHAKI)
 		return
 		
 	if enemy.get("is_dead", false):
-		print_to_log("Враг уже повержен.", Color.GRAY)
+		print_to_log(tr_text("Враг уже повержен.", "The enemy is already slain."), Color.GRAY)
 		return
 		
 	var has_sword = false
 	for it_id in items.keys():
-		if items[it_id]["location"] == 0 and items[it_id]["id"] == 14:
+		if items[it_id]["location"] == 0 and (items[it_id]["id"] == 14 or items[it_id]["id"] == 12 or items[it_id]["id"] == 7):
 			has_sword = true
 			break
 			
 	if not has_sword:
-		print_to_log("Биться с врагом голыми руками без оружия — верная гибель!", Color.SALMON)
+		print_to_log(tr_text("Биться с врагом голыми руками без оружия — верная гибель!", "Fighting bare-handed without a weapon is certain death!"), Color.SALMON)
 		_npc_attacks_player(enemy)
 		return
 		
 	var roll = randi() % 100
+	var enemy_name = get_npc_name(enemy)
 	if roll > 35:
-		print_to_log("[color=green]Вы наносите стремительный выпад мечом Жало и сражаете " + enemy.get("name_ru", enemy["name"]) + "![/color]", Color.GREEN)
+		print_to_log(tr_text(
+			"[color=green]Вы наносите стремительный выпад мечом Жало и сражаете " + enemy_name + "![/color]",
+			"[color=green]With a swift stroke of Sting, you cleave down the " + enemy_name + "![/color]"
+		), Color.GREEN)
 		enemy["is_dead"] = true
 	else:
-		print_to_log("Ваш клинок со звоном отражен!", Color.SALMON)
+		print_to_log(tr_text("Ваш клинок со звоном отражен!", "Your blow is parried with a loud clang!"), Color.SALMON)
 		_npc_attacks_player(enemy)
 
 func _npc_attacks_player(npc: Dictionary) -> void:
+	var n_name = get_npc_name(npc)
 	if is_invisible:
-		print_to_log(npc.get("name_ru", npc["name"]) + " оглядывается в бешенстве, но не может увидеть невидимого хоббита!", Color.YELLOW)
+		print_to_log(tr_text(
+			n_name + " оглядывается в бешенстве, но не может увидеть невидимого хоббита!",
+			n_name + " looks around furiously, but cannot see the invisible hobbit!"
+		), Color.YELLOW)
 		return
 		
 	var roll = randi() % 100
 	if roll > 40:
-		print_to_log("[color=red]" + npc.get("name_ru", npc["name"]) + " наносит вам сокрушительный удар![/color]", Color.RED)
+		print_to_log(tr_text(
+			"[color=red]" + n_name + " наносит вам сокрушительный удар![/color]",
+			"[color=red]" + n_name + " lands a vicious blow upon you![/color]"
+		), Color.RED)
 		player_health -= 40
 		if player_health <= 0:
 			_die()
 	else:
-		print_to_log(npc.get("name_ru", npc["name"]) + " свирепо атакует, но промахивается!", Color.YELLOW)
+		print_to_log(tr_text(
+			n_name + " свирепо атакует, но промахивается!",
+			n_name + " attacks wildly, but misses!"
+		), Color.YELLOW)
 
 func _shoot_dragon() -> void:
 	if current_room_id != 41 and current_room_id != 35:
-		print_to_log("Здесь не в кого стрелять.", Color.KHAKI)
+		print_to_log(tr_text("Здесь не в кого стрелять.", "There is nothing to shoot at here."), Color.KHAKI)
 		return
 	var smaug = npcs.get(60)
 	if not smaug or smaug.get("is_dead", false):
-		print_to_log("Дракон уже мертв.", Color.WHITE)
+		print_to_log(tr_text("Дракон уже мертв.", "The dragon is already dead."), Color.WHITE)
 		return
 		
 	var bard = npcs.get(70)
 	if not bard or bard.get("location", -1) != current_room_id:
-		print_to_log("Только меткий лучник Бард может поразить Смауга Черной стрелой!", Color.SALMON)
+		print_to_log(tr_text(
+			"Только меткий лучник Бард может поразить Смауга Черной стрелой!",
+			"Only Bard the Bowman can slay Smaug with the Black Arrow!"
+		), Color.SALMON)
 		return
 		
-	print_to_log("[color=gold]Бард натягивает свой исполинский лук до самого уха и спускает тетиву![/color]", Color.GOLD)
-	print_to_log("[color=gold]Черная стрела с шипением вонзается прямо в незащищенное место под левой грудью Смауга![/color]", Color.GOLD)
-	print_to_log("[color=crimson]Дракон издает душераздирающий вопль и замертво рушится на скалы! СМАУГ ПОВЕРЖЕН![/color]", Color.CRIMSON)
+	print_to_log(tr_text(
+		"[color=gold]Бард натягивает свой исполинский лук до самого уха и спускает тетиву!
+Черная стрела с шипением вонзается прямо в незащищенное место под левой грудью Смауга!
+Дракон издает душераздирающий вопль и замертво рушится на скалы! СМАУГ ПОВЕРЖЕН![/color]",
+		"[color=gold]Bard draws his great bow to the ear and looses the cord!
+The Black Arrow hisses into the hollow beneath Smaug's left breast!
+With a terrifying screech, the mighty dragon crashes into the rocks! SMAUG IS DEAD![/color]"
+	), Color.GOLD)
 	smaug["is_dead"] = true
 	smaug_slain = true
 
@@ -1008,11 +1133,14 @@ func _give(object_name: String, target_npc: String) -> void:
 	var it = _find_item_by_alias(object_name, 0)
 	var npc = _find_npc_by_alias(target_npc, current_room_id)
 	if it.is_empty() or npc.is_empty():
-		print_to_log("Кому и что вы хотите отдать?", Color.KHAKI)
+		print_to_log(tr_text("Кому и что вы хотите отдать?", "What do you want to give, and to whom?"), Color.KHAKI)
 		return
 		
 	it["location"] = npc["id"]
-	print_to_log("Вы отдали " + it.get("name_ru", it["name"]) + " персонажу " + npc.get("name_ru", npc["name"]) + ".", Color.WHITE)
+	print_to_log(tr_text(
+		"Вы отдали " + get_item_name(it) + " персонажу " + get_npc_name(npc) + ".",
+		"You give the " + get_item_name(it) + " to " + get_npc_name(npc) + "."
+	), Color.WHITE)
 	inventory_changed.emit()
 
 func _process_companion_command(comp_id: String, parsed: Dictionary) -> void:
@@ -1020,60 +1148,61 @@ func _process_companion_command(comp_id: String, parsed: Dictionary) -> void:
 		"thorin":
 			var th = npcs.get(63)
 			if th.get("location", -1) != current_room_id:
-				print_to_log("Торина нет рядом с вами.", Color.KHAKI)
+				print_to_log(tr_text("Торина нет рядом с вами.", "Thorin is not here."), Color.KHAKI)
 				return
 			if parsed["verb"] == "open":
 				_open(parsed["object"], parsed["indirect_object"])
-				print_to_log("Торин с гномьей силой помог открыть " + parsed["object"] + ".", Color.GREEN)
+				print_to_log(tr_text("Торин с гномьей силой помог открыть " + parsed["object"] + ".", "Thorin lends dwarven strength to open the " + parsed["object"] + "."), Color.GREEN)
 			elif parsed["verb"] == "take":
 				var it = _find_item_by_alias(parsed["object"], current_room_id)
 				if not it.is_empty():
 					it["location"] = 63
-					print_to_log("Торин взял " + it.get("name_ru", it["name"]) + ".", Color.GREEN)
+					print_to_log(tr_text("Торин взял " + get_item_name(it) + ".", "Thorin takes the " + get_item_name(it) + "."), Color.GREEN)
 			elif parsed["verb"] == "go":
 				_go(parsed["direction"])
 				th["location"] = current_room_id
-				print_to_log("Торин последовал за вами.", Color.GREEN)
+				print_to_log(tr_text("Торин последовал за вами.", "Thorin follows you."), Color.GREEN)
 			else:
-				print_to_log("Торин кивает и говорит: 'За золото Эребора!'", Color.ORANGE)
+				print_to_log(tr_text("Торин кивает и говорит: 'За золото Эребора!'", "Thorin nods: 'For the gold of Erebor!'"), Color.ORANGE)
 		"gandalf":
 			var g = npcs.get(62)
 			if g.get("location", -1) != current_room_id:
-				print_to_log("Гэндальфа нет рядом.", Color.KHAKI)
+				print_to_log(tr_text("Гэндальфа нет рядом.", "Gandalf is not here."), Color.KHAKI)
 				return
-			print_to_log("Гэндальф пыхтит трубкой: 'Храбрость, Бильбо, храбрость приведет нас к победе!'", Color.CYAN)
+			print_to_log(tr_text("Гэндальф пыхтит трубкой: 'Храбрость, Бильбо, храбрость приведет нас к победе!'", "Gandalf puffs his pipe: 'Courage, Bilbo, courage will see us through!'"), Color.CYAN)
 		"elrond":
 			var e = npcs.get(65)
 			if e.get("location", -1) != current_room_id:
-				print_to_log("Элронда нет здесь.", Color.KHAKI)
+				print_to_log(tr_text("Элронда нет здесь.", "Elrond is not here."), Color.KHAKI)
 				return
 			_read("карта")
 		"bard":
 			var b = npcs.get(70)
 			if b.get("location", -1) != current_room_id:
-				print_to_log("Барда нет рядом.", Color.KHAKI)
+				print_to_log(tr_text("Барда нет рядом.", "Bard is not here."), Color.KHAKI)
 				return
 			_shoot_dragon()
 		_:
-			print_to_log("Персонаж не реагирует на ваши слова.", Color.GRAY)
+			print_to_log(tr_text("Персонаж не реагирует на ваши слова.", "The character does not react to your words."), Color.GRAY)
 
 func _wait() -> void:
-	print_to_log("Время идет... Вы выжидаете.", Color.GRAY)
+	print_to_log(tr_text("Время идет... Вы выжидаете.", "Time passes... You wait."), Color.GRAY)
 
 func _die() -> void:
 	game_over = true
-	print_to_log("\n[color=red]*** ВЫ ПОГИБЛИ В СРЕДИЗЕМЬЕ ***[/color]", Color.RED)
-	print_to_log("Приключение окончено. Перезапустите игру, чтобы попробовать снова.", Color.RED)
+	print_to_log(tr_text(
+		"\n[color=red]*** ВЫ ПОГИБЛИ В СРЕДИЗЕМЬЕ ***\nПриключение окончено. Перезапустите игру, чтобы попробовать снова.[/color]",
+		"\n[color=red]*** YOU HAVE DIED IN MIDDLE-EARTH ***\nThe adventure is over. Restart the game to try again.[/color]"
+	), Color.RED)
 
 func _win_game() -> void:
 	game_won = true
 	game_over = true
 	world_updated.emit()
-	print_to_log("\n[color=gold]****************************************************[/color]", Color.GOLD)
-	print_to_log("[color=gold]ПОЗДРАВЛЯЕМ! ВЕЛИКАЯ ПОБЕДА![/color]", Color.GOLD)
-	print_to_log("Вы принесли сокровища Одинокой Горы обратно в Хоббитон!", Color.GOLD)
-	print_to_log("Бильбо Бэггинс вернулся героем и богачом, прожив долгую и счастливую жизнь!", Color.GOLD)
-	print_to_log("[color=gold]****************************************************[/color]\n", Color.GOLD)
+	print_to_log(tr_text(
+		"\n[color=gold]****************************************************\nПОЗДРАВЛЯЕМ! ВЕЛИКАЯ ПОБЕДА!\nВы принесли сокровища Одинокой Горы обратно в Хоббитон!\nБильбо Бэггинс вернулся героем и богачом, прожив долгую и счастливую жизнь!\n****************************************************[/color]\n",
+		"\n[color=gold]****************************************************\nCONGRATULATIONS! A GLORIOUS VICTORY!\nYou have brought the treasures of the Lonely Mountain back to Hobbiton!\nBilbo Baggins returned home a hero and wealthy hobbit, living happily ever after!\n****************************************************[/color]\n"
+	), Color.GOLD)
 
 func get_slot_save_path(slot_id: int) -> String:
 	return "user://saves/slot_%d.json" % slot_id
@@ -1123,6 +1252,7 @@ func save_to_slot(slot_id: int, screenshot_img: Image = null) -> bool:
 		"day_phase_name": phase_name,
 		"game_mode": int(game_mode),
 		"game_mode_name": mode_name,
+		"language": int(current_language),
 		"player_health": player_health,
 		"player_strength": player_strength,
 		"player_max_mass": player_max_mass,
@@ -1210,6 +1340,11 @@ func load_from_slot(slot_id: int) -> bool:
 	if parsed.has("game_mode"):
 		var m = int(parsed["game_mode"])
 		set_game_mode(m as GameMode)
+		
+	if parsed.has("language"):
+		var l = int(parsed["language"])
+		if l in [0, 1]:
+			set_language(l as Language)
 		
 	if world_sim:
 		world_sim.butler_wine_sips = int(parsed.get("butler_wine_sips", 0))
@@ -1321,7 +1456,9 @@ func get_slot_info(slot_id: int) -> Dictionary:
 	if parsed and parsed is Dictionary:
 		parsed["exists"] = true
 		parsed["slot_id"] = slot_id
-		parsed["room_id"] = int(parsed.get("current_room_id", 1))
+		var rid = int(parsed.get("current_room_id", 1))
+		parsed["room_id"] = rid
+		parsed["room_name"] = get_room_name(rooms.get(rid, {}))
 		parsed["health"] = int(parsed.get("player_health", 100))
 		parsed["mode_name"] = str(parsed.get("game_mode_name", "Modern"))
 		var img_path = get_slot_image_path(slot_id)
@@ -1332,20 +1469,20 @@ func get_slot_info(slot_id: int) -> Dictionary:
 
 func _save_game() -> bool:
 	if save_to_slot(1):
-		print_to_log("[color=green]Игра успешно сохранена![/color]", Color.GREEN)
+		print_to_log(tr_text("[color=green]Игра успешно сохранена![/color]", "[color=green]Game successfully saved![/color]"), Color.GREEN)
 		return true
 	else:
-		print_to_log("Ошибка при сохранении игры.", Color.RED)
+		print_to_log(tr_text("Ошибка при сохранении игры.", "Error saving game."), Color.RED)
 		return false
 
 func _load_game() -> bool:
 	if not load_from_slot(1):
-		print_to_log("Файл сохранения не найден.", Color.SALMON)
+		print_to_log(tr_text("Файл сохранения не найден.", "Save file not found."), Color.SALMON)
 		return false
 	return true
 
 func _show_help() -> void:
-	var help_text = """
+	var help_text_ru = """
 [color=yellow]СПРАВКА ПО УПРАВЛЕНИЮ:[/color]
 - [b]Перемещение[/b]: СЕВЕР (С), ЮГ (Ю), ВОСТОК (В), ЗАПАД (З), СВ, СЗ, ЮВ, ЮЗ, ВВЕРХ, ВНИЗ.
 - [b]Действия[/b]: ВЗЯТЬ <вещь>, БРОСИТЬ <вещь>, ОСМОТРЕТЬ <вещь>, ОСМОТРЕТЬСЯ (О), ИНВЕНТАРЬ (И), ЖДАТЬ (Ж).
@@ -1354,4 +1491,13 @@ func _show_help() -> void:
 - [b]Команды спутникам (Inglish)[/b]: ТОРИН, ОТКРОЙ ДВЕРЬ; ТОРИН, ВОЗЬМИ МЕЧ; БАРД, СТРЕЛЯЙ В ДРАКОНА.
 - [b]Система[/b]: СОХРАНИТЬ, ЗАГРУЗИТЬ.
 """
-	print_to_log(help_text, Color.KHAKI)
+	var help_text_en = """
+[color=yellow]COMMAND HELP (INGLISH):[/color]
+- [b]Movement[/b]: NORTH (N), SOUTH (S), EAST (E), WEST (W), NE, NW, SE, SW, UP (U), DOWN (D).
+- [b]Actions[/b]: TAKE <item>, DROP <item>, EXAMINE <item> (X), LOOK (L), INVENTORY (I), WAIT (Z).
+- [b]Objects[/b]: OPEN <door/chest> [WITH KEY], CLOSE, READ MAP, WEAR RING, REMOVE RING.
+- [b]Eating & Drinking[/b]: EAT LUNCH, DRINK WINE.
+- [b]Companion orders[/b]: THORIN, OPEN DOOR; THORIN, TAKE SWORD; BARD, SHOOT DRAGON.
+- [b]System[/b]: SAVE, LOAD.
+"""
+	print_to_log(tr_text(help_text_ru, help_text_en), Color.KHAKI)

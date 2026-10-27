@@ -59,6 +59,16 @@ func open_credits() -> void:
 	scroll_pos_y = 1080.0
 	if scroll_content:
 		scroll_content.position.y = scroll_pos_y
+		
+	var gs = null
+	if is_inside_tree() and get_tree().root and get_tree().root.has_node("GameState"):
+		gs = get_tree().root.get_node("GameState")
+	var is_en = gs.is_english() if (gs and gs.has_method("is_english")) else false
+	if btn_back:
+		btn_back.text = "← MENU" if is_en else "← В МЕНЮ"
+	if speed_hint:
+		speed_hint.text = "[SPACE] Speed up / [ESC] Exit" if is_en else "[ПРОБЕЛ] Ускорить / [ESC] Выйти"
+
 	if btn_back and btn_back.is_inside_tree():
 		btn_back.grab_focus()
 	

@@ -66,9 +66,15 @@ const FONT_PATH_ZX: String = "res://assets/fonts/ZX/zx_spectrum-7.ttf"
 @onready var vol_value_label: Label = %VolValue
 @onready var check_fullscreen: CheckBox = %CheckFullscreen
 @onready var check_accessibility: CheckBox = %CheckAccessibility
+@onready var label_language: Label = %LabelLanguage
+@onready var option_language: OptionButton = %OptionLanguage
 @onready var btn_settings_main_menu: Button = %BtnSettingsMainMenu
 @onready var btn_settings_back: Button = %BtnSettingsBack
 @onready var btn_settings_game: Button = %BtnSettingsGame
+
+# Языковые кнопки на экране выбора режима
+@onready var btn_lang_ru: Button = %BtnLangRU
+@onready var btn_lang_en: Button = %BtnLangEN
 
 enum IntroPhase { VIDEO, FADING, READY }
 var intro_phase: IntroPhase = IntroPhase.VIDEO
@@ -194,6 +200,20 @@ func _ready() -> void:
 	btn_select_modern.pressed.connect(func(): _on_mode_card_selected(Mode.MODERN))
 	btn_select_vga.pressed.connect(func(): _on_mode_card_selected(Mode.VGA))
 	btn_select_zx.pressed.connect(func(): _on_mode_card_selected(Mode.ZX))
+	
+	if btn_lang_ru:
+		btn_lang_ru.pressed.connect(func(): _set_ui_language(HobbitGameState.Language.RU))
+	if btn_lang_en:
+		btn_lang_en.pressed.connect(func(): _set_ui_language(HobbitGameState.Language.EN))
+	if option_language:
+		option_language.item_selected.connect(func(idx: int): _set_ui_language(idx as HobbitGameState.Language))
+		
+	if gs:
+		gs.language_changed.connect(func(new_lang: int):
+			_tts_voice_checked = false
+			apply_language(new_lang as HobbitGameState.Language)
+		)
+		apply_language(gs.current_language)
 	
 	# 3. Инициализация титульного экрана
 	_update_title_load_button()
@@ -740,19 +760,36 @@ func _on_settings_pressed() -> void:
 	var is_fs = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN or DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 	check_fullscreen.button_pressed = is_fs
 	
+	if option_language and gs:
+		option_language.selected = int(gs.current_language)
+
 	# Настройка навигации стрелками вверх/вниз в окне настроек
 	volume_slider.focus_neighbor_bottom = check_fullscreen.get_path()
 	check_fullscreen.focus_neighbor_top = volume_slider.get_path()
 	check_fullscreen.focus_neighbor_bottom = check_accessibility.get_path()
 	check_accessibility.focus_neighbor_top = check_fullscreen.get_path()
-	if game_started and btn_settings_main_menu and btn_settings_main_menu.visible:
-		check_accessibility.focus_neighbor_bottom = btn_settings_main_menu.get_path()
-		btn_settings_main_menu.focus_neighbor_top = check_accessibility.get_path()
-		btn_settings_main_menu.focus_neighbor_bottom = btn_settings_back.get_path()
-		btn_settings_back.focus_neighbor_top = btn_settings_main_menu.get_path()
+	
+	if option_language:
+		check_accessibility.focus_neighbor_bottom = option_language.get_path()
+		option_language.focus_neighbor_top = check_accessibility.get_path()
+		if game_started and btn_settings_main_menu and btn_settings_main_menu.visible:
+			option_language.focus_neighbor_bottom = btn_settings_main_menu.get_path()
+			btn_settings_main_menu.focus_neighbor_top = option_language.get_path()
+			btn_settings_main_menu.focus_neighbor_bottom = btn_settings_back.get_path()
+			btn_settings_back.focus_neighbor_top = btn_settings_main_menu.get_path()
+		else:
+			option_language.focus_neighbor_bottom = btn_settings_back.get_path()
+			btn_settings_back.focus_neighbor_top = option_language.get_path()
 	else:
-		check_accessibility.focus_neighbor_bottom = btn_settings_back.get_path()
-		btn_settings_back.focus_neighbor_top = check_accessibility.get_path()
+		if game_started and btn_settings_main_menu and btn_settings_main_menu.visible:
+			check_accessibility.focus_neighbor_bottom = btn_settings_main_menu.get_path()
+			btn_settings_main_menu.focus_neighbor_top = check_accessibility.get_path()
+			btn_settings_main_menu.focus_neighbor_bottom = btn_settings_back.get_path()
+			btn_settings_back.focus_neighbor_top = btn_settings_main_menu.get_path()
+		else:
+			check_accessibility.focus_neighbor_bottom = btn_settings_back.get_path()
+			btn_settings_back.focus_neighbor_top = check_accessibility.get_path()
+			
 	btn_settings_back.focus_neighbor_bottom = volume_slider.get_path()
 	volume_slider.focus_neighbor_top = btn_settings_back.get_path()
 	
@@ -760,7 +797,10 @@ func _on_settings_pressed() -> void:
 		volume_slider.grab_focus()
 		
 	if gs and gs.is_accessibility_mode:
-		_speak_text("Меню настроек игры. Доступны: ползунок громкости музыки, полноэкранный режим и режим для слабовидящих. Используйте стрелки для выбора опций, Escape для возврата.", true)
+		if gs.is_english():
+			_speak_text("Game Settings. Available: music volume slider, fullscreen toggle, accessibility mode and language selector. Use arrow keys to navigate, Escape to go back.", true)
+		else:
+			_speak_text("Меню настроек игры. Доступны: ползунок громкости музыки, полноэкранный режим, режим для слабовидящих и переключатель языка. Используйте стрелки для выбора опций, Escape для возврата.", true)
 
 func _on_settings_back_pressed() -> void:
 	settings_panel.visible = false
@@ -1174,14 +1214,27 @@ func _get_tts_voice_id() -> String:
 	if voices.is_empty():
 		return ""
 		
-	for v in voices:
-		if v is Dictionary:
-			var lang = str(v.get("language", "")).to_lower()
-			var v_name = str(v.get("name", "")).to_lower()
-			var v_id = str(v.get("id", "")).to_lower()
-			if "ru" in lang or "ru" in v_name or "russian" in v_name or "irina" in v_name or "ru" in v_id:
-				_tts_voice_id = str(v.get("id", ""))
-				return _tts_voice_id
+	var gs = _get_game_state()
+	var is_en = (gs and gs.has_method("is_english") and gs.is_english())
+	
+	if is_en:
+		for v in voices:
+			if v is Dictionary:
+				var lang = str(v.get("language", "")).to_lower()
+				var v_name = str(v.get("name", "")).to_lower()
+				var v_id = str(v.get("id", "")).to_lower()
+				if "en" in lang or "english" in v_name or "david" in v_name or "zira" in v_name or "en" in v_id or "george" in v_name:
+					_tts_voice_id = str(v.get("id", ""))
+					return _tts_voice_id
+	else:
+		for v in voices:
+			if v is Dictionary:
+				var lang = str(v.get("language", "")).to_lower()
+				var v_name = str(v.get("name", "")).to_lower()
+				var v_id = str(v.get("id", "")).to_lower()
+				if "ru" in lang or "ru" in v_name or "russian" in v_name or "irina" in v_name or "ru" in v_id:
+					_tts_voice_id = str(v.get("id", ""))
+					return _tts_voice_id
 				
 	if voices[0] is Dictionary:
 		_tts_voice_id = str(voices[0].get("id", ""))
@@ -1888,42 +1941,166 @@ func _update_header(room_id: int) -> void:
 		loc_title.text = "Неизвестная земля"
 		return
 		
-	loc_title.text = room.get("name_ru", room.get("name", ""))
+	if gs:
+		loc_title.text = gs.get_room_name(room)
+	else:
+		loc_title.text = room.get("name_ru", room.get("name", ""))
+
+func _set_ui_language(lang: HobbitGameState.Language) -> void:
+	var gs = _get_game_state()
+	if gs:
+		gs.set_language(lang)
+	var am = _get_audio_manager()
+	if am and am.has_method("save_settings"):
+		am.save_settings()
+	_tts_voice_checked = false
+	apply_language(lang)
+
+func apply_language(lang: HobbitGameState.Language) -> void:
+	var is_en = (lang == HobbitGameState.Language.EN)
+	var gs = _get_game_state()
+	
+	# 1. Кнопки переключения языка
+	if btn_lang_ru:
+		btn_lang_ru.add_theme_color_override("font_color", Color(0.7, 0.75, 0.8) if is_en else Color(1.0, 0.9, 0.35))
+	if btn_lang_en:
+		btn_lang_en.add_theme_color_override("font_color", Color(1.0, 0.9, 0.35) if is_en else Color(0.7, 0.75, 0.8))
+	if option_language:
+		option_language.selected = int(lang)
+		
+	# 2. Экран выбора режима (ModeSelectScreen)
+	if mode_select_screen:
+		var main_t = mode_select_screen.get_node_or_null("Margin/VBoxModes/TitleSection/MainTitle")
+		if main_t: main_t.text = "T H E   H O B B I T" if is_en else "Х О Б Б И Т"
+		var sub_t = mode_select_screen.get_node_or_null("Margin/VBoxModes/TitleSection/SubTitle")
+		if sub_t: sub_t.text = "REMAKE OF THE LEGENDARY 1982 GAME" if is_en else "РЕМЕЙК ЛЕГЕНДАРНОЙ ИГРЫ 1982 ГОДА"
+		var prompt_t = mode_select_screen.get_node_or_null("Margin/VBoxModes/TitleSection/PromptTitle")
+		if prompt_t: prompt_t.text = "CHOOSE GAME MODE:" if is_en else "ВЫБЕРИТЕ РЕЖИМ ИГРЫ:"
+		var foot_h = mode_select_screen.get_node_or_null("Margin/VBoxModes/FooterHint")
+		if foot_h: foot_h.text = "You can change the mode later from the main menu." if is_en else "Вы сможете изменить режим из главного меню."
+		
+		# Modern card
+		var c_mod = mode_select_screen.get_node_or_null("Margin/VBoxModes/HBoxCards/CardModern/Margin/VBox")
+		if c_mod:
+			var b = c_mod.get_node_or_null("Badge")
+			if b: b.text = "HIGH RESOLUTION" if is_en else "ВЫСОКОЕ РАЗРЕШЕНИЕ"
+			var ct = c_mod.get_node_or_null("CardTitle")
+			if ct: ct.text = "MODERN" if is_en else "СОВРЕМЕННЫЙ"
+			var cd = c_mod.get_node_or_null("Desc")
+			if cd:
+				cd.text = "- High-definition detailed artwork\n- Orchestral score & live instruments\n- Cinematic video intro\n- Modern visual effects & smooth filtering" if is_en else "- Детализированная графика высокого разрешения\n- Оркестровая музыка и живые инструменты\n- Кинематографическая заставка\n- Современные визуальные эффекты и плавная фильтрация"
+		if btn_select_modern:
+			btn_select_modern.text = "PLAY MODERN" if is_en else "ИГРАТЬ В MODERN"
+			
+		# VGA card
+		var c_vga = mode_select_screen.get_node_or_null("Margin/VBoxModes/HBoxCards/CardVGA/Margin/VBox")
+		if c_vga:
+			var b = c_vga.get_node_or_null("Badge")
+			if b: b.text = "DOS ERA" if is_en else "ЭПОХА DOS"
+			var ct = c_vga.get_node_or_null("CardTitle")
+			if ct: ct.text = "RETRO (VGA)" if is_en else "РЕТРО (VGA)"
+			var cd = c_vga.get_node_or_null("Desc")
+			if cd:
+				cd.text = "- Authentic 256-color MS-DOS VGA palette\n- Sound Blaster (SB) arrangements\n- Retro 90s-era VGA intro\n- Crisp pixel art with nostalgic charm" if is_en else "- Аутентичная 256-цветная VGA палитра MS-DOS\n- Аранжировки Sound Blaster (SB)\n- Ретро-заставка VGA эпохи 90-х\n- Четкая пиксельная графика с аутентичным шармом"
+		if btn_select_vga:
+			btn_select_vga.text = "PLAY VGA" if is_en else "ИГРАТЬ В VGA"
+			
+		# ZX card
+		var c_zx = mode_select_screen.get_node_or_null("Margin/VBoxModes/HBoxCards/CardZX/Margin/VBox")
+		if c_zx:
+			var b = c_zx.get_node_or_null("Badge")
+			if b: b.text = "ORIGINAL 1982" if is_en else "ОРИГИНАЛ 1982"
+			var ct = c_zx.get_node_or_null("CardTitle")
+			if ct: ct.text = "CLASSIC (ZX)" if is_en else "КЛАССИЧЕСКИЙ (ZX)"
+			var cd = c_zx.get_node_or_null("Desc")
+			if cd:
+				cd.text = "- Original 1982 ZX Spectrum graphics\n- Legendary chiptune by Neil Brennan (SID)\n  (music from Commodore 64 version)\n- Authentic retro title screen\n- The classic Melbourne House game,\n  enhanced and polished" if is_en else "- Оригинальная графика ZX Spectrum 1982 года\n- Легендарный чиптюн Neil Brennan (SID)\n  (музыка от версии игры для Commodore 64)\n- Аутентичная ретро-заставка\n- Та самая легендарная игра от Melbourne House,\n  но с небольшими доработками"
+		if btn_select_zx:
+			btn_select_zx.text = "PLAY CLASSIC" if is_en else "ИГРАТЬ В КЛАССИКУ"
+
+	# 3. Главное меню (TitleScreen)
+	if btn_start_game: btn_start_game.text = "New Game" if is_en else "Начать игру"
+	if btn_title_load: btn_title_load.text = "Load Game" if is_en else "Загрузка"
+	if btn_change_mode: btn_change_mode.text = "Change Game Mode" if is_en else "Сменить режим игры"
+	if btn_settings: btn_settings.text = "Settings" if is_en else "Настройки"
+	if btn_credits: btn_credits.text = "Credits" if is_en else "Об игре"
+	if btn_star: btn_star.text = "★ Star on GitHub" if is_en else "★ Поставить звезду на GitHub"
+	if btn_exit: btn_exit.text = "Exit" if is_en else "Выход"
+	
+	# 4. Панель настроек (SettingsPanel)
+	if check_fullscreen: check_fullscreen.text = " Fullscreen mode" if is_en else " Полноэкранный режим"
+	if check_accessibility: check_accessibility.text = " Accessibility mode (High Contrast & Large Text)" if is_en else " Режим для слабовидящих"
+	if label_language: label_language.text = " Language / Язык:" if is_en else " Язык / Language:"
+	if btn_settings_main_menu: btn_settings_main_menu.text = "MAIN MENU" if is_en else "ГЛАВНОЕ МЕНЮ"
+	if btn_settings_back: btn_settings_back.text = "BACK" if is_en else "НАЗАД"
+	
+	# 5. Игровой HUD
+	if btn_look: btn_look.text = "LOOK" if is_en else "ОСМОТРЕТЬСЯ"
+	if btn_inv: btn_inv.text = "INVENTORY" if is_en else "ИНВЕНТАРЬ"
+	if btn_wait: btn_wait.text = "WAIT" if is_en else "ЖДАТЬ"
+	if btn_take_all: btn_take_all.text = "TAKE ALL" if is_en else "ВЗЯТЬ ВСЁ"
+	if btn_save: btn_save.text = "SAVE" if is_en else "СОХРАНИТЬ"
+	if btn_load: btn_load.text = "LOAD" if is_en else "ЗАГРУЗИТЬ"
+	if btn_settings_game: btn_settings_game.text = "SETTINGS" if is_en else "НАСТРОЙКИ"
+	
+	if btn_nw: btn_nw.text = "NW" if is_en else "СЗ"
+	if btn_n: btn_n.text = "N" if is_en else "С"
+	if btn_ne: btn_ne.text = "NE" if is_en else "СВ"
+	if btn_w: btn_w.text = "W" if is_en else "З"
+	if btn_e: btn_e.text = "E" if is_en else "В"
+	if btn_sw: btn_sw.text = "SW" if is_en else "ЮЗ"
+	if btn_s: btn_s.text = "S" if is_en else "Ю"
+	if btn_se: btn_se.text = "SE" if is_en else "ЮВ"
+	if btn_up: btn_up.text = "UP" if is_en else "ВВЕРХ"
+	if btn_dn: btn_dn.text = "DOWN" if is_en else "ВНИЗ"
+	
+	if input_line:
+		input_line.placeholder_text = "Enter command... (e.g. look, north, take sword)" if is_en else "Введите команду... (например: осмотреться, север, взять меч)"
+		
+	if gs:
+		_update_header(gs.current_room_id)
+		_update_status_bar()
+		_update_compass_buttons()
+		_update_command_dropdown()
+		
+	if save_load_screen and save_load_screen.visible:
+		save_load_screen.refresh_slots()
 
 func _update_status_bar() -> void:
 	var gs = _get_game_state()
 	if not gs:
 		return
 		
+	var is_en = gs.is_english()
 	var mode_str = gs.get_current_mode_name()
 	if mode_info_label:
-		mode_info_label.text = "Режим: %s" % mode_str
+		mode_info_label.text = ("Mode: %s" if is_en else "Режим: %s") % mode_str
 		
 	if health_info_label:
-		health_info_label.text = "Здоровье: %d / 100" % gs.player_health
+		health_info_label.text = ("Health: %d / 100" if is_en else "Здоровье: %d / 100") % gs.player_health
 		
-	var vis_str = "Невидим (Кольцо)" if gs.is_invisible else "Обычная"
+	var vis_str = ("Invisible (Ring)" if is_en else "Невидим (Кольцо)") if gs.is_invisible else ("Normal" if is_en else "Обычная")
 	if vis_info_label:
-		vis_info_label.text = "Видимость: %s" % vis_str
+		vis_info_label.text = ("Visibility: %s" if is_en else "Видимость: %s") % vis_str
 		
 	var comp_in_room = []
 	for n_id in gs.npcs.keys():
 		var n = gs.npcs[n_id]
 		if n.get("location", -1) == gs.current_room_id and not n.get("is_dead", false):
-			comp_in_room.append(n.get("name_ru", n["name"]))
+			comp_in_room.append(gs.get_npc_name(n))
 	if companion_info_label:
 		if comp_in_room.size() > 0:
-			companion_info_label.text = "Спутники: " + ", ".join(comp_in_room)
+			companion_info_label.text = ("Companions: " if is_en else "Спутники: ") + ", ".join(comp_in_room)
 		else:
-			companion_info_label.text = "Спутники: Рядом нет"
+			companion_info_label.text = "Companions: None nearby" if is_en else "Спутники: Рядом нет"
 
 	if gs.game_won:
-		status_info.text = "Триумф! | Здоровье: %d | Путешествие успешно завершено!" % gs.player_health
+		status_info.text = ("Triumph! | Health: %d | Journey successfully completed!" if is_en else "Триумф! | Здоровье: %d | Путешествие успешно завершено!") % gs.player_health
 		return
 		
-	var phases = ["День", "Закат", "Ночь", "Рассвет"]
+	var phases = ["Day", "Dusk", "Night", "Dawn"] if is_en else ["День", "Закат", "Ночь", "Рассвет"]
 	var phase_str = phases[gs.day_phase]
-	status_info.text = "Время: %s | Здоровье: %d | Видимость: %s" % [phase_str, gs.player_health, vis_str]
+	status_info.text = ("Time: %s | Health: %d | Visibility: %s" if is_en else "Время: %s | Здоровье: %d | Видимость: %s") % [phase_str, gs.player_health, vis_str]
 
 func _update_compass_buttons() -> void:
 	var gs = _get_game_state()
@@ -1942,25 +2119,28 @@ func _update_compass_buttons() -> void:
 		available_dirs[dir_code] = ex
 		available_dirs[dir_ru] = ex
 		
+		var is_en = gs.is_english()
+		var dir_display = ex["direction"] if is_en else dir_ru
 		var dest_id = ex.get("dest", 0)
 		var is_valid_dest = dest_id > 0 and gs.rooms.has(dest_id)
 		var via_id = ex.get("via_obj", 0)
 		if via_id > 0:
 			var via_obj = gs.items.get(via_id)
-			var via_name = via_obj.get("name_ru", "дверь") if via_obj else "преграда"
+			var via_name = gs.get_item_name(via_obj) if via_obj else ("obstacle" if is_en else "преграда")
 			if not is_valid_dest:
-				exits_text_list.append("%s [%s (преграждает путь)]" % [dir_ru, via_name])
+				exits_text_list.append("%s [%s (%s)]" % [dir_display, via_name, "blocks way" if is_en else "преграждает путь"])
 			else:
-				var state = "(закрыто)" if (via_obj and not via_obj.get("is_open", true)) else "(открыто)"
-				exits_text_list.append("%s [%s %s]" % [dir_ru, via_name, state])
+				var state = ("(closed)" if is_en else "(закрыто)") if (via_obj and not via_obj.get("is_open", true)) else ("(open)" if is_en else "(открыто)")
+				exits_text_list.append("%s [%s %s]" % [dir_display, via_name, state])
 		elif is_valid_dest:
-			exits_text_list.append(dir_ru)
+			exits_text_list.append(dir_display)
 			
 	if exits_info_label:
+		var is_en = gs.is_english()
 		if exits_text_list.size() > 0:
-			exits_info_label.text = "Выходы: " + ", ".join(exits_text_list)
+			exits_info_label.text = ("Exits: " if is_en else "Выходы: ") + ", ".join(exits_text_list)
 		else:
-			exits_info_label.text = "Выходы: Нет видимых путей"
+			exits_info_label.text = "Exits: No visible paths" if is_en else "Выходы: Нет видимых путей"
 
 	var dir_buttons = {
 		btn_n: "north",
@@ -1984,26 +2164,28 @@ func _update_compass_buttons() -> void:
 			var via_id = ex.get("via_obj", 0)
 			
 			btn.disabled = false
+			var is_en = gs.is_english()
 			if not is_valid_dest:
 				var via_obj = gs.items.get(via_id) if via_id > 0 else null
-				var vname = via_obj.get("name_ru", "препятствие") if via_obj else "препятствие"
+				var vname = gs.get_item_name(via_obj) if via_obj else ("obstacle" if is_en else "препятствие")
 				btn.modulate = Color(1.0, 0.25, 0.25, 1.0) if gs.is_accessibility_mode else Color(0.9, 0.4, 0.4, 0.9)
-				btn.tooltip_text = "Путь прегражден: " + vname
+				btn.tooltip_text = ("Way blocked: " if is_en else "Путь прегражден: ") + vname
 			elif via_id > 0:
 				var via_obj = gs.items.get(via_id)
 				if via_obj and not via_obj.get("is_open", true):
 					btn.modulate = Color(1.0, 0.9, 0.0, 1.0) if gs.is_accessibility_mode else Color(1.0, 0.82, 0.2, 1.0)
-					btn.tooltip_text = "Путь закрыт: " + via_obj.get("name_ru", "дверь") + " (закрыто)"
+					btn.tooltip_text = ("Way closed: " if is_en else "Путь закрыт: ") + gs.get_item_name(via_obj) + (" (closed)" if is_en else " (закрыто)")
 				else:
 					btn.modulate = Color(0.2, 1.0, 0.4, 1.0) if gs.is_accessibility_mode else Color(0.3, 1.0, 0.5, 1.0)
-					btn.tooltip_text = "Идти на " + ex.get("direction_ru", dir_code)
+					btn.tooltip_text = ("Go " if is_en else "Идти на ") + (dir_code if is_en else ex.get("direction_ru", dir_code))
 			else:
 				btn.modulate = Color(0.2, 1.0, 0.4, 1.0) if gs.is_accessibility_mode else Color(0.3, 1.0, 0.5, 1.0)
-				btn.tooltip_text = "Идти на " + ex.get("direction_ru", dir_code)
+				btn.tooltip_text = ("Go " if is_en else "Идти на ") + (dir_code if is_en else ex.get("direction_ru", dir_code))
 		else:
+			var is_en = gs.is_english()
 			btn.disabled = true
 			btn.modulate = Color(0.3, 0.35, 0.4, 0.25) if gs.is_accessibility_mode else Color(0.4, 0.45, 0.5, 0.35)
-			btn.tooltip_text = "Путь недоступен"
+			btn.tooltip_text = "Way unavailable" if is_en else "Путь недоступен"
 
 
 	if is_dark:
@@ -2033,14 +2215,15 @@ func _update_command_dropdown() -> void:
 	if not command_dropdown:
 		return
 		
-	command_dropdown.clear()
-	command_dropdown.add_item("Выбрать команду...", 0)
-	command_dropdown.set_item_disabled(0, true)
-	
 	var gs = _get_game_state()
 	if not gs:
 		return
 		
+	var is_en = gs.is_english()
+	command_dropdown.clear()
+	command_dropdown.add_item("Choose command..." if is_en else "Выбрать команду...", 0)
+	command_dropdown.set_item_disabled(0, true)
+	
 	var room = gs.rooms.get(gs.current_room_id, {})
 	var exits = room.get("exits", [])
 	
@@ -2048,10 +2231,10 @@ func _update_command_dropdown() -> void:
 	for ex in exits:
 		var dest_id = ex.get("dest", 0)
 		if dest_id > 0 and gs.rooms.has(dest_id):
-			var dir_ru = ex.get("direction_ru", ex["direction"])
+			var dir_name = ex["direction"] if is_en else ex.get("direction_ru", ex["direction"])
 			var idx = command_dropdown.item_count
-			command_dropdown.add_item("Идти: " + dir_ru, idx)
-			command_dropdown.set_item_metadata(idx, dir_ru)
+			command_dropdown.add_item(("Go: " if is_en else "Идти: ") + dir_name, idx)
+			command_dropdown.set_item_metadata(idx, ex["direction"] if is_en else ex.get("direction_ru", ex["direction"]))
 			
 	# Особые действия у Заколдованной реки на берегу 66
 	if gs.current_room_id == 66:
@@ -2059,26 +2242,26 @@ func _update_command_dropdown() -> void:
 		var rope = gs.items.get(18)
 		if boat and boat.get("location") == 67 and rope and (rope.get("location") == 0 or rope.get("location") == 66):
 			var idx_rope = command_dropdown.item_count
-			command_dropdown.add_item("Зацепить и притянуть лодку веревкой", idx_rope)
-			command_dropdown.set_item_metadata(idx_rope, "притянуть лодку веревкой")
+			command_dropdown.add_item("Snag and pull boat with rope" if is_en else "Зацепить и притянуть лодку веревкой", idx_rope)
+			command_dropdown.set_item_metadata(idx_rope, "pull boat with rope" if is_en else "притянуть лодку веревкой")
 
 	# Действия внутри лодки / бочки
 	if gs.inside_container_id == 41:
 		var idx_exit = command_dropdown.item_count
-		command_dropdown.add_item("Вылезти из лодки на берег", idx_exit)
-		command_dropdown.set_item_metadata(idx_exit, "вылезти")
+		command_dropdown.add_item("Climb out of boat to bank" if is_en else "Вылезти из лодки на берег", idx_exit)
+		command_dropdown.set_item_metadata(idx_exit, "exit" if is_en else "вылезти")
 		if gs.current_room_id == 66:
 			var idx_row = command_dropdown.item_count
-			command_dropdown.add_item("Плыть на восток (к восточному берегу)", idx_row)
-			command_dropdown.set_item_metadata(idx_row, "восток")
+			command_dropdown.add_item("Row east (to east bank)" if is_en else "Плыть на восток (к восточному берегу)", idx_row)
+			command_dropdown.set_item_metadata(idx_row, "east" if is_en else "восток")
 		elif gs.current_room_id == 67:
 			var idx_row = command_dropdown.item_count
-			command_dropdown.add_item("Плыть на запад (к западному берегу)", idx_row)
-			command_dropdown.set_item_metadata(idx_row, "запад")
+			command_dropdown.add_item("Row west (to west bank)" if is_en else "Плыть на запад (к западному берегу)", idx_row)
+			command_dropdown.set_item_metadata(idx_row, "west" if is_en else "запад")
 	elif gs.inside_container_id != -1:
 		var idx_exit = command_dropdown.item_count
-		command_dropdown.add_item("Вылезти наружу", idx_exit)
-		command_dropdown.set_item_metadata(idx_exit, "вылезти")
+		command_dropdown.add_item("Climb out" if is_en else "Вылезти наружу", idx_exit)
+		command_dropdown.set_item_metadata(idx_exit, "exit" if is_en else "вылезти")
 		
 	# 2. Предметы в текущей локации
 	var items_in_room = []
@@ -2088,98 +2271,101 @@ func _update_command_dropdown() -> void:
 			items_in_room.append(it)
 			
 	for it in items_in_room:
-		var name_ru = it.get("name_ru", it["name"])
+		var iname = gs.get_item_name(it)
 		var can_take = it.get("mass", 0) <= gs.player_max_mass and not it.get("is_fixed", false)
+		var item_word = it["name"].to_lower() if is_en else it.get("name_ru", it["name"])
 		
 		if can_take:
 			var idx_take = command_dropdown.item_count
-			command_dropdown.add_item("Взять: " + name_ru, idx_take)
-			command_dropdown.set_item_metadata(idx_take, "взять " + name_ru)
+			command_dropdown.add_item(("Take: " if is_en else "Взять: ") + iname, idx_take)
+			command_dropdown.set_item_metadata(idx_take, ("take " + item_word) if is_en else ("взять " + item_word))
 			
 		var idx_look = command_dropdown.item_count
-		command_dropdown.add_item("Осмотреть: " + name_ru, idx_look)
-		command_dropdown.set_item_metadata(idx_look, "осмотреть " + name_ru)
+		command_dropdown.add_item(("Examine: " if is_en else "Осмотреть: ") + iname, idx_look)
+		command_dropdown.set_item_metadata(idx_look, ("examine " + item_word) if is_en else ("осмотреть " + item_word))
 		
 		if it["id"] in [19, 41] and gs.inside_container_id == -1:
 			var idx_enter = command_dropdown.item_count
-			command_dropdown.add_item("Залезть в: " + name_ru, idx_enter)
-			command_dropdown.set_item_metadata(idx_enter, "залезть в " + name_ru)
+			command_dropdown.add_item(("Climb into: " if is_en else "Залезть в: ") + iname, idx_enter)
+			command_dropdown.set_item_metadata(idx_enter, ("enter " + item_word) if is_en else ("залезть в " + item_word))
 		
-		if it.get("is_container", false) or "двер" in name_ru.to_lower():
+		if it.get("is_container", false) or "door" in it["name"].to_lower() or "двер" in str(it.get("name_ru","")).to_lower():
 			if not it.get("is_open", false):
 				var idx_open = command_dropdown.item_count
-				command_dropdown.add_item("Открыть: " + name_ru, idx_open)
-				command_dropdown.set_item_metadata(idx_open, "открыть " + name_ru)
+				command_dropdown.add_item(("Open: " if is_en else "Открыть: ") + iname, idx_open)
+				command_dropdown.set_item_metadata(idx_open, ("open " + item_word) if is_en else ("открыть " + item_word))
 			else:
 				var idx_close = command_dropdown.item_count
-				command_dropdown.add_item("Закрыть: " + name_ru, idx_close)
-				command_dropdown.set_item_metadata(idx_close, "закрыть " + name_ru)
+				command_dropdown.add_item(("Close: " if is_en else "Закрыть: ") + iname, idx_close)
+				command_dropdown.set_item_metadata(idx_close, ("close " + item_word) if is_en else ("закрыть " + item_word))
 				
 				if it.get("is_container", false):
 					var idx_in = command_dropdown.item_count
-					command_dropdown.add_item("Заглянуть в: " + name_ru, idx_in)
-					command_dropdown.set_item_metadata(idx_in, "осмотреть внутри " + name_ru)
+					command_dropdown.add_item(("Look inside: " if is_en else "Заглянуть в: ") + iname, idx_in)
+					command_dropdown.set_item_metadata(idx_in, ("look inside " + item_word) if is_en else ("осмотреть внутри " + item_word))
 					
 	# 3. Предметы в инвентаре
 	for it_id in gs.items.keys():
 		var it = gs.items[it_id]
 		if it.get("location", -999) == 0:
-			var name_ru = it.get("name_ru", it["name"])
+			var iname = gs.get_item_name(it)
+			var item_word = it["name"].to_lower() if is_en else it.get("name_ru", it["name"])
 			var idx_drop = command_dropdown.item_count
-			command_dropdown.add_item("Бросить: " + name_ru, idx_drop)
-			command_dropdown.set_item_metadata(idx_drop, "бросить " + name_ru)
+			command_dropdown.add_item(("Drop: " if is_en else "Бросить: ") + iname, idx_drop)
+			command_dropdown.set_item_metadata(idx_drop, ("drop " + item_word) if is_en else ("бросить " + item_word))
 			
 			var idx_ex = command_dropdown.item_count
-			command_dropdown.add_item("Осмотреть в сумке: " + name_ru, idx_ex)
-			command_dropdown.set_item_metadata(idx_ex, "осмотреть " + name_ru)
+			command_dropdown.add_item(("Examine in inventory: " if is_en else "Осмотреть в сумке: ") + iname, idx_ex)
+			command_dropdown.set_item_metadata(idx_ex, ("examine " + item_word) if is_en else ("осмотреть " + item_word))
 			
 			if it_id == 16:
 				var idx_ring = command_dropdown.item_count
 				if not gs.is_invisible:
-					command_dropdown.add_item("Надеть Кольцо (невидимость)", idx_ring)
-					command_dropdown.set_item_metadata(idx_ring, "надеть кольцо")
+					command_dropdown.add_item("Wear Ring (invisible)" if is_en else "Надеть Кольцо (невидимость)", idx_ring)
+					command_dropdown.set_item_metadata(idx_ring, "wear ring" if is_en else "надеть кольцо")
 				else:
-					command_dropdown.add_item("Снять Кольцо (стать видимым)", idx_ring)
-					command_dropdown.set_item_metadata(idx_ring, "снять кольцо")
+					command_dropdown.add_item("Remove Ring (visible)" if is_en else "Снять Кольцо (стать видимым)", idx_ring)
+					command_dropdown.set_item_metadata(idx_ring, "unwear ring" if is_en else "снять кольцо")
 					
 	# 4. Персонажи в комнате
 	for n_id in gs.npcs.keys():
 		var n = gs.npcs[n_id]
 		if n.get("location", -999) == gs.current_room_id and not n.get("is_dead", false):
-			var n_name = n.get("name_ru", n["name"])
+			var n_name = gs.get_npc_name(n)
+			var n_word = n["name"].to_lower() if is_en else n.get("name_ru", n["name"])
 			var idx_talk = command_dropdown.item_count
-			command_dropdown.add_item("Говорить с: " + n_name, idx_talk)
-			command_dropdown.set_item_metadata(idx_talk, "говорить с " + n_name)
+			command_dropdown.add_item(("Talk to: " if is_en else "Говорить с: ") + n_name, idx_talk)
+			command_dropdown.set_item_metadata(idx_talk, ("talk to " + n_word) if is_en else ("говорить с " + n_word))
 			
 			var idx_ex_n = command_dropdown.item_count
-			command_dropdown.add_item("Осмотреть: " + n_name, idx_ex_n)
-			command_dropdown.set_item_metadata(idx_ex_n, "осмотреть " + n_name)
+			command_dropdown.add_item(("Examine: " if is_en else "Осмотреть: ") + n_name, idx_ex_n)
+			command_dropdown.set_item_metadata(idx_ex_n, ("examine " + n_word) if is_en else ("осмотреть " + n_word))
 			
-			if n_id == 1:
+			if n_id == 63 or n_id == 1:
 				var idx_th1 = command_dropdown.item_count
-				command_dropdown.add_item("Торин, следуй за мной", idx_th1)
-				command_dropdown.set_item_metadata(idx_th1, "Торин, следуй за мной")
+				command_dropdown.add_item("Thorin, follow me" if is_en else "Торин, следуй за мной", idx_th1)
+				command_dropdown.set_item_metadata(idx_th1, "Thorin, follow me" if is_en else "Торин, следуй за мной")
 				
 				var idx_th2 = command_dropdown.item_count
-				command_dropdown.add_item("Торин, открой дверь", idx_th2)
-				command_dropdown.set_item_metadata(idx_th2, "Торин, открой дверь")
+				command_dropdown.add_item("Thorin, open door" if is_en else "Торин, открой дверь", idx_th2)
+				command_dropdown.set_item_metadata(idx_th2, "Thorin, open door" if is_en else "Торин, открой дверь")
 				
-			elif n_id == 2:
+			elif n_id == 62 or n_id == 2:
 				var idx_g = command_dropdown.item_count
-				command_dropdown.add_item("Гэндальф, дай совет", idx_g)
-				command_dropdown.set_item_metadata(idx_g, "Гэндальф, дай совет")
+				command_dropdown.add_item("Gandalf, give advice" if is_en else "Гэндальф, дай совет", idx_g)
+				command_dropdown.set_item_metadata(idx_g, "Gandalf, give advice" if is_en else "Гэндальф, дай совет")
 				
-			elif n_id == 7:
+			elif n_id == 68 or n_id == 7:
 				var idx_gol = command_dropdown.item_count
-				command_dropdown.add_item("Загадать загадку Голлуму", idx_gol)
-				command_dropdown.set_item_metadata(idx_gol, "загадать загадку")
+				command_dropdown.add_item("Ask riddle to Gollum" if is_en else "Загадать загадку Голлуму", idx_gol)
+				command_dropdown.set_item_metadata(idx_gol, "riddle" if is_en else "загадать загадку")
 				
 	# 5. Базовые действия
 	var base_actions = [
-		["Осмотреться вокруг", "осмотреться"],
-		["Инвентарь (вещи)", "инвентарь"],
-		["Подождать ход", "ждать"],
-		["Взять всё на локации", "взять всё"]
+		["Look around" if is_en else "Осмотреться вокруг", "look" if is_en else "осмотреться"],
+		["Inventory" if is_en else "Инвентарь (вещи)", "inventory" if is_en else "инвентарь"],
+		["Wait turn" if is_en else "Подождать ход", "wait" if is_en else "ждать"],
+		["Take all" if is_en else "Взять всё на локации", "take all" if is_en else "взять всё"]
 	]
 	for ba in base_actions:
 		var idx_ba = command_dropdown.item_count

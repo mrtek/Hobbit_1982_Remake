@@ -20,7 +20,8 @@
     "is_sleeping": true,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Колоссальный красно-золотой дракон. Его чешуя тверда, как сталь, а из пасти струится дым."
+    "desc_ru": "Колоссальный красно-золотой дракон. Его чешуя тверда, как сталь, а из пасти струится дым.",
+    "desc_en": "A colossal red-golden dragon. His scales are hard as threefold steel, and smoke curls from his jaws."
   },
   {
     "id": 62,
@@ -41,7 +42,8 @@
     "max_health": 200,
     "is_dead": false,
     "friendly": true,
-    "desc_ru": "Мудрый волшебник в остроконечной синей шляпе, длинном сером плаще и с серебряным посохом."
+    "desc_ru": "Мудрый волшебник в остроконечной синей шляпе, длинном сером плаще и с серебряным посохом.",
+    "desc_en": "A wise wizard in a pointed blue hat, a long grey cloak, and carrying a silver staff."
   },
   {
     "id": 63,
@@ -61,7 +63,8 @@
     "max_health": 160,
     "is_dead": false,
     "friendly": true,
-    "desc_ru": "Торин Дубощит, наследник Подгорного королевства. Гордый и отважный предводитель гномов."
+    "desc_ru": "Торин Дубощит, наследник Подгорного королевства. Гордый и отважный предводитель гномов.",
+    "desc_en": "Thorin Oakenshield, son of Thrain, King under the Mountain. A proud dwarf in a sky-blue hood with a silver tassel."
   },
   {
     "id": 64,
@@ -80,7 +83,8 @@
     "max_health": 90,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Лесной эльф в зеленом одеянии с луком и кинжалом на поясе."
+    "desc_ru": "Лесной эльф в зеленом одеянии с луком и кинжалом на поясе.",
+    "desc_en": "A fierce goblin warrior wielding a notched scimitar."
   },
   {
     "id": 65,
@@ -99,7 +103,8 @@
     "max_health": 180,
     "is_dead": false,
     "friendly": true,
-    "desc_ru": "Владыка Ривенделла, благородный и мудрый, как король эльфов, и могучий, как воин."
+    "desc_ru": "Владыка Ривенделла, благородный и мудрый, как король эльфов, и могучий, как воин.",
+    "desc_en": "Elrond Half-elven, Lord of Rivendell, noble and fair as an elf-lord, strong as a warrior, wise as a wizard."
   },
   {
     "id": 66,
@@ -118,7 +123,8 @@
     "is_sleeping": false,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Королевский дворецкий, обожающий дегустировать лучшее вино из подвалов."
+    "desc_ru": "Королевский дворецкий, обожающий дегустировать лучшее вино из подвалов.",
+    "desc_en": "The royal butler of the Elvenking, responsible for tasting the palace's finest wines."
   },
   {
     "id": 67,
@@ -137,7 +143,8 @@
     "max_health": 100,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Гигантский дикий волк с горящими красными глазами и острыми клыками."
+    "desc_ru": "Гигантский дикий волк с горящими красными глазами и острыми клыками.",
+    "desc_en": "The Elvenking Thranduil, crowned with autumn leaves and holding an oak sceptre."
   },
   {
     "id": 68,
@@ -156,7 +163,8 @@
     "max_health": 80,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Тощее бледное существо с большими светящимися глазами. Он непрестанно бормочет: 'Моя прелесссть...'"
+    "desc_ru": "Тощее бледное существо с большими светящимися глазами. Он непрестанно бормочет: 'Моя прелесссть...'",
+    "desc_en": "A small, slimy creature with large pale bulbous eyes, muttering about his 'precious birthday present'."
   },
   {
     "id": 70,
@@ -175,7 +183,8 @@
     "max_health": 140,
     "is_dead": false,
     "friendly": true,
-    "desc_ru": "Суровый меткий стрелок из Озерного города, потомок древних королей Дейла."
+    "desc_ru": "Суровый меткий стрелок из Озерного города, потомок древних королей Дейла.",
+    "desc_en": "Bard the Bowman, a grim-faced descendant of Lord Girion of Dale, bearing his great yew bow."
   },
   {
     "id": 71,
@@ -195,7 +204,8 @@
     "is_stone": false,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Огромный туповатый тролль, жарящий баранину на углях костра."
+    "desc_ru": "Огромный туповатый тролль, жарящий баранину на углях костра.",
+    "desc_en": "William the Troll, large, lumbering and foul-tempered, clutching a great wooden club."
   },
   {
     "id": 72,
@@ -215,7 +225,8 @@
     "is_stone": false,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Грубый верзила-тролль, постоянно спорящий со своими товарищами."
+    "desc_ru": "Грубый верзила-тролль, постоянно спорящий со своими товарищами.",
+    "desc_en": "Tom the Troll, slow-witted and argumentative, arguing over how to roast dwarves."
   },
   {
     "id": 61,
@@ -234,7 +245,8 @@
     "max_health": 70,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Злобный горный гоблин с кривым ятаганом."
+    "desc_ru": "Злобный горный гоблин с кривым ятаганом.",
+    "desc_en": "Goblin."
   },
   {
     "id": 69,
@@ -251,7 +263,8 @@
     "max_health": 70,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Пещерный гоблин."
+    "desc_ru": "Пещерный гоблин.",
+    "desc_en": "A cruel Great Goblin perched upon a seat of stone, surrounded by chanting guards."
   },
   {
     "id": 73,
@@ -268,7 +281,8 @@
     "max_health": 70,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Пещерный гоблин."
+    "desc_ru": "Пещерный гоблин.",
+    "desc_en": "Bert the Troll, poking the fire and complaining about mutton."
   },
   {
     "id": 74,
@@ -285,7 +299,8 @@
     "max_health": 70,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Пещерный гоблин."
+    "desc_ru": "Пещерный гоблин.",
+    "desc_en": "A great black mountain spider with venomous fangs and hairy limbs."
   },
   {
     "id": 75,
@@ -302,7 +317,8 @@
     "max_health": 70,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Пещерный гоблин."
+    "desc_ru": "Пещерный гоблин.",
+    "desc_en": "A giant black spider scuttling through the canopy of Mirkwood."
   },
   {
     "id": 76,
@@ -320,6 +336,7 @@
     "max_health": 160,
     "is_dead": false,
     "friendly": false,
-    "desc_ru": "Огромный жирный вождь гоблинов, восседающий на каменном троне."
+    "desc_ru": "Огромный жирный вождь гоблинов, восседающий на каменном троне.",
+    "desc_en": "A monstrous mountain warg, eyes glowing yellow in the dark."
   }
 ]

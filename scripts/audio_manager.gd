@@ -127,22 +127,27 @@ func save_current_settings() -> void:
 	settings_fullscreen = is_fs
 	save_settings(is_fs)
 
-func save_settings(fullscreen: bool) -> void:
-	settings_fullscreen = fullscreen
+func save_settings(fullscreen: Variant = null) -> void:
+	if fullscreen != null:
+		settings_fullscreen = bool(fullscreen)
 	var f = FileAccess.open("user://settings.json", FileAccess.WRITE)
 	if f:
 		var mode_val = 0
 		var gs = _get_game_state()
 		var is_acc = false
+		var lang_val = 0
 		if gs:
 			mode_val = int(gs.game_mode)
 			is_acc = gs.is_accessibility_mode
+			if "current_language" in gs:
+				lang_val = int(gs.current_language)
 		var d = {
 			"music_volume": _pre_accessibility_volume if is_acc else music_volume,
 			"pre_accessibility_volume": _pre_accessibility_volume,
 			"fullscreen": fullscreen,
 			"game_mode": mode_val,
-			"accessibility": is_acc
+			"accessibility": is_acc,
+			"language": lang_val
 		}
 		f.store_string(JSON.stringify(d))
 
@@ -175,6 +180,11 @@ func _load_settings() -> void:
 					gs.is_accessibility_mode = is_acc
 				if is_acc:
 					music_volume = 0.10
+			if parsed.has("language"):
+				var l = int(parsed["language"])
+				var gs = _get_game_state()
+				if gs and "set_language" in gs and l in [0, 1]:
+					gs.set_language(l)
 
 func apply_fullscreen(fs: bool) -> void:
 	if fs:

@@ -19,7 +19,8 @@
     "strength": 100,
     "is_npc": true,
     "is_open": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "You look at yourself: a small, respectable hobbit with furry feet, ready for adventure."
   },
   {
     "id": 1,
@@ -42,7 +43,8 @@
     "is_open": false,
     "is_locked": true,
     "key_id": 4,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A heavy stone door blocking the entrance to the trolls' cave. It has a keyhole."
   },
   {
     "id": 2,
@@ -64,7 +66,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A large heavy key dropped by the trolls. It looks like it fits the cave door."
   },
   {
     "id": 3,
@@ -86,7 +89,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "An ancient dwarven map with silver moon-runes showing the Lonely Mountain."
   },
   {
     "id": 4,
@@ -108,7 +112,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A small brass key with intricate runes."
   },
   {
     "id": 5,
@@ -130,7 +135,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A perfectly round green wooden door with a shiny brass knob right in the middle."
   },
   {
     "id": 6,
@@ -152,7 +158,8 @@
     "is_container": false,
     "is_open": true,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A narrow crack in the cave wall, opening into dark goblin passages."
   },
   {
     "id": 7,
@@ -174,7 +181,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "Thick, sticky spiderwebs woven between the dark branches of Mirkwood."
   },
   {
     "id": 8,
@@ -197,7 +205,8 @@
     "is_open": false,
     "is_locked": true,
     "key_id": 15,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A heavy barred wooden door leading into the elven dungeon."
   },
   {
     "id": 9,
@@ -220,7 +229,8 @@
     "is_container": false,
     "is_open": true,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "The enchanted black water of the river. Anyone who touches it falls into a deep enchanted sleep."
   },
   {
     "id": 10,
@@ -243,7 +253,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A sturdy elven oak door carved with leaves and stars."
   },
   {
     "id": 11,
@@ -267,7 +278,8 @@
     "is_open": false,
     "is_locked": true,
     "key_id": 43,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A low wooden door leading into the royal wine cellars."
   },
   {
     "id": 12,
@@ -290,7 +302,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "The secret side-door of the Lonely Mountain, perfectly flush with the rock."
   },
   {
     "id": 13,
@@ -312,7 +325,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "The massive iron-studded gate of the goblin mountain stronghold."
   },
   {
     "id": 14,
@@ -339,7 +353,8 @@
     "strength": 150,
     "is_weapon": true,
     "gives_light": true,
-    "is_open": false
+    "is_open": false,
+    "desc_en": "The ancient elvish blade Sting. It glows with a pale cold blue light whenever enemies are near."
   },
   {
     "id": 15,
@@ -363,7 +378,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A heavy ring of keys carried by the chief elf butler."
   },
   {
     "id": 16,
@@ -385,7 +401,8 @@
     "strength": 255,
     "is_wearable": true,
     "gives_light": false,
-    "is_open": false
+    "is_open": false,
+    "desc_en": "A plain golden ring. When slipped onto your finger, it renders you invisible to all mortal eyes."
   },
   {
     "id": 17,
@@ -406,7 +423,8 @@
     "is_container": false,
     "is_open": false,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A sturdy wooden door barred from the outside."
   },
   {
     "id": 18,
@@ -426,7 +444,8 @@
     "mass": 10,
     "strength": 100,
     "is_open": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A strong, supple rope with a sturdy hook, very useful for pulling objects across water."
   },
   {
     "id": 19,
@@ -452,7 +471,8 @@
     "is_container": true,
     "is_open": true,
     "is_locked": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A large empty wine barrel from Dorwinion. It is hollow, watertight, and big enough to hide in."
   },
   {
     "id": 20,
@@ -471,7 +491,8 @@
     "mass": 5,
     "strength": 10,
     "is_fluid": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "Rich fragrant wine brewed in distant Dorwinion, potent enough to put even elves to sleep."
   },
   {
     "id": 21,
@@ -491,7 +512,8 @@
     "mass": 5,
     "strength": 10,
     "is_fluid": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "Cool, clear mountain spring water."
   },
   {
     "id": 22,
@@ -510,7 +532,8 @@
     "mass": 5,
     "strength": 10,
     "is_fluid": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "Fresh running stream water murmuring over clean pebbles."
   },
   {
     "id": 23,
@@ -529,7 +552,8 @@
     "mass": 255,
     "strength": 255,
     "is_fluid": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "Dark, quiet river water flowing through the forest."
   },
   {
     "id": 24,
@@ -549,7 +573,8 @@
     "mass": 255,
     "strength": 255,
     "is_fluid": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "Deep, cold waters of the great river."
   },
   {
     "id": 25,
@@ -568,7 +593,8 @@
     "mass": 15,
     "strength": 80,
     "is_weapon": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A magnificent great yew bow belonging to Bard the Bowman, famed for its range and power."
   },
   {
     "id": 26,
@@ -588,7 +614,8 @@
     "mass": 5,
     "strength": 150,
     "is_weapon": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "The legendary Black Arrow of Bard. It has never failed to slay its quarry."
   },
   {
     "id": 27,
@@ -607,7 +634,8 @@
     "mass": 255,
     "strength": 255,
     "is_open": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A high narrow window overlooking the valley."
   },
   {
     "id": 28,
@@ -626,7 +654,8 @@
     "mass": 10,
     "strength": 40,
     "gives_light": true,
-    "is_open": false
+    "is_open": false,
+    "desc_en": "A burning pitch-pine torch casting flickering red shadows."
   },
   {
     "id": 29,
@@ -645,7 +674,8 @@
     "mass": 10,
     "strength": 10,
     "is_open": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "Fine golden sand scattered along the lakeside."
   },
   {
     "id": 30,
@@ -666,7 +696,8 @@
     "is_open": false,
     "is_locked": true,
     "key_id": 2,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A solid iron-bound wooden door."
   },
   {
     "id": 31,
@@ -690,7 +721,8 @@
     "strength": 255,
     "is_container": true,
     "is_open": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A hidden cache of supplies and rations concealed beneath the rocks."
   },
   {
     "id": 32,
@@ -709,7 +741,8 @@
     "mass": 10,
     "strength": 20,
     "is_open": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A heavy woven curtain embroidered with woodland motifs."
   },
   {
     "id": 33,
@@ -734,7 +767,8 @@
     "strength": 120,
     "is_container": true,
     "is_open": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A carved wooden cupboard filled with plates, bowls, and pantry stores."
   },
   {
     "id": 34,
@@ -755,7 +789,8 @@
     "volume": 5,
     "mass": 5,
     "strength": 10,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A generous parcel of travel rations, cram, and dried meat."
   },
   {
     "id": 35,
@@ -776,7 +811,8 @@
     "volume": 100,
     "mass": 100,
     "strength": 255,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A glittering hoard of dwarven treasure: gold coins, gems, and jewel-encrusted chalices."
   },
   {
     "id": 36,
@@ -795,7 +831,8 @@
     "mass": 255,
     "strength": 255,
     "is_open": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A sheer wall of ancient dressed stone."
   },
   {
     "id": 37,
@@ -822,7 +859,8 @@
     "strength": 150,
     "is_container": true,
     "is_open": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A heavy iron-bound oak chest with a solid lock."
   },
   {
     "id": 38,
@@ -842,7 +880,8 @@
     "volume": 5,
     "mass": 5,
     "strength": 10,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A delicious hobbit luncheon wrapped neatly in clean linen."
   },
   {
     "id": 39,
@@ -860,7 +899,8 @@
     "mass": 255,
     "strength": 255,
     "is_open": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A heavy iron portcullis suspended by chains above the waterway."
   },
   {
     "id": 40,
@@ -879,7 +919,8 @@
     "mass": 255,
     "strength": 255,
     "is_open": false,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A curious stone slab set flush into the floor with a hidden catch."
   },
   {
     "id": 41,
@@ -900,7 +941,8 @@
     "strength": 100,
     "is_container": true,
     "is_open": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A small wooden boat moored to the bank, fitted with a pair of oars."
   },
   {
     "id": 42,
@@ -919,7 +961,8 @@
     "mass": 255,
     "strength": 255,
     "is_open": true,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "The swift, foaming current of the Forest River."
   },
   {
     "id": 43,
@@ -939,6 +982,7 @@
     "volume": 2,
     "mass": 2,
     "strength": 50,
-    "gives_light": false
+    "gives_light": false,
+    "desc_en": "A small silver key that fits the secret side-door of the Lonely Mountain."
   }
 ]

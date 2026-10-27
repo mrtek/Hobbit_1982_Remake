@@ -56,6 +56,22 @@ func parse(raw_input: String) -> Dictionary:
 				sub_res["raw_text"] = clean
 				return sub_res
 
+			if lower.begins_with("tell " + alias) or lower.begins_with("say to " + alias) or lower.begins_with("ask " + alias) or lower.begins_with("order " + alias):
+				result["target_npc"] = comp_id
+				var pfx_len = 0
+				for pfx in ["tell " + alias, "say to " + alias, "ask " + alias, "order " + alias]:
+					if lower.begins_with(pfx):
+						pfx_len = len(pfx)
+						break
+				var rest = lower.substr(pfx_len).strip_edges()
+				if rest.begins_with("to "):
+					rest = rest.substr(3).strip_edges()
+				rest = rest.trim_prefix('"').trim_suffix('"').trim_prefix('«').trim_suffix('»').strip_edges()
+				var sub_res = parse(rest)
+				sub_res["target_npc"] = comp_id
+				sub_res["raw_text"] = clean
+				return sub_res
+
 	# 2. Конструкции осмотра контейнеров и содержимого (сундук, шкаф, бочка, тайник)
 	var container_prefixes = [
 		"что лежит внутри ",
@@ -79,14 +95,22 @@ func parse(raw_input: String) -> Dictionary:
 		"осмотреть вещи в ",
 		"осмотреть внутри ",
 		"осмотреть в ",
-		"внутри "
+		"внутри ",
+		"what is inside ",
+		"what is in ",
+		"look inside ",
+		"look in ",
+		"check inside ",
+		"search inside ",
+		"search ",
+		"inside "
 	]
 	for prefix in container_prefixes:
 		if lower.begins_with(prefix):
 			var cont_name = lower.substr(prefix.length()).strip_edges()
 			result["verb"] = "examine"
-			result["object"] = cont_name
-			result["preposition"] = "в"
+			result["object"] = _clean_article(cont_name)
+			result["preposition"] = "in"
 			return result
 
 	if lower.begins_with("в ") and not lower in ["в", "восток"]:
@@ -182,17 +206,25 @@ func parse(raw_input: String) -> Dictionary:
 		
 		# Если до предлога пусто (например "загляни в сундук"), то объект после предлога
 		if before_prep.size() == 0:
-			result["object"] = " ".join(after_prep)
+			result["object"] = _clean_article(" ".join(after_prep))
 		else:
-			result["object"] = " ".join(before_prep)
-			result["indirect_object"] = " ".join(after_prep)
+			result["object"] = _clean_article(" ".join(before_prep))
+			result["indirect_object"] = _clean_article(" ".join(after_prep))
 	else:
 		# Без явного предлога
 		var last_w = non_verb_words[-1]
 		if (last_w.ends_with("ом") or last_w.ends_with("ем")) and non_verb_words.size() > 1:
-			result["object"] = " ".join(non_verb_words.slice(0, non_verb_words.size() - 1))
+			result["object"] = _clean_article(" ".join(non_verb_words.slice(0, non_verb_words.size() - 1)))
 			result["indirect_object"] = last_w
 		else:
-			result["object"] = " ".join(non_verb_words)
+			result["object"] = _clean_article(" ".join(non_verb_words))
 			
 	return result
+
+func _clean_article(text: String) -> String:
+	var t = text.strip_edges()
+	for art in ["the ", "a ", "an "]:
+		if t.begins_with(art):
+			return t.substr(len(art)).strip_edges()
+	return t
+

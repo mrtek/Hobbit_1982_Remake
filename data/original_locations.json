@@ -14,7 +14,8 @@
         "dest": 4,
         "via_obj": 5
       }
-    ]
+    ],
+    "description_en": "You are in a comfortable tunnel-like hall of a hobbit-hole. The walls are paneled, the floor carpeted, and a round green door leads east to the wide world."
   },
   {
     "id": 2,
@@ -37,7 +38,8 @@
         "dest": 46,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A narrow stony road winding among thick copses. The air is fresh and smells of pine."
   },
   {
     "id": 3,
@@ -60,7 +62,8 @@
         "dest": 45,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "An ancient wild forest. Tall trees intertwine their branches, shutting out the sun."
   },
   {
     "id": 4,
@@ -95,7 +98,8 @@
         "dest": 6,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "You are in a gloomy empty land with dreary hills ahead. The road vanishes into wilderness."
   },
   {
     "id": 5,
@@ -124,7 +128,8 @@
         "dest": 6,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A gloomy clearing amidst gnarled oaks. Two huge stone figures stand motionless in the center."
   },
   {
     "id": 6,
@@ -147,7 +152,8 @@
         "dest": 7,
         "via_obj": 1
       }
-    ]
+    ],
+    "description_en": "A hidden overgrown path climbing towards the foothills. Large heavy footprints are pressed into the mud."
   },
   {
     "id": 7,
@@ -164,7 +170,8 @@
         "dest": 6,
         "via_obj": 1
       }
-    ]
+    ],
+    "description_en": "A deep damp cave strewn with gnawed bones, empty barrels and iron pots. It reeks of trolls."
   },
   {
     "id": 8,
@@ -187,7 +194,8 @@
         "dest": 3,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A swift mountain river rushing over grey boulders with a roar of white foam."
   },
   {
     "id": 9,
@@ -210,7 +218,8 @@
         "dest": 5,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The fair hidden valley of Rivendell. The Last Homely House east of the Sea stands surrounded by singing waterfalls and fragrant gardens."
   },
   {
     "id": 10,
@@ -245,7 +254,8 @@
         "dest": 73,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A hard dangerous path through the Misty Mountains. Sheer cliffs tower above into chilling mist."
   },
   {
     "id": 11,
@@ -274,7 +284,8 @@
         "dest": 14,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A narrow ledge above a dizzying drop into a dim valley. The wind howls fiercely."
   },
   {
     "id": 12,
@@ -297,7 +308,8 @@
         "dest": 11,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A perilous path clinging to the mountain slope. Loose stones clatter down into the abyss."
   },
   {
     "id": 13,
@@ -320,7 +332,8 @@
         "dest": 18,
         "via_obj": 27
       }
-    ]
+    ],
+    "description_en": "A cold stone dungeon behind iron bars. Goblin bones and broken chains lie scattered about."
   },
   {
     "id": 14,
@@ -343,7 +356,8 @@
         "dest": 11,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A large dry cave, sheltered from the wind and surprisingly comfortable. A chimney-crack rises at the back."
   },
   {
     "id": 15,
@@ -372,7 +386,8 @@
         "dest": 58,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A pitch-black stuffy passage burrowing deep into the roots of the mountains."
   },
   {
     "id": 16,
@@ -401,7 +416,8 @@
         "dest": 13,
         "via_obj": 17
       }
-    ]
+    ],
+    "description_en": "A vast subterranean cavern lit by smoking torches along the walls. The sound of goblin hammers echoes in the distance."
   },
   {
     "id": 17,
@@ -418,7 +434,8 @@
         "dest": 55,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The brink of a deep, dark subterranean lake. The icy water is black as night and still as death."
   },
   {
     "id": 18,
@@ -447,7 +464,8 @@
         "dest": 13,
         "via_obj": 27
       }
-    ]
+    ],
+    "description_en": "A dark winding passage descending into the black depths of the mountain."
   },
   {
     "id": 19,
@@ -518,7 +536,8 @@
         "dest": 16,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "Inside the heavy iron gates of the goblin stronghold. Spikes and crude armor line the walls."
   },
   {
     "id": 20,
@@ -541,7 +560,8 @@
         "dest": 21,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "Outside the mountain gate. A desolate hillside of pine trees and shattered rock."
   },
   {
     "id": 21,
@@ -564,7 +584,8 @@
         "dest": 20,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A treeless clearing on the edge of the forest. The great Carrock rock formation rises in the distance."
   },
   {
     "id": 22,
@@ -605,7 +626,8 @@
         "dest": 49,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The great timber hall of Beorn the skin-changer. The scent of clover, wax and sweet honey fills the warm air."
   },
   {
     "id": 23,
@@ -628,7 +650,8 @@
         "dest": 48,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The dark waters of Forest River flowing swiftly beneath hanging boughs."
   },
   {
     "id": 24,
@@ -657,7 +680,8 @@
         "dest": 25,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The Gate to Mirkwood. Ahead lies a dark tunnel beneath ancient, brooding trees."
   },
   {
     "id": 25,
@@ -686,7 +710,8 @@
         "dest": 0,
         "via_obj": 9
       }
-    ]
+    ],
+    "description_en": "A bewitched gloomy clearing enveloped in oppressive silence. Black tangled roots twist across the ground."
   },
   {
     "id": 26,
@@ -721,7 +746,8 @@
         "dest": 27,
         "via_obj": 7
       }
-    ]
+    ],
+    "description_en": "A grim grove choked with thick spiderwebs. Large black silhouettes stir in the canopy above."
   },
   {
     "id": 27,
@@ -744,7 +770,8 @@
         "dest": 50,
         "via_obj": 7
       }
-    ]
+    ],
+    "description_en": "A dense suffocating forest where twisted branches choke out all sky. Strange eyes gleam in the shadows."
   },
   {
     "id": 28,
@@ -773,7 +800,8 @@
         "dest": 30,
         "via_obj": 13
       }
-    ]
+    ],
+    "description_en": "An elvish clearing with leveled ground, smoothed logs, and the cold ashes of woodland feast-fires."
   },
   {
     "id": 29,
@@ -790,7 +818,8 @@
         "dest": 26,
         "via_obj": 7
       }
-    ]
+    ],
+    "description_en": "A treacherous black swamp. Treacherous bogs and stagnant pools lurk beneath deceptive moss."
   },
   {
     "id": 30,
@@ -819,7 +848,8 @@
         "dest": 28,
         "via_obj": 13
       }
-    ]
+    ],
+    "description_en": "The magnificent subterranean halls of the Elvenking, illuminated by lanterns and carved from living rock."
   },
   {
     "id": 31,
@@ -842,7 +872,8 @@
         "dest": 30,
         "via_obj": 8
       }
-    ]
+    ],
+    "description_en": "A damp subterranean dungeon of the Wood-elves. Straw lies on the stone floor."
   },
   {
     "id": 32,
@@ -871,7 +902,8 @@
         "dest": 33,
         "via_obj": 12
       }
-    ]
+    ],
+    "description_en": "The royal cellar where the Elvenking stores his finest barrels of Dorwinion wine. Trapdoors open above the river."
   },
   {
     "id": 33,
@@ -900,7 +932,8 @@
         "dest": 0,
         "via_obj": 42
       }
-    ]
+    ],
+    "description_en": "The rushing river beneath the palace cellars, flowing rapidly towards the lake."
   },
   {
     "id": 34,
@@ -935,7 +968,8 @@
         "dest": 45,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The wide surface of Long Lake. Far to the north, the Lonely Mountain rises above the clouds."
   },
   {
     "id": 35,
@@ -970,7 +1004,8 @@
         "dest": 34,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The town of Esgaroth built entirely of wood on great piles in the middle of Long Lake."
   },
   {
     "id": 36,
@@ -993,7 +1028,8 @@
         "dest": 34,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The River Running flowing steadily from the roots of the Mountain towards the lake."
   },
   {
     "id": 37,
@@ -1016,7 +1052,8 @@
         "dest": 36,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The Desolation of Smaug. A bleak barren wasteland of blackened stone and scorched earth that was once green."
   },
   {
     "id": 38,
@@ -1045,7 +1082,8 @@
         "dest": 40,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The ruined valley of Dale. Crumbling stone arches and ancient ruins overgrown with grey nettles."
   },
   {
     "id": 39,
@@ -1074,7 +1112,8 @@
         "dest": 40,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The Front Gate of the Lonely Mountain. A cavernous archway from which the River Running pours out in dark smoke."
   },
   {
     "id": 40,
@@ -1103,7 +1142,8 @@
         "dest": 39,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The western side of Ravenhill, an ancient watch-post overlooking the plains of Dale."
   },
   {
     "id": 41,
@@ -1132,7 +1172,8 @@
         "dest": 44,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The great subterranean hall where the dragon Smaug lies sleeping atop a colossal mound of gold and gems."
   },
   {
     "id": 42,
@@ -1161,7 +1202,8 @@
         "dest": 51,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A secret steep bay high on the western shoulder of the Mountain, hidden by overhanging cliffs."
   },
   {
     "id": 43,
@@ -1184,7 +1226,8 @@
         "dest": 41,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A smooth straight passage carved by dwarves, leading into the heart of the Mountain."
   },
   {
     "id": 44,
@@ -1219,7 +1262,8 @@
         "dest": 40,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "High upon the slopes of the Lonely Mountain. The icy wind howls across desolate stone."
   },
   {
     "id": 45,
@@ -1242,7 +1286,8 @@
         "dest": 3,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A roaring waterfall plunging into a spray-filled gorge."
   },
   {
     "id": 46,
@@ -1265,7 +1310,8 @@
         "dest": 24,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A quiet country road winding past green hedgerows and rolling hills of the Shire."
   },
   {
     "id": 47,
@@ -1275,7 +1321,8 @@
     "description_ru": "Небольшая каменистая площадка. Здесь стоит плоский серый камень, облюбованный черным дроздом.",
     "image_file": "2E Forest Road.png",
     "is_dark": false,
-    "exits": []
+    "exits": [],
+    "description_en": "A quiet vantage point among the hills, overlooking the green Shire."
   },
   {
     "id": 48,
@@ -1304,7 +1351,8 @@
         "dest": 23,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "Stony windswept foothills dotted with stunted pines."
   },
   {
     "id": 49,
@@ -1339,7 +1387,8 @@
         "dest": 10,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A broad swift river winding through the plains of Rhovanion."
   },
   {
     "id": 50,
@@ -1362,7 +1411,8 @@
         "dest": 67,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A dense pine grove on the slopes of the Misty Mountains."
   },
   {
     "id": 51,
@@ -1391,7 +1441,8 @@
         "dest": 44,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "An empty deserted hall in the dwarven ruins, coated with centuries of dust."
   },
   {
     "id": 52,
@@ -1420,7 +1471,8 @@
         "dest": 54,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A shadowy mountain passage carved deep into the granite."
   },
   {
     "id": 53,
@@ -1437,7 +1489,8 @@
         "dest": 52,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A narrow side tunnel leading through the mountain."
   },
   {
     "id": 54,
@@ -1472,7 +1525,8 @@
         "dest": 17,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A steep rocky slope leading up into the cold clouds."
   },
   {
     "id": 55,
@@ -1507,7 +1561,8 @@
         "dest": 60,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A dusty forest trail leading through the woods."
   },
   {
     "id": 56,
@@ -1524,7 +1579,8 @@
         "dest": 60,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A misty gorge where water cascades down mossy rocks."
   },
   {
     "id": 57,
@@ -1553,7 +1609,8 @@
         "dest": 58,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A trail through dense undergrowth."
   },
   {
     "id": 58,
@@ -1588,7 +1645,8 @@
         "dest": 59,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "Deep in the woodland gloom."
   },
   {
     "id": 59,
@@ -1611,7 +1669,8 @@
         "dest": 60,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "Along the stony banks of the River Running."
   },
   {
     "id": 60,
@@ -1640,7 +1699,8 @@
         "dest": 56,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A bend in the Forest River beneath weeping willows."
   },
   {
     "id": 61,
@@ -1663,7 +1723,8 @@
         "dest": 60,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A cold mountain ridge exposed to icy gales."
   },
   {
     "id": 62,
@@ -1680,7 +1741,8 @@
         "dest": 61,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "The banks of the Great River Anduin."
   },
   {
     "id": 63,
@@ -1709,7 +1771,8 @@
         "dest": 58,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A quiet clearing amidst ancient trees."
   },
   {
     "id": 64,
@@ -1738,7 +1801,8 @@
         "dest": 63,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A leafy glade in the greenwood."
   },
   {
     "id": 65,
@@ -1767,7 +1831,8 @@
         "dest": 19,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A hidden hollow beneath rocky crags."
   },
   {
     "id": 66,
@@ -1790,7 +1855,8 @@
         "dest": 67,
         "via_obj": 9
       }
-    ]
+    ],
+    "description_en": "The western bank of the Enchanted River. The black water flows swiftly, carrying a magic slumber."
   },
   {
     "id": 67,
@@ -1813,7 +1879,8 @@
         "dest": 66,
         "via_obj": 9
       }
-    ]
+    ],
+    "description_en": "The eastern bank of the Enchanted River, bordered by ancient weeping trees."
   },
   {
     "id": 68,
@@ -1842,7 +1909,8 @@
         "dest": 10,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A narrow mountain track flanked by steep scree."
   },
   {
     "id": 69,
@@ -1871,7 +1939,8 @@
         "dest": 10,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A stony path threading between towering boulders."
   },
   {
     "id": 70,
@@ -1894,7 +1963,8 @@
         "dest": 69,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A lonely path climbing toward the snowline."
   },
   {
     "id": 71,
@@ -1923,7 +1993,8 @@
         "dest": 68,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A rugged track overlooking deep ravines."
   },
   {
     "id": 72,
@@ -1952,7 +2023,8 @@
         "dest": 75,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A high mountain defile where eagles soar."
   },
   {
     "id": 73,
@@ -1975,7 +2047,8 @@
         "dest": 10,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A dizzying trail across a rocky ridge."
   },
   {
     "id": 74,
@@ -1998,7 +2071,8 @@
         "dest": 73,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A narrow path descending toward the lowlands."
   },
   {
     "id": 75,
@@ -2015,7 +2089,8 @@
         "dest": 76,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A steep rocky track winding up the precipice."
   },
   {
     "id": 76,
@@ -2032,7 +2107,8 @@
         "dest": 77,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A precarious scramble over broken rocks."
   },
   {
     "id": 77,
@@ -2049,7 +2125,8 @@
         "dest": 78,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A rugged descent toward the mountain valleys."
   },
   {
     "id": 78,
@@ -2072,7 +2149,8 @@
         "dest": 77,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A deep misty valley veiled in perpetual damp fog."
   },
   {
     "id": 79,
@@ -2095,6 +2173,7 @@
         "dest": 74,
         "via_obj": 0
       }
-    ]
+    ],
+    "description_en": "A secluded hollow in the mountain mist."
   }
 ]
