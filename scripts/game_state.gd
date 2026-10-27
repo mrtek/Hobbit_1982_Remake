@@ -52,6 +52,14 @@ signal room_changed(new_room_id: int)
 signal inventory_changed()
 signal world_updated()
 signal game_mode_changed(new_mode: GameMode)
+signal accessibility_mode_changed(enabled: bool)
+
+var is_accessibility_mode: bool = false
+
+func set_accessibility_mode(enabled: bool) -> void:
+	if is_accessibility_mode != enabled:
+		is_accessibility_mode = enabled
+		accessibility_mode_changed.emit(enabled)
 
 func set_game_mode(mode: GameMode) -> void:
 	if game_mode != mode:

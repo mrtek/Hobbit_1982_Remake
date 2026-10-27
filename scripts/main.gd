@@ -64,6 +64,7 @@ const FONT_PATH_ZX: String = "res://assets/fonts/ZX/zx_spectrum-7.ttf"
 @onready var volume_slider: HSlider = %VolumeSlider
 @onready var vol_value_label: Label = %VolValue
 @onready var check_fullscreen: CheckBox = %CheckFullscreen
+@onready var check_accessibility: CheckBox = %CheckAccessibility
 @onready var btn_settings_main_menu: Button = %BtnSettingsMainMenu
 @onready var btn_settings_back: Button = %BtnSettingsBack
 @onready var btn_settings_game: Button = %BtnSettingsGame
@@ -183,15 +184,24 @@ func _ready() -> void:
 		btn_exit.visible = false
 	
 	# 4. Инициализация окна настроек
+	_setup_fullscreen_checkbox()
+	_setup_accessibility_checkbox()
+	
 	if am:
+		_is_syncing_volume_slider = true
 		volume_slider.value = am.get_music_volume()
 		_update_volume_label(volume_slider.value)
+		_is_syncing_volume_slider = false
 	volume_slider.value_changed.connect(_on_volume_changed)
 	
-	_setup_fullscreen_checkbox()
 	var is_fs = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN or DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 	check_fullscreen.button_pressed = is_fs
 	check_fullscreen.toggled.connect(_on_fullscreen_toggled)
+	
+	if gs:
+		check_accessibility.button_pressed = gs.is_accessibility_mode
+	check_accessibility.toggled.connect(_on_accessibility_toggled)
+		
 	btn_settings_back.pressed.connect(_on_settings_back_pressed)
 	btn_settings_main_menu.pressed.connect(_on_settings_main_menu_pressed)
 	
@@ -602,8 +612,12 @@ func _on_settings_pressed() -> void:
 	var gs = _get_game_state()
 	var am = _get_audio_manager()
 	if am:
+		_is_syncing_volume_slider = true
 		volume_slider.value = am.get_music_volume()
 		_update_volume_label(volume_slider.value)
+		_is_syncing_volume_slider = false
+	if gs and check_accessibility:
+		check_accessibility.button_pressed = gs.is_accessibility_mode
 	var is_fs = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN or DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 	check_fullscreen.button_pressed = is_fs
 	if btn_settings_back.is_inside_tree():
@@ -684,11 +698,19 @@ func _on_exit_pressed() -> void:
 	if not OS.has_feature("web"):
 		get_tree().quit()
 
+var _is_syncing_volume_slider: bool = false
+
 func _on_volume_changed(val: float) -> void:
+	_update_volume_label(val)
+	if _is_syncing_volume_slider:
+		return
 	var am = _get_audio_manager()
+	var gs = _get_game_state()
+	var is_acc = gs.is_accessibility_mode if gs else false
 	if am:
+		if not is_acc:
+			am.set_pre_accessibility_volume(val)
 		am.set_music_volume(val)
-		_update_volume_label(val)
 		am.save_settings(check_fullscreen.button_pressed)
 
 func _update_volume_label(val: float) -> void:
@@ -706,6 +728,29 @@ func _on_fullscreen_toggled(is_fs: bool) -> void:
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
+
+func _on_accessibility_toggled(enabled: bool) -> void:
+	var gs = _get_game_state()
+	var am = _get_audio_manager()
+	_stop_tts()
+	if gs:
+		gs.set_accessibility_mode(enabled)
+		gs.print_to_log("Режим для слабовидящих: " + ("ВКЛ" if enabled else "ВЫКЛ"), Color.YELLOW)
+	if am:
+		_is_syncing_volume_slider = true
+		if enabled:
+			am._on_accessibility_mode_changed(true)
+			volume_slider.value = 0.20
+			_update_volume_label(0.20)
+		else:
+			am._on_accessibility_mode_changed(false)
+			var restored_vol = am.get_music_volume()
+			volume_slider.value = restored_vol
+			_update_volume_label(restored_vol)
+		_is_syncing_volume_slider = false
+		am.save_settings(check_fullscreen.button_pressed)
+	if enabled:
+		_speak_text("Режим для слабовидящих включен.")
 
 func _setup_fullscreen_checkbox() -> void:
 	var tex_un: Texture2D = _load_texture_file("res://assets/images/checkbox_unchecked.png")
@@ -727,6 +772,29 @@ func _setup_fullscreen_checkbox() -> void:
 	check_fullscreen.add_theme_color_override("font_focus_color", Color(1.0, 0.85, 0.3, 1.0))
 	check_fullscreen.add_theme_color_override("font_pressed_color", Color(1.0, 0.85, 0.3, 1.0))
 	check_fullscreen.add_theme_color_override("font_color", Color(0.92, 0.92, 0.95, 1.0))
+
+func _setup_accessibility_checkbox() -> void:
+	if not check_accessibility:
+		return
+	var tex_un: Texture2D = _load_texture_file("res://assets/images/checkbox_unchecked.png")
+	if not tex_un:
+		tex_un = _create_fallback_checkbox_texture(false)
+		
+	var tex_ck: Texture2D = _load_texture_file("res://assets/images/checkbox_checked.png")
+	if not tex_ck:
+		tex_ck = _create_fallback_checkbox_texture(true)
+		
+	check_accessibility.add_theme_icon_override("unchecked", tex_un)
+	check_accessibility.add_theme_icon_override("unchecked_disabled", tex_un)
+	check_accessibility.add_theme_icon_override("checked", tex_ck)
+	check_accessibility.add_theme_icon_override("checked_disabled", tex_ck)
+	
+	var empty_sb = StyleBoxEmpty.new()
+	check_accessibility.add_theme_stylebox_override("focus", empty_sb)
+	check_accessibility.add_theme_color_override("font_hover_color", Color(1.0, 0.85, 0.3, 1.0))
+	check_accessibility.add_theme_color_override("font_focus_color", Color(1.0, 0.85, 0.3, 1.0))
+	check_accessibility.add_theme_color_override("font_pressed_color", Color(1.0, 0.85, 0.3, 1.0))
+	check_accessibility.add_theme_color_override("font_color", Color(0.92, 0.92, 0.95, 1.0))
 
 func _create_fallback_checkbox_texture(is_checked: bool) -> ImageTexture:
 	var img = Image.create(24, 24, false, Image.FORMAT_RGBA8)
@@ -785,6 +853,7 @@ func _connect_buttons() -> void:
 	btn_load.pressed.connect(func(): open_load_menu(false))
 
 func _execute_quick(cmd: String) -> void:
+	_stop_tts()
 	var gs = _get_game_state()
 	if gs:
 		gs.process_command(cmd)
@@ -792,17 +861,101 @@ func _execute_quick(cmd: String) -> void:
 	_update_command_dropdown()
 	input_line.grab_focus()
 
+var _tts_voice_id: String = ""
+var _tts_voice_checked: bool = false
+
+func _stop_tts() -> void:
+	if DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH):
+		DisplayServer.tts_stop()
+	if OS.has_feature("web"):
+		JavaScriptBridge.eval("if (window.speechSynthesis) window.speechSynthesis.cancel();")
+
+func _get_tts_voice_id() -> String:
+	if _tts_voice_checked:
+		return _tts_voice_id
+	_tts_voice_checked = true
+	
+	if not DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH):
+		return ""
+		
+	var voices = DisplayServer.tts_get_voices()
+	if voices.is_empty():
+		return ""
+		
+	for v in voices:
+		if v is Dictionary:
+			var lang = str(v.get("language", "")).to_lower()
+			var v_name = str(v.get("name", "")).to_lower()
+			var v_id = str(v.get("id", "")).to_lower()
+			if "ru" in lang or "ru" in v_name or "russian" in v_name or "irina" in v_name or "ru" in v_id:
+				_tts_voice_id = str(v.get("id", ""))
+				return _tts_voice_id
+				
+	if voices[0] is Dictionary:
+		_tts_voice_id = str(voices[0].get("id", ""))
+	return _tts_voice_id
+
+func _speak_text(text: String) -> void:
+	if text.is_empty():
+		return
+		
+	# Очистка всех тегов BBCode [color=...], [b] и др.
+	var regex = RegEx.new()
+	regex.compile("\\[[^\\]]*\\]")
+	var clean_text = regex.sub(text, "", true).strip_edges()
+	
+	# Очистка лишних пробелов
+	var sp_regex = RegEx.new()
+	sp_regex.compile("\\s+")
+	clean_text = sp_regex.sub(clean_text, " ", true).strip_edges()
+	
+	if clean_text.is_empty():
+		return
+		
+	# 1. Браузерная Web-версия (HTML5 Web Speech API)
+	if OS.has_feature("web"):
+		var js = """
+		(function() {
+			if (!window.speechSynthesis) return;
+			var u = new SpeechSynthesisUtterance(%s);
+			u.lang = 'ru-RU';
+			u.rate = 1.0;
+			u.pitch = 1.0;
+			u.volume = 1.0;
+			window.speechSynthesis.speak(u);
+		})();
+		""" % [JSON.stringify(clean_text)]
+		JavaScriptBridge.eval(js)
+		return
+		
+	# 2. Нативная десктопная версия (DisplayServer TTS)
+	if not DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH):
+		return
+		
+	var v_id = _get_tts_voice_id()
+	if v_id.is_empty():
+		return
+		
+	# Godot 4: tts_speak(text, voice, volume=50, pitch=1.0, rate=1.0, utterance_id=0, interrupt=false)
+	# volume = 100 для максимальной четкости и слышимости
+	DisplayServer.tts_speak(clean_text, v_id, 100, 1.0, 1.0, 0, false)
+
 func _on_text_printed(text: String, color: Color) -> void:
 	if text.begins_with("[color"):
 		output_log.append_text(text + "\n")
 	else:
 		var hex = color.to_html(false)
 		output_log.append_text("[color=#" + hex + "]" + text + "[/color]\n")
+	
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode:
+		_speak_text(text)
 
 func _on_input_submitted(new_text: String) -> void:
 	var clean = new_text.strip_edges()
 	if clean.is_empty():
 		return
+	_stop_tts()
 		
 	history.append(clean)
 	history_index = history.size()
@@ -1050,6 +1203,11 @@ func _apply_game_mode_font(mode: int) -> void:
 	for b in act_btns:
 		if b:
 			b.add_theme_font_size_override("font_size", btn_action_sz)
+			
+	if check_fullscreen:
+		check_fullscreen.add_theme_font_size_override("font_size", 14 if mode == Mode.ZX else 17)
+	if check_accessibility:
+		check_accessibility.add_theme_font_size_override("font_size", 14 if mode == Mode.ZX else 17)
 			
 	# Черная окантовка шрифта для кнопок главного меню (чтобы шрифт четко читался на пестром фоне заставки)
 	var title_btns = [btn_start_game, btn_title_load, btn_change_mode, btn_settings, btn_exit]

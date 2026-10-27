@@ -20,6 +20,7 @@ var settings_fullscreen: bool = false
 
 var pending_theme: String = ""
 var _fade_tween: Tween = null
+var _pre_accessibility_volume: float = 0.75
 
 const FADE_OUT_DURATION: float = 1.0
 const FADE_IN_DURATION: float = 1.0
@@ -60,6 +61,22 @@ func _ready() -> void:
 	if gs:
 		gs.room_changed.connect(_on_room_changed)
 		gs.game_mode_changed.connect(_on_game_mode_changed)
+		gs.accessibility_mode_changed.connect(_on_accessibility_mode_changed)
+
+func _on_accessibility_mode_changed(enabled: bool) -> void:
+	if enabled:
+		if music_volume > 0.25:
+			_pre_accessibility_volume = music_volume
+		set_music_volume(0.20)
+	else:
+		set_music_volume(_pre_accessibility_volume)
+
+func get_pre_accessibility_volume() -> float:
+	return _pre_accessibility_volume
+
+func set_pre_accessibility_volume(val: float) -> void:
+	_pre_accessibility_volume = clamp(val, 0.0, 1.0)
+
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
@@ -116,12 +133,16 @@ func save_settings(fullscreen: bool) -> void:
 	if f:
 		var mode_val = 0
 		var gs = _get_game_state()
+		var is_acc = false
 		if gs:
 			mode_val = int(gs.game_mode)
+			is_acc = gs.is_accessibility_mode
 		var d = {
-			"music_volume": music_volume,
+			"music_volume": _pre_accessibility_volume if is_acc else music_volume,
+			"pre_accessibility_volume": _pre_accessibility_volume,
 			"fullscreen": fullscreen,
-			"game_mode": mode_val
+			"game_mode": mode_val,
+			"accessibility": is_acc
 		}
 		f.store_string(JSON.stringify(d))
 
@@ -132,6 +153,11 @@ func _load_settings() -> void:
 	if f:
 		var parsed = JSON.parse_string(f.get_as_text())
 		if parsed and parsed is Dictionary:
+			if parsed.has("pre_accessibility_volume"):
+				_pre_accessibility_volume = float(parsed["pre_accessibility_volume"])
+			elif parsed.has("music_volume"):
+				_pre_accessibility_volume = float(parsed["music_volume"])
+				
 			if parsed.has("music_volume"):
 				music_volume = float(parsed["music_volume"])
 			if parsed.has("fullscreen"):
@@ -142,6 +168,13 @@ func _load_settings() -> void:
 				var gs = _get_game_state()
 				if gs and m in [0, 1, 2]:
 					gs.set_game_mode(m)
+			if parsed.has("accessibility"):
+				var is_acc = bool(parsed["accessibility"])
+				var gs = _get_game_state()
+				if gs:
+					gs.is_accessibility_mode = is_acc
+				if is_acc:
+					music_volume = 0.20
 
 func apply_fullscreen(fs: bool) -> void:
 	if fs:

@@ -581,6 +581,38 @@ func _initialize() -> void:
 	assert(mode_ver.text == "v 0.9 Beta Test", "ModeSelectVersion text must be 'v 0.9 Beta Test'")
 	print("[PASS] Version info 'v 0.9 Beta Test' verified across TitleScreen and ModeSelectScreen.")
 
+	# 22. Проверка режима для слабовидящих (Accessibility Mode) и синхронизации громкости музыки
+	assert(main_instance.check_accessibility != null, "CheckAccessibility node must exist in SettingsPanel")
+	assert("Режим для слабовидящих" in main_instance.check_accessibility.text, "CheckAccessibility label must match")
+	
+	# Проверка исходной громкости (по умолчанию 0.75)
+	am.set_music_volume(0.75)
+	main_instance.volume_slider.value = 0.75
+	main_instance._on_volume_changed(0.75)
+	assert(am.get_music_volume() == 0.75, "Base music volume must be 0.75")
+	assert(main_instance.volume_slider.value == 0.75, "Volume slider must be 0.75")
+	assert(main_instance.vol_value_label.text == "75%", "Volume label must show 75%")
+	
+	# Включаем режим для слабовидящих
+	main_instance.check_accessibility.button_pressed = true
+	main_instance._on_accessibility_toggled(true)
+	assert(gs.is_accessibility_mode == true, "GameState.is_accessibility_mode must be true")
+	assert(is_equal_approx(am.get_music_volume(), 0.20), "Music volume must be attenuated to 0.20 when accessibility mode is enabled")
+	assert(is_equal_approx(main_instance.volume_slider.value, 0.20), "Volume slider must visually update to 0.20")
+	assert(main_instance.vol_value_label.text == "20%", "Volume label must show 20%")
+	
+	# Отключаем режим для слабовидящих - громкость музыки и ползунок должны вернуться к 0.75!
+	main_instance.check_accessibility.button_pressed = false
+	main_instance._on_accessibility_toggled(false)
+	assert(gs.is_accessibility_mode == false, "GameState.is_accessibility_mode must be false")
+	assert(is_equal_approx(am.get_music_volume(), 0.75), "Music volume must be restored to 0.75 when accessibility mode is disabled")
+	assert(is_equal_approx(main_instance.volume_slider.value, 0.75), "Volume slider must visually restore to 0.75")
+	assert(main_instance.vol_value_label.text == "75%", "Volume label must restore to 75%")
+	
+	# Проверка обработки текста для озвучки (очистка BBCode)
+	main_instance._speak_text("[b][color=#ffff00]Тестовый текст озвучки[/color][/b]")
+	print("[PASS] Accessibility Mode (Режим для слабовидящих): volume auto-attenuation, visual slider sync & volume restore verified.")
+
 	print("\n--- ALL TESTS PASSED SUCCESSFULLY! ---")
 	main_instance.free()
 	quit(0)
