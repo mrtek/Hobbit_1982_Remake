@@ -236,11 +236,19 @@ func _ready() -> void:
 		credits_screen.cached_audio_manager = am
 		credits_screen.closed.connect(_on_credits_closed)
 	
+	# 7. Подключение глобального фокусного диктора и озвучивание при наведении мыши
+	if get_viewport():
+		get_viewport().gui_focus_changed.connect(_on_gui_focus_changed)
+	_setup_mouse_hover_focus(self)
+	
 	# Стартовое состояние: показываем меню выбора из 3-х режимов!
 	mode_select_screen.visible = true
 	title_screen.visible = false
 	if is_inside_tree():
 		btn_select_modern.grab_focus()
+		
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Хоббит: Ремейк, версия 0.95 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания.", true)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_PREDELETE:
@@ -289,6 +297,9 @@ func _on_change_mode_pressed() -> void:
 				btn_select_modern.grab_focus()
 	else:
 		btn_select_modern.grab_focus()
+		
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Используйте стрелки или цифровые клавиши 1, 2, 3 и Enter.", true)
 
 func _start_intro_sequence() -> void:
 	var am = _get_audio_manager()
@@ -451,6 +462,10 @@ func _on_title_image_fully_shown() -> void:
 		version_label.visible = true
 		tween.parallel().tween_property(version_label, "modulate:a", 1.0, 0.35).set_trans(Tween.TRANS_SINE)
 	btn_start_game.grab_focus()
+	
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Главное меню. Доступно 6 пунктов. Используйте стрелки вверх и вниз для навигации, Enter для выбора. Клавиша V для переключения озвучивания.", true)
 
 func _skip_intro() -> void:
 	if intro_phase == IntroPhase.READY:
@@ -460,15 +475,31 @@ func _skip_intro() -> void:
 	_on_title_image_fully_shown()
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		# Глобальная горячая клавиша F1 или V (когда не идет набор текста) для переключения режима доступности
+		var is_typing = input_line and input_line.has_focus()
+		if event.keycode == KEY_F1 or (event.keycode == KEY_V and not is_typing):
+			var gs = _get_game_state()
+			if gs:
+				var new_mode = not gs.is_accessibility_mode
+				if check_accessibility:
+					check_accessibility.button_pressed = new_mode
+				_on_accessibility_toggled(new_mode)
+				get_viewport().set_input_as_handled()
+				return
+				
+		# Глобальная горячая клавиша F2 / F3 для повтора описания локации и статуса в игре
+		if game_started and (event.keycode == KEY_F2 or event.keycode == KEY_F3):
+			_repeat_current_location_audio()
+			get_viewport().set_input_as_handled()
+			return
+
 	if credits_screen and credits_screen.visible:
 		# Экран титров самостоятельно обрабатывает свои клавиши (Space, ESC, стрелки, колесо)
 		return
 		
 	if save_load_screen and save_load_screen.visible:
-		if event is InputEventKey and event.pressed:
-			if event.keycode == KEY_ESCAPE:
-				save_load_screen.close()
-				get_viewport().set_input_as_handled()
+		# Окно сохранений обрабатывает свои клавиши (1..6, ESC)
 		return
 		
 	if mode_select_screen.visible:
@@ -476,12 +507,46 @@ func _input(event: InputEvent) -> void:
 			if event.keycode in [KEY_1, KEY_KP_1]:
 				_on_mode_card_selected(Mode.MODERN)
 				get_viewport().set_input_as_handled()
+				return
 			elif event.keycode in [KEY_2, KEY_KP_2]:
 				_on_mode_card_selected(Mode.VGA)
 				get_viewport().set_input_as_handled()
+				return
 			elif event.keycode in [KEY_3, KEY_KP_3]:
 				_on_mode_card_selected(Mode.ZX)
 				get_viewport().set_input_as_handled()
+				return
+			elif event.keycode in [KEY_RIGHT, KEY_DOWN]:
+				if btn_select_modern.has_focus():
+					btn_select_vga.grab_focus()
+				elif btn_select_vga.has_focus():
+					btn_select_zx.grab_focus()
+				elif btn_select_zx.has_focus():
+					btn_select_modern.grab_focus()
+				else:
+					btn_select_modern.grab_focus()
+				get_viewport().set_input_as_handled()
+				return
+			elif event.keycode in [KEY_LEFT, KEY_UP]:
+				if btn_select_modern.has_focus():
+					btn_select_zx.grab_focus()
+				elif btn_select_zx.has_focus():
+					btn_select_vga.grab_focus()
+				elif btn_select_vga.has_focus():
+					btn_select_modern.grab_focus()
+				else:
+					btn_select_zx.grab_focus()
+				get_viewport().set_input_as_handled()
+				return
+			elif event.keycode in [KEY_SPACE, KEY_ENTER, KEY_KP_ENTER]:
+				if btn_select_modern.has_focus():
+					_on_mode_card_selected(Mode.MODERN)
+				elif btn_select_vga.has_focus():
+					_on_mode_card_selected(Mode.VGA)
+				elif btn_select_zx.has_focus():
+					_on_mode_card_selected(Mode.ZX)
+				get_viewport().set_input_as_handled()
+				return
 		return
 		
 	if not game_started and title_screen.visible:
@@ -638,17 +703,42 @@ func _on_settings_pressed() -> void:
 		check_accessibility.button_pressed = gs.is_accessibility_mode
 	var is_fs = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN or DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 	check_fullscreen.button_pressed = is_fs
-	if btn_settings_back.is_inside_tree():
-		btn_settings_back.grab_focus()
+	
+	# Настройка навигации стрелками вверх/вниз в окне настроек
+	volume_slider.focus_neighbor_bottom = check_fullscreen.get_path()
+	check_fullscreen.focus_neighbor_top = volume_slider.get_path()
+	check_fullscreen.focus_neighbor_bottom = check_accessibility.get_path()
+	check_accessibility.focus_neighbor_top = check_fullscreen.get_path()
+	if game_started and btn_settings_main_menu and btn_settings_main_menu.visible:
+		check_accessibility.focus_neighbor_bottom = btn_settings_main_menu.get_path()
+		btn_settings_main_menu.focus_neighbor_top = check_accessibility.get_path()
+		btn_settings_main_menu.focus_neighbor_bottom = btn_settings_back.get_path()
+		btn_settings_back.focus_neighbor_top = btn_settings_main_menu.get_path()
+	else:
+		check_accessibility.focus_neighbor_bottom = btn_settings_back.get_path()
+		btn_settings_back.focus_neighbor_top = check_accessibility.get_path()
+	btn_settings_back.focus_neighbor_bottom = volume_slider.get_path()
+	volume_slider.focus_neighbor_top = btn_settings_back.get_path()
+	
+	if volume_slider.is_inside_tree():
+		volume_slider.grab_focus()
+		
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Меню настроек игры. Доступны: ползунок громкости музыки, полноэкранный режим и режим для слабовидящих. Используйте стрелки для выбора опций, Escape для возврата.", true)
 
 func _on_settings_back_pressed() -> void:
 	settings_panel.visible = false
+	var gs = _get_game_state()
 	if not game_started:
 		if btn_settings and btn_settings.is_inside_tree():
 			btn_settings.grab_focus()
+		if gs and gs.is_accessibility_mode:
+			_speak_text("Главное меню.", true)
 	else:
 		if input_line and input_line.is_inside_tree():
 			input_line.grab_focus()
+		if gs and gs.is_accessibility_mode:
+			_speak_text("Возврат в игру. " + loc_title.text, true)
 
 func _on_settings_main_menu_pressed() -> void:
 	settings_panel.visible = false
@@ -681,6 +771,10 @@ func _on_settings_main_menu_pressed() -> void:
 		
 	if btn_start_game and btn_start_game.is_inside_tree():
 		btn_start_game.grab_focus()
+		
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Главное меню.", true)
 
 func _on_credits_pressed() -> void:
 	if intro_video:
@@ -695,6 +789,9 @@ func _on_credits_pressed() -> void:
 	if credits_screen:
 		credits_screen.cached_audio_manager = _get_audio_manager()
 		credits_screen.open_credits()
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Экран титров: Об игре. История создания ремейка и авторы. Удерживайте Пробел для ускорения, стрелки для прокрутки, клавиша Escape для закрытия.", true)
 
 func _on_credits_closed() -> void:
 	if credits_screen:
@@ -708,6 +805,9 @@ func _on_credits_closed() -> void:
 		am.play_theme("fanfare")
 	if btn_credits and btn_credits.is_inside_tree():
 		btn_credits.grab_focus()
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Главное меню.", true)
 
 func _on_exit_pressed() -> void:
 	var am = _get_audio_manager()
@@ -717,6 +817,8 @@ func _on_exit_pressed() -> void:
 		get_tree().quit()
 
 var _is_syncing_volume_slider: bool = false
+
+var _last_spoken_vol_pct: int = -1
 
 func _on_volume_changed(val: float) -> void:
 	_update_volume_label(val)
@@ -730,6 +832,11 @@ func _on_volume_changed(val: float) -> void:
 			am.set_pre_accessibility_volume(val)
 		am.set_music_volume(val)
 		am.save_settings(check_fullscreen.button_pressed)
+	if is_acc:
+		var pct = int(round(val * 100))
+		if pct != _last_spoken_vol_pct:
+			_last_spoken_vol_pct = pct
+			_speak_text("Громкость музыки: %d процентов." % pct, true)
 
 func _update_volume_label(val: float) -> void:
 	if vol_value_label:
@@ -746,6 +853,9 @@ func _on_fullscreen_toggled(is_fs: bool) -> void:
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Полноэкранный режим: " + ("включен" if is_fs else "выключен"), true)
 
 func _on_accessibility_toggled(enabled: bool) -> void:
 	var gs = _get_game_state()
@@ -771,7 +881,15 @@ func _on_accessibility_toggled(enabled: bool) -> void:
 	_apply_accessibility_theme(enabled)
 	
 	if enabled:
-		_speak_text("Режим для слабовидящих включен.")
+		_speak_text("Режим для слабовидящих и озвучивание интерфейса включены. Стрелки и Tab для навигации, Enter для выбора. Клавиша F2 для повтора информации о локации.", true)
+		var vp = get_viewport()
+		var cur_focus = vp.gui_get_focus_owner() if vp else null
+		if cur_focus:
+			var desc = _get_control_accessibility_description(cur_focus)
+			if not desc.is_empty():
+				_speak_text(desc, false)
+	else:
+		_speak_text("Режим для слабовидящих выключен.", true)
 
 func _save_original_panel_styles() -> void:
 	if _orig_left_panel_style != null:
@@ -1018,7 +1136,7 @@ func _get_tts_voice_id() -> String:
 		_tts_voice_id = str(voices[0].get("id", ""))
 	return _tts_voice_id
 
-func _speak_text(text: String) -> void:
+func _speak_text(text: String, interrupt: bool = false) -> void:
 	if text.is_empty():
 		return
 		
@@ -1035,11 +1153,17 @@ func _speak_text(text: String) -> void:
 	if clean_text.is_empty():
 		return
 		
+	if interrupt:
+		_stop_tts()
+		
 	# 1. Браузерная Web-версия (HTML5 Web Speech API)
 	if OS.has_feature("web"):
 		var js = """
 		(function() {
 			if (!window.speechSynthesis) return;
+			if (%s) {
+				window.speechSynthesis.cancel();
+			}
 			var u = new SpeechSynthesisUtterance(%s);
 			u.lang = 'ru-RU';
 			u.rate = 1.0;
@@ -1047,7 +1171,7 @@ func _speak_text(text: String) -> void:
 			u.volume = 1.0;
 			window.speechSynthesis.speak(u);
 		})();
-		""" % [JSON.stringify(clean_text)]
+		""" % ["true" if interrupt else "false", JSON.stringify(clean_text)]
 		JavaScriptBridge.eval(js)
 		return
 		
@@ -1061,7 +1185,178 @@ func _speak_text(text: String) -> void:
 		
 	# Godot 4: tts_speak(text, voice, volume=50, pitch=1.0, rate=1.0, utterance_id=0, interrupt=false)
 	# volume = 100 для максимальной четкости и слышимости
-	DisplayServer.tts_speak(clean_text, v_id, 100, 1.0, 1.0, 0, false)
+	DisplayServer.tts_speak(clean_text, v_id, 100, 1.0, 1.0, 0, interrupt)
+
+func _repeat_current_location_audio() -> void:
+	var gs = _get_game_state()
+	if not gs:
+		return
+	var loc_str = loc_title.text if loc_title else ""
+	var exits_str = exits_info_label.text if exits_info_label else ""
+	var status_str = status_info.text if status_info else ""
+	_speak_text("Локация: %s. %s. %s." % [loc_str, exits_str, status_str], true)
+
+func _setup_mouse_hover_focus(node: Node) -> void:
+	if node is Control and node.focus_mode != Control.FOCUS_NONE:
+		if not node.mouse_entered.is_connected(_on_control_mouse_entered.bind(node)):
+			node.mouse_entered.connect(_on_control_mouse_entered.bind(node))
+	for child in node.get_children():
+		_setup_mouse_hover_focus(child)
+
+func _on_control_mouse_entered(c: Control) -> void:
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode and c and c.is_inside_tree() and c.is_visible_in_tree():
+		c.grab_focus()
+
+func _on_gui_focus_changed(control: Control) -> void:
+	if not control:
+		return
+	var gs = _get_game_state()
+	if not gs or not gs.is_accessibility_mode:
+		return
+		
+	var utterance = _get_control_accessibility_description(control)
+	if not utterance.is_empty():
+		_speak_text(utterance, true)
+
+func _get_control_accessibility_description(c: Control) -> String:
+	if not c:
+		return ""
+		
+	# 1. CheckBox
+	if c is CheckBox:
+		var state_str = "отмечено" if c.button_pressed else "не отмечено"
+		var txt = c.text.strip_edges()
+		if c == check_fullscreen or "экран" in txt.to_lower():
+			txt = "Полноэкранный режим"
+		elif c == check_accessibility or "слабовидящ" in txt.to_lower():
+			txt = "Режим для слабовидящих"
+		elif txt.is_empty() and c.tooltip_text:
+			txt = c.tooltip_text
+		return "%s, флажок, %s. Нажмите Пробел для переключения." % [txt, state_str]
+		
+	# 2. HSlider
+	if c is HSlider:
+		var val_pct = int(round(c.value * 100))
+		return "Громкость музыки, ползунок, %d процентов. Изменяйте стрелками влево и вправо." % val_pct
+		
+	# 3. LineEdit
+	if c is LineEdit:
+		var cur = c.text.strip_edges()
+		if cur.is_empty():
+			return "Строка ввода команды. Введите текст и нажмите Enter."
+		else:
+			return "Строка ввода команды. Введено: %s." % cur
+			
+	# 4. OptionButton
+	if c is OptionButton:
+		var idx = c.selected
+		var item_txt = c.get_item_text(idx) if idx >= 0 else "нет"
+		return "Выпадающий список быстрых команд. Выбрано: %s. Изменяйте стрелками вверх и вниз, активируйте Enter." % item_txt
+		
+	# 5. Button
+	if c is Button:
+		var dis_str = ", недоступно" if c.disabled else ""
+		
+		# Кнопки компаса (направления)
+		var dir_map = {
+			btn_nw: "северо-запад", btn_n: "север", btn_ne: "северо-восток",
+			btn_w: "запад", btn_e: "восток",
+			btn_sw: "юго-запад", btn_s: "юг", btn_se: "юго-восток",
+			btn_up: "вверх", btn_dn: "вниз"
+		}
+		if c in dir_map:
+			var dname = dir_map[c]
+			var hint = c.tooltip_text
+			if hint.is_empty():
+				hint = "Путь свободен" if not c.disabled else "Путь недоступен"
+			return "Кнопка направления %s: %s%s." % [dname, hint, dis_str]
+			
+		# Кнопки действий игрового экрана
+		if c == btn_look:
+			return "Осмотр, кнопка. Осмотреть локацию и видимые предметы."
+		elif c == btn_inv:
+			return "Инвентарь, кнопка. Проверить вещи Бильбо."
+		elif c == btn_wait:
+			return "Ждать, кнопка. Пропустить ход."
+		elif c == btn_take_all:
+			return "Взять всё, кнопка. Собрать все доступные предметы."
+		elif c == btn_save:
+			return "Сохранить игру, кнопка. Открыть меню сохранений."
+		elif c == btn_load:
+			return "Загрузить игру, кнопка%s." % dis_str
+		elif c == btn_settings_game:
+			return "Настройки игры, кнопка."
+			
+		# Кнопки выбора режима игры
+		if c == btn_select_modern:
+			return "Современный режим Modern Edition, кнопка. Высокое разрешение, оркестровая музыка и атмосферный шрифт. Нажмите Enter или клавишу 1."
+		elif c == btn_select_vga:
+			return "Ретро режим VGA Edition, кнопка. Пиксель-арт MS-DOS, музыка AdLib Sound Blaster и шрифт DOS. Нажмите Enter или клавишу 2."
+		elif c == btn_select_zx:
+			return "Классический режим ZX Spectrum Edition, кнопка. Оригинальная 8-битная графика 1982 года, чиптюн Neil Brennan и шрифт Спектрума. Нажмите Enter или клавишу 3."
+			
+		# Кнопки главного меню
+		if c == btn_start_game:
+			return "Начать игру, кнопка. Нажмите Enter для старта."
+		elif c == btn_title_load:
+			return "Загрузить игру, кнопка%s." % (", недоступно, нет сохраненных игр" if c.disabled else "")
+		elif c == btn_change_mode:
+			return "Сменить режим оформления, кнопка. Выбрать Modern, VGA или ZX."
+		elif c == btn_settings:
+			return "Настройки, кнопка. Настройка звука, экрана и доступности."
+		elif c == btn_credits:
+			return "Об игре, титры, кнопка. История создания игры и авторы."
+		elif c == btn_exit:
+			return "Выход из игры, кнопка."
+			
+		# Кнопки настроек
+		if c == btn_settings_main_menu:
+			return "Выход в главное меню, кнопка."
+		elif c == btn_settings_back:
+			return "Назад, кнопка. Закрыть меню настроек."
+			
+		# Кнопки слотов сохранения (SaveLoadScreen)
+		var cname = c.name
+		if cname.begins_with("BtnCardAction"):
+			var card_idx = cname.replace("BtnCardAction", "").to_int() - 1
+			if save_load_screen:
+				var slot_id = (save_load_screen.current_page - 1) * 6 + (card_idx + 1)
+				var gs = _get_game_state()
+				var info: Dictionary = gs.get_slot_info(slot_id) if (gs and gs.has_method("get_slot_info")) else {}
+				var is_save = (save_load_screen.current_mode == save_load_screen.Mode.SAVE)
+				if info.get("exists", false):
+					var rname = info.get("room_name", "Локация")
+					var date = info.get("timestamp", "")
+					var hp = info.get("player_health", 100)
+					return "Слот %d: %s, %d здоровья, %s. Нажмите Enter для %s." % [slot_id, rname, hp, date, "перезаписи" if is_save else "загрузки"]
+				else:
+					return "Слот %d: Пустой слот. %s." % [slot_id, "Нажмите Enter для сохранения" if is_save else "Недоступно для загрузки"]
+		elif cname.begins_with("BtnDelete"):
+			var card_idx = cname.replace("BtnDelete", "").to_int() - 1
+			if save_load_screen:
+				var slot_id = (save_load_screen.current_page - 1) * 6 + (card_idx + 1)
+				return "Удалить сохранение в слоте %d, кнопка." % slot_id
+		elif cname == "BtnTabSave":
+			return "Вкладка Сохранить, кнопка."
+		elif cname == "BtnTabLoad":
+			return "Вкладка Загрузить, кнопка."
+		elif cname in ["BtnClose", "BtnBackBottom", "BtnBack"]:
+			return "Назад, закрыть окно, кнопка."
+		elif cname == "BtnConfirmYes":
+			return "Да, подтвердить, кнопка."
+		elif cname == "BtnConfirmNo":
+			return "Отмена, кнопка."
+			
+		# Обычный текст кнопки
+		var btext = c.text.strip_edges()
+		if btext.is_empty() and c.tooltip_text:
+			btext = c.tooltip_text
+		if btext.is_empty():
+			btext = c.name
+		return "%s, кнопка%s." % [btext, dis_str]
+		
+	return ""
 
 func _on_text_printed(text: String, color: Color) -> void:
 	var gs = _get_game_state()

@@ -113,15 +113,27 @@ func open_save(screenshot: Image = null) -> void:
 	current_screenshot = screenshot
 	set_mode(Mode.SAVE)
 	visible = true
-	if btn_close and btn_close.is_inside_tree():
+	_ensure_nodes()
+	if slot_cards.size() > 0 and slot_cards[0].has_node("%BtnCardAction1"):
+		var btn = slot_cards[0].get_node("%BtnCardAction1")
+		if btn.is_inside_tree():
+			btn.grab_focus()
+	elif btn_close and btn_close.is_inside_tree():
 		btn_close.grab_focus()
+	_speak_accessibility("Экран сохранения игры. Доступны слоты с 1 по 6. Используйте стрелки для выбора или цифровые клавиши от 1 до 6 на клавиатуре. Клавиша Escape для закрытия.")
 
 func open_load(from_title: bool = false) -> void:
 	is_opened_from_title = from_title
 	set_mode(Mode.LOAD)
 	visible = true
-	if btn_close and btn_close.is_inside_tree():
+	_ensure_nodes()
+	if slot_cards.size() > 0 and slot_cards[0].has_node("%BtnCardAction1"):
+		var btn = slot_cards[0].get_node("%BtnCardAction1")
+		if btn.is_inside_tree():
+			btn.grab_focus()
+	elif btn_close and btn_close.is_inside_tree():
 		btn_close.grab_focus()
+	_speak_accessibility("Экран загрузки игры. Доступны слоты с 1 по 6. Используйте стрелки для выбора или цифровые клавиши от 1 до 6 на клавиатуре. Клавиша Escape для закрытия.")
 
 func close() -> void:
 	if confirm_overlay and confirm_overlay.visible:
@@ -321,6 +333,7 @@ func _ask_confirm(prompt_text: String, action: Callable) -> void:
 		confirm_overlay.visible = true
 	if btn_confirm_yes and btn_confirm_yes.is_inside_tree():
 		btn_confirm_yes.grab_focus()
+	_speak_accessibility(prompt_text.replace("\n", " ") + " Кнопка Да или Отмена.")
 
 func _on_confirm_yes() -> void:
 	if confirm_overlay:
@@ -345,14 +358,31 @@ func show_toast(text: String, col: Color = Color.WHITE) -> void:
 	toast_tween = create_tween()
 	toast_tween.tween_interval(2.0)
 	toast_tween.tween_property(toast_label, "modulate:a", 0.0, 0.5)
+	_speak_accessibility(text)
+
+func _speak_accessibility(text: String) -> void:
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode and main_ref and main_ref.has_method("_speak_text"):
+		main_ref._speak_text(text, true)
 
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
+	if confirm_overlay and confirm_overlay.visible:
+		if event is InputEventKey and event.pressed:
+			if event.keycode == KEY_ESCAPE:
+				_on_confirm_no()
+				get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
-			if confirm_overlay and confirm_overlay.visible:
-				_on_confirm_no()
-			else:
-				close()
+			close()
+			get_viewport().set_input_as_handled()
+		elif event.keycode >= KEY_1 and event.keycode <= KEY_6:
+			var idx = event.keycode - KEY_1
+			_on_slot_card_pressed(idx)
+			get_viewport().set_input_as_handled()
+		elif event.keycode >= KEY_KP_1 and event.keycode <= KEY_KP_6:
+			var idx = event.keycode - KEY_KP_1
+			_on_slot_card_pressed(idx)
 			get_viewport().set_input_as_handled()

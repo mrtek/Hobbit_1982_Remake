@@ -48,7 +48,7 @@ func _get_audio_manager() -> Node:
 func _ready() -> void:
 	visible = false
 	if btn_back:
-		btn_back.focus_mode = Control.FOCUS_NONE
+		btn_back.focus_mode = Control.FOCUS_ALL
 		if not btn_back.pressed.is_connected(close_credits):
 			btn_back.pressed.connect(close_credits)
 	_load_all_credits_images()
@@ -59,6 +59,8 @@ func open_credits() -> void:
 	scroll_pos_y = 1080.0
 	if scroll_content:
 		scroll_content.position.y = scroll_pos_y
+	if btn_back and btn_back.is_inside_tree():
+		btn_back.grab_focus()
 	
 	if text_vbox:
 		# Force layout update to know exact content height

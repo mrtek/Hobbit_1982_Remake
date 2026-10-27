@@ -573,15 +573,15 @@ func _initialize() -> void:
 	assert(am.current_theme == "fanfare", "Fanfare theme must continue/restart on title screen")
 	print("[PASS] CreditsScreen integration, shaders, textures, scrolling & music verified.")
 
-	# 21. Проверка надписи версии (v 0.94 Beta) в главном меню во всех режимах
+	# 21. Проверка надписи версии (v 0.95 Beta) в главном меню во всех режимах
 	assert(main_instance.version_label != null, "VersionLabel node must be present in TitleScreen")
-	assert(main_instance.version_label.text == "v 0.94 Beta", "VersionLabel text must be 'v 0.94 Beta'")
+	assert(main_instance.version_label.text == "v 0.95 Beta", "VersionLabel text must be 'v 0.95 Beta'")
 	var mode_ver = main_instance.get_node("ModeSelectScreen/ModeSelectVersion")
 	assert(mode_ver != null, "ModeSelectVersion must exist in ModeSelectScreen")
-	assert(mode_ver.text == "v 0.94 Beta", "ModeSelectVersion text must be 'v 0.94 Beta'")
-	print("[PASS] Version info 'v 0.94 Beta' verified across TitleScreen and ModeSelectScreen.")
+	assert(mode_ver.text == "v 0.95 Beta", "ModeSelectVersion text must be 'v 0.95 Beta'")
+	print("[PASS] Version info 'v 0.95 Beta' verified across TitleScreen and ModeSelectScreen.")
 
-	# 22. Проверка режима для слабовидящих (Accessibility Mode), контрастного UI, шрифтов и громкости музыки (10%)
+	# 22. Проверка режима для слабовидящих (Accessibility Mode), синтеза речи UI (self-voicing), контрастного интерфейса и громкости 10%
 	assert(main_instance.check_accessibility != null, "CheckAccessibility node must exist in SettingsPanel")
 	assert("Режим для слабовидящих" in main_instance.check_accessibility.text, "CheckAccessibility label must match")
 	
@@ -613,6 +613,25 @@ func _initialize() -> void:
 	assert(main_instance.prompt_label.get_theme_font_size("font_size") == 28, "Prompt label font size must be 28 in accessibility mode")
 	assert(main_instance.loc_title.get_theme_font_size("font_size") == 34, "Title font size must be 34 in accessibility mode")
 	
+	# Проверка диктора интерфейса (Self-Voicing): речевые описания элементов управления
+	var desc_btn = main_instance._get_control_accessibility_description(main_instance.btn_start_game)
+	assert("Начать игру" in desc_btn and "кнопка" in desc_btn, "Button speech description must contain text and role")
+	
+	var desc_cb = main_instance._get_control_accessibility_description(main_instance.check_fullscreen)
+	assert("Полноэкранный режим" in desc_cb and "флажок" in desc_cb, "Checkbox speech description must contain role and state")
+	
+	var desc_sl = main_instance._get_control_accessibility_description(main_instance.volume_slider)
+	assert("Громкость музыки" in desc_sl and "ползунок" in desc_sl and "процентов" in desc_sl, "Slider speech description must contain role and percentage")
+	
+	var desc_dir = main_instance._get_control_accessibility_description(main_instance.btn_n)
+	assert("север" in desc_dir.to_lower(), "Compass button speech description must mention direction")
+	
+	var desc_inp = main_instance._get_control_accessibility_description(main_instance.input_line)
+	assert("Строка ввода" in desc_inp, "Input line speech description must mention command input")
+	
+	# Проверка горячих клавиш: повтор локации (F2) и переключение доступности (F1 / V)
+	main_instance._repeat_current_location_audio()
+	
 	# Отключаем режим для слабовидящих - громкость музыки, ползунок и шрифты должны вернуться в стандартное состояние
 	main_instance.check_accessibility.button_pressed = false
 	main_instance._on_accessibility_toggled(false)
@@ -624,8 +643,8 @@ func _initialize() -> void:
 	assert(main_instance.input_line.get_theme_font_size("font_size") == 22, "Input line font size must restore to 22 in Modern mode")
 	
 	# Проверка обработки текста для озвучки (очистка BBCode)
-	main_instance._speak_text("[b][color=#ffff00]Тестовый текст озвучки[/color][/b]")
-	print("[PASS] Accessibility Mode (Режим для слабовидящих): volume auto-attenuation to 10%, high contrast UI, enlarged fonts & restore verified.")
+	main_instance._speak_text("[b][color=#ffff00]Тестовый текст озвучки[/color][/b]", true)
+	print("[PASS] Full UI Self-Voicing (диктор интерфейса, фокус, горячие клавиши F1/V/F2, кнопки, меню, слоты, ползунки) verified.")
 
 	print("\n--- ALL TESTS PASSED SUCCESSFULLY! ---")
 	main_instance.free()
