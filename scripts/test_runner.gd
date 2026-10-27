@@ -573,18 +573,18 @@ func _initialize() -> void:
 	assert(am.current_theme == "fanfare", "Fanfare theme must continue/restart on title screen")
 	print("[PASS] CreditsScreen integration, shaders, textures, scrolling & music verified.")
 
-	# 21. Проверка кнопки 'Поставить звезду на GitHub' и надписи версии (v 0.98 Beta) в главном меню
+	# 21. Проверка кнопки 'Поставить звезду на GitHub' и надписи версии (v 0.99 Beta) в главном меню
 	assert(main_instance.btn_star != null, "BtnStar must exist in TitleScreen MenuContainer")
 	assert("GitHub" in main_instance.btn_star.text and ("звезд" in main_instance.btn_star.text.to_lower() or "star" in main_instance.btn_star.text.to_lower()), "BtnStar text must invite to star on GitHub")
 	var desc_star = main_instance._get_control_accessibility_description(main_instance.btn_star)
 	assert("GitHub" in desc_star, "BtnStar speech description must mention GitHub")
 	
 	assert(main_instance.version_label != null, "VersionLabel node must be present in TitleScreen")
-	assert(main_instance.version_label.text == "v 0.98 Beta", "VersionLabel text must be 'v 0.98 Beta'")
+	assert(main_instance.version_label.text == "v 0.99 Beta", "VersionLabel text must be 'v 0.99 Beta'")
 	var mode_ver = main_instance.get_node("ModeSelectScreen/ModeSelectVersion")
 	assert(mode_ver != null, "ModeSelectVersion must exist in ModeSelectScreen")
-	assert(mode_ver.text == "v 0.98 Beta", "ModeSelectVersion text must be 'v 0.98 Beta'")
-	print("[PASS] BtnStar ('Поставить звезду на GitHub') and Version info 'v 0.98 Beta' verified across TitleScreen and ModeSelectScreen.")
+	assert(mode_ver.text == "v 0.99 Beta", "ModeSelectVersion text must be 'v 0.99 Beta'")
+	print("[PASS] BtnStar ('Поставить звезду на GitHub') and Version info 'v 0.99 Beta' verified across TitleScreen and ModeSelectScreen.")
 
 	# 22. Проверка режима для слабовидящих (Accessibility Mode), синтеза речи UI (self-voicing), контрастного интерфейса и громкости 10%
 	assert(main_instance.check_accessibility != null, "CheckAccessibility node must exist in SettingsPanel")
@@ -714,7 +714,27 @@ func _initialize() -> void:
 	assert(main_instance.btn_start_game.text == "Начать игру", "BtnStartGame text restored to RU")
 	assert(main_instance.btn_look.text == "ОСМОТРЕТЬСЯ", "BtnLook text restored to RU")
 	assert(main_instance.btn_n.text == "С", "Compass N button text restored to RU")
-	print("[PASS] Full Bilingual Support (RU default, EN 1982 authentic texts, live UI switching, parser, slots) verified.")
+
+	# Проверка кнопок переключения языка на экране выбора режима (ModeSelectScreen)
+	assert(main_instance.btn_lang_ru != null, "BtnLangRU must exist")
+	assert(main_instance.btn_lang_en != null, "BtnLangEN must exist")
+	var lang_box = main_instance.get_node("ModeSelectScreen/HBoxModeSelectLang")
+	assert(lang_box != null, "HBoxModeSelectLang must exist in ModeSelectScreen")
+	var mode_screen = main_instance.get_node("ModeSelectScreen")
+	var margin_idx = mode_screen.get_node("Margin").get_index()
+	var lang_idx = lang_box.get_index()
+	assert(lang_idx > margin_idx, "HBoxModeSelectLang must be after MarginContainer in hierarchy to receive clicks")
+	
+	# Нажимаем кнопку переключения на английский язык на ModeSelectScreen
+	main_instance.btn_lang_en.emit_signal("pressed")
+	assert(gs.current_language == HobbitGameState.Language.EN, "Current language must be EN after clicking btn_lang_en")
+	assert(main_instance.btn_lang_en.get_theme_color("font_color") == Color(1.0, 0.92, 0.45), "Active EN button must have bright gold font")
+	
+	# Нажимаем кнопку переключения на русский язык на ModeSelectScreen
+	main_instance.btn_lang_ru.emit_signal("pressed")
+	assert(gs.current_language == HobbitGameState.Language.RU, "Current language must be RU after clicking btn_lang_ru")
+	assert(main_instance.btn_lang_ru.get_theme_color("font_color") == Color(1.0, 0.92, 0.45), "Active RU button must have bright gold font")
+	print("[PASS] Full Bilingual Support (RU default, EN 1982 authentic texts, live UI switching, parser, ModeSelectScreen buttons & styling) verified.")
 
 	print("\n--- ALL TESTS PASSED SUCCESSFULLY! ---")
 	main_instance.free()

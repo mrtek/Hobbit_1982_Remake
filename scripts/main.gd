@@ -285,7 +285,8 @@ func _ready() -> void:
 		btn_select_modern.grab_focus()
 		
 	if gs and gs.is_accessibility_mode:
-		_speak_text("Хоббит: Ремейк, версия 0.97 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания.", true)
+		var intro_text = "The Hobbit: Remake, version 0.99 Beta. Game mode selection screen. 1 — Modern, 2 — Retro VGA, 3 — Classic ZX Spectrum. Press 1, 2 or 3, or use arrow keys and Enter. Key V to toggle voice." if (gs.current_language == HobbitGameState.Language.EN) else "Хоббит: Ремейк, версия 0.99 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания."
+		_speak_text(intro_text, true)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_PREDELETE:
@@ -1955,16 +1956,49 @@ func _set_ui_language(lang: HobbitGameState.Language) -> void:
 		am.save_settings()
 	_tts_voice_checked = false
 	apply_language(lang)
+	if gs and gs.is_accessibility_mode:
+		var announce = "Language switched to English" if lang == HobbitGameState.Language.EN else "Язык переключен на русский"
+		_speak_text(announce, true)
 
 func apply_language(lang: HobbitGameState.Language) -> void:
 	var is_en = (lang == HobbitGameState.Language.EN)
 	var gs = _get_game_state()
 	
 	# 1. Кнопки переключения языка
+	var style_active := StyleBoxFlat.new()
+	style_active.bg_color = Color(0.12, 0.15, 0.20, 0.95)
+	style_active.set_border_width_all(2)
+	style_active.border_color = Color(1.0, 0.84, 0.22, 1.0)
+	style_active.set_corner_radius_all(6)
+	style_active.content_margin_left = 12
+	style_active.content_margin_right = 12
+	style_active.content_margin_top = 6
+	style_active.content_margin_bottom = 6
+
+	var style_inactive := StyleBoxFlat.new()
+	style_inactive.bg_color = Color(0.06, 0.08, 0.12, 0.6)
+	style_inactive.set_border_width_all(1)
+	style_inactive.border_color = Color(0.28, 0.32, 0.40, 0.6)
+	style_inactive.set_corner_radius_all(6)
+	style_inactive.content_margin_left = 12
+	style_inactive.content_margin_right = 12
+	style_inactive.content_margin_top = 6
+	style_inactive.content_margin_bottom = 6
+
 	if btn_lang_ru:
-		btn_lang_ru.add_theme_color_override("font_color", Color(0.7, 0.75, 0.8) if is_en else Color(1.0, 0.9, 0.35))
+		btn_lang_ru.add_theme_stylebox_override("normal", style_inactive if is_en else style_active)
+		btn_lang_ru.add_theme_stylebox_override("hover", style_active)
+		btn_lang_ru.add_theme_stylebox_override("pressed", style_active)
+		btn_lang_ru.add_theme_stylebox_override("focus", style_active)
+		btn_lang_ru.add_theme_color_override("font_color", Color(0.65, 0.70, 0.78) if is_en else Color(1.0, 0.92, 0.45))
+		btn_lang_ru.add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.6))
 	if btn_lang_en:
-		btn_lang_en.add_theme_color_override("font_color", Color(1.0, 0.9, 0.35) if is_en else Color(0.7, 0.75, 0.8))
+		btn_lang_en.add_theme_stylebox_override("normal", style_active if is_en else style_inactive)
+		btn_lang_en.add_theme_stylebox_override("hover", style_active)
+		btn_lang_en.add_theme_stylebox_override("pressed", style_active)
+		btn_lang_en.add_theme_stylebox_override("focus", style_active)
+		btn_lang_en.add_theme_color_override("font_color", Color(1.0, 0.92, 0.45) if is_en else Color(0.65, 0.70, 0.78))
+		btn_lang_en.add_theme_color_override("font_hover_color", Color(1.0, 0.95, 0.6))
 	if option_language:
 		option_language.selected = int(lang)
 		
