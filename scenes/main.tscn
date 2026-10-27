@@ -679,9 +679,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 60.0
-offset_top = -420.0
+offset_top = -480.0
 offset_right = 540.0
-offset_bottom = -50.0
+offset_bottom = -40.0
 grow_vertical = 0
 theme_override_constants/separation = 12
 
@@ -767,6 +767,23 @@ text = "Об игре"
 flat = true
 alignment = 0
 
+[node name="BtnStar" type="Button" parent="TitleScreen/MenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_focus_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+text = "⭐ Поставить звезду на GitHub"
+flat = true
+alignment = 0
+
 [node name="BtnExit" type="Button" parent="TitleScreen/MenuContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -802,7 +819,7 @@ theme_override_constants/outline_size = 6
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 20
-text = "v 0.96 Beta"
+text = "v 0.97 Beta"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -953,7 +970,7 @@ theme_override_colors/font_color = Color(1, 0.88, 0.45, 0.8)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 19
-text = "v 0.96 Beta"
+text = "v 0.97 Beta"
 horizontal_alignment = 2
 vertical_alignment = 1
 

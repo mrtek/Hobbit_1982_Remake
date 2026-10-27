@@ -50,6 +50,7 @@ const FONT_PATH_ZX: String = "res://assets/fonts/ZX/zx_spectrum-7.ttf"
 @onready var btn_change_mode: Button = %BtnChangeMode
 @onready var btn_settings: Button = %BtnSettings
 @onready var btn_credits: Button = %BtnCredits
+@onready var btn_star: Button = %BtnStar
 @onready var btn_exit: Button = %BtnExit
 @onready var version_label: Label = %VersionLabel
 
@@ -204,6 +205,8 @@ func _ready() -> void:
 	btn_settings_game.pressed.connect(_on_settings_pressed)
 	if btn_credits:
 		btn_credits.pressed.connect(_on_credits_pressed)
+	if btn_star:
+		btn_star.pressed.connect(_on_star_pressed)
 	btn_exit.pressed.connect(_on_exit_pressed)
 	if OS.has_feature("web"):
 		btn_exit.visible = false
@@ -262,7 +265,7 @@ func _ready() -> void:
 		btn_select_modern.grab_focus()
 		
 	if gs and gs.is_accessibility_mode:
-		_speak_text("Хоббит: Ремейк, версия 0.96 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания.", true)
+		_speak_text("Хоббит: Ремейк, версия 0.97 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания.", true)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_PREDELETE:
@@ -479,7 +482,7 @@ func _on_title_image_fully_shown() -> void:
 	
 	var gs = _get_game_state()
 	if gs and gs.is_accessibility_mode:
-		_speak_text("Главное меню. Доступно 6 пунктов. Используйте стрелки вверх и вниз для навигации, Enter для выбора. Клавиша V для переключения озвучивания.", true)
+		_speak_text("Главное меню. Доступно 7 пунктов. Используйте стрелки вверх и вниз для навигации, Enter для выбора. Клавиша V для переключения озвучивания.", true)
 
 func _skip_intro() -> void:
 	if intro_phase == IntroPhase.READY:
@@ -600,6 +603,8 @@ func _input(event: InputEvent) -> void:
 						_on_settings_pressed()
 					elif btn_credits and btn_credits.has_focus():
 						_on_credits_pressed()
+					elif btn_star and btn_star.has_focus():
+						_on_star_pressed()
 					elif btn_exit.has_focus():
 						_on_exit_pressed()
 					get_viewport().set_input_as_handled()
@@ -839,6 +844,17 @@ func _on_credits_closed() -> void:
 	var gs = _get_game_state()
 	if gs and gs.is_accessibility_mode:
 		_speak_text("Главное меню.", true)
+
+func _on_star_pressed() -> void:
+	const GITHUB_URL = "https://github.com/mrtek/Hobbit_1982_Remake"
+	if OS.has_feature("web"):
+		var js = "window.open('%s', '_blank');" % GITHUB_URL
+		JavaScriptBridge.eval(js)
+	else:
+		OS.shell_open(GITHUB_URL)
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode:
+		_speak_text("Открыта страница репозитория проекта на GitHub в браузере. Спасибо за вашу звезду и поддержку!", true)
 
 func _on_exit_pressed() -> void:
 	var am = _get_audio_manager()
@@ -1404,6 +1420,8 @@ func _get_control_accessibility_description(c: Control) -> String:
 			return "Настройки, кнопка. Настройка звука, экрана и доступности."
 		elif c == btn_credits:
 			return "Об игре, титры, кнопка. История создания игры и авторы."
+		elif c == btn_star:
+			return "Поставить звезду на GitHub, кнопка. Открыть страницу проекта в браузере."
 		elif c == btn_exit:
 			return "Выход из игры, кнопка."
 			
@@ -1805,7 +1823,7 @@ func _apply_game_mode_font(mode: int) -> void:
 		check_accessibility.add_theme_font_size_override("font_size", check_sz)
 			
 	# Черная окантовка шрифта для кнопок главного меню (чтобы шрифт четко читался на пестром фоне заставки)
-	var title_btns = [btn_start_game, btn_title_load, btn_change_mode, btn_settings, btn_exit]
+	var title_btns = [btn_start_game, btn_title_load, btn_change_mode, btn_settings, btn_credits, btn_star, btn_exit]
 	for tb in title_btns:
 		if tb:
 			tb.add_theme_constant_override("outline_size", 8)

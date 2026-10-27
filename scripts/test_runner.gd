@@ -573,13 +573,18 @@ func _initialize() -> void:
 	assert(am.current_theme == "fanfare", "Fanfare theme must continue/restart on title screen")
 	print("[PASS] CreditsScreen integration, shaders, textures, scrolling & music verified.")
 
-	# 21. Проверка надписи версии (v 0.96 Beta) в главном меню во всех режимах
+	# 21. Проверка кнопки 'Поставить звезду на GitHub' и надписи версии (v 0.97 Beta) в главном меню
+	assert(main_instance.btn_star != null, "BtnStar must exist in TitleScreen MenuContainer")
+	assert("GitHub" in main_instance.btn_star.text and "звезд" in main_instance.btn_star.text.to_lower(), "BtnStar text must invite to star on GitHub")
+	var desc_star = main_instance._get_control_accessibility_description(main_instance.btn_star)
+	assert("GitHub" in desc_star and "кнопка" in desc_star, "BtnStar speech description must mention GitHub and button role")
+	
 	assert(main_instance.version_label != null, "VersionLabel node must be present in TitleScreen")
-	assert(main_instance.version_label.text == "v 0.96 Beta", "VersionLabel text must be 'v 0.96 Beta'")
+	assert(main_instance.version_label.text == "v 0.97 Beta", "VersionLabel text must be 'v 0.97 Beta'")
 	var mode_ver = main_instance.get_node("ModeSelectScreen/ModeSelectVersion")
 	assert(mode_ver != null, "ModeSelectVersion must exist in ModeSelectScreen")
-	assert(mode_ver.text == "v 0.96 Beta", "ModeSelectVersion text must be 'v 0.96 Beta'")
-	print("[PASS] Version info 'v 0.96 Beta' verified across TitleScreen and ModeSelectScreen.")
+	assert(mode_ver.text == "v 0.97 Beta", "ModeSelectVersion text must be 'v 0.97 Beta'")
+	print("[PASS] BtnStar ('Поставить звезду на GitHub') and Version info 'v 0.97 Beta' verified across TitleScreen and ModeSelectScreen.")
 
 	# 22. Проверка режима для слабовидящих (Accessibility Mode), синтеза речи UI (self-voicing), контрастного интерфейса и громкости 10%
 	assert(main_instance.check_accessibility != null, "CheckAccessibility node must exist in SettingsPanel")
