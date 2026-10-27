@@ -3,7 +3,7 @@
 [![Play Online](https://img.shields.io/badge/▶_ИГРАТЬ_ОНЛАЙН-GitHub_Pages-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white)](https://mrtek.github.io/Hobbit_1982_Remake/)
 
 [![Godot Engine](https://img.shields.io/badge/Godot-4.3+-478CBF?logo=godotengine&logoColor=white)](https://godotengine.org)
-[![Version](https://img.shields.io/badge/version-v0.95_Beta-gold)](#)
+[![Version](https://img.shields.io/badge/version-v0.96_Beta-gold)](#)
 [![Genre](https://img.shields.io/badge/genre-Text--Graphic_Adventure-darkgreen)](#)
 [![Platform](https://img.shields.io/badge/platform-Web_%7C_Windows_%7C_Linux_%7C_macOS-lightgrey)](#)
 [![Author](https://img.shields.io/badge/Author-Freeonce_(aka_MrTEK)-blue)](#)

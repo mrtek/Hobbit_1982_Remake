@@ -573,13 +573,13 @@ func _initialize() -> void:
 	assert(am.current_theme == "fanfare", "Fanfare theme must continue/restart on title screen")
 	print("[PASS] CreditsScreen integration, shaders, textures, scrolling & music verified.")
 
-	# 21. Проверка надписи версии (v 0.95 Beta) в главном меню во всех режимах
+	# 21. Проверка надписи версии (v 0.96 Beta) в главном меню во всех режимах
 	assert(main_instance.version_label != null, "VersionLabel node must be present in TitleScreen")
-	assert(main_instance.version_label.text == "v 0.95 Beta", "VersionLabel text must be 'v 0.95 Beta'")
+	assert(main_instance.version_label.text == "v 0.96 Beta", "VersionLabel text must be 'v 0.96 Beta'")
 	var mode_ver = main_instance.get_node("ModeSelectScreen/ModeSelectVersion")
 	assert(mode_ver != null, "ModeSelectVersion must exist in ModeSelectScreen")
-	assert(mode_ver.text == "v 0.95 Beta", "ModeSelectVersion text must be 'v 0.95 Beta'")
-	print("[PASS] Version info 'v 0.95 Beta' verified across TitleScreen and ModeSelectScreen.")
+	assert(mode_ver.text == "v 0.96 Beta", "ModeSelectVersion text must be 'v 0.96 Beta'")
+	print("[PASS] Version info 'v 0.96 Beta' verified across TitleScreen and ModeSelectScreen.")
 
 	# 22. Проверка режима для слабовидящих (Accessibility Mode), синтеза речи UI (self-voicing), контрастного интерфейса и громкости 10%
 	assert(main_instance.check_accessibility != null, "CheckAccessibility node must exist in SettingsPanel")
@@ -644,7 +644,28 @@ func _initialize() -> void:
 	
 	# Проверка обработки текста для озвучки (очистка BBCode)
 	main_instance._speak_text("[b][color=#ffff00]Тестовый текст озвучки[/color][/b]", true)
-	print("[PASS] Full UI Self-Voicing (диктор интерфейса, фокус, горячие клавиши F1/V/F2, кнопки, меню, слоты, ползунки) verified.")
+	
+	# Проверка диктора окна событий (Live Event Narration, буферизация хода и история событий)
+	var desc_log = main_instance._get_control_accessibility_description(main_instance.output_log)
+	assert("Окно событий" in desc_log, "OutputLog speech description must mention event window")
+	
+	main_instance.check_accessibility.button_pressed = true
+	main_instance._on_accessibility_toggled(true)
+	main_instance._on_text_printed("Круглая зеленая дверь: закрыта.", Color.WHITE)
+	main_instance._on_text_printed("Гэндальф пускает кольца сизого дыма.", Color.CYAN)
+	main_instance._flush_pending_speech()
+	assert("Круглая зеленая дверь" in main_instance._last_event_log_text, "Last event text must contain printed event")
+	assert("Гэндальф" in main_instance._last_event_log_text, "Last event text must contain NPC reaction")
+	
+	# Проверка горячих клавиш F4 (повтор события) и PageUp/PageDown (листание истории событий)
+	main_instance._repeat_last_event_audio()
+	main_instance._scroll_and_read_event_log(true)
+	main_instance._scroll_and_read_event_log(false)
+	
+	# Проверка текстовой команды "лог" в строке ввода
+	main_instance._on_input_submitted("лог")
+	
+	print("[PASS] Full UI Self-Voicing (диктор интерфейса, событий лога, фокус, горячие клавиши F1/V/F2/F4, кнопки, меню, слоты, ползунки) verified.")
 
 	print("\n--- ALL TESTS PASSED SUCCESSFULLY! ---")
 	main_instance.free()

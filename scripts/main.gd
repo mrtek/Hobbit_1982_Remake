@@ -113,6 +113,15 @@ var history: Array[String] = []
 var history_index: int = -1
 var game_started: bool = false
 
+# Система доступности: история событий окна лога и диктор
+var _last_event_log_text: String = ""
+var _event_log_history: Array[String] = []
+var _event_history_browse_index: int = -1
+var _pending_speech_lines: Array[String] = []
+var _suppress_focus_narration: bool = false
+var _bbcode_regex: RegEx = null
+var _spaces_regex: RegEx = null
+
 var cached_game_state: Node = null
 var cached_audio_manager: Node = null
 
@@ -241,6 +250,11 @@ func _ready() -> void:
 		get_viewport().gui_focus_changed.connect(_on_gui_focus_changed)
 	_setup_mouse_hover_focus(self)
 	
+	if output_log:
+		output_log.mouse_filter = Control.MOUSE_FILTER_STOP
+		output_log.focus_mode = Control.FOCUS_ALL
+		output_log.gui_input.connect(_on_output_log_gui_input)
+	
 	# Стартовое состояние: показываем меню выбора из 3-х режимов!
 	mode_select_screen.visible = true
 	title_screen.visible = false
@@ -248,7 +262,7 @@ func _ready() -> void:
 		btn_select_modern.grab_focus()
 		
 	if gs and gs.is_accessibility_mode:
-		_speak_text("Хоббит: Ремейк, версия 0.95 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания.", true)
+		_speak_text("Хоббит: Ремейк, версия 0.96 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания.", true)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_PREDELETE:
@@ -483,14 +497,26 @@ func _input(event: InputEvent) -> void:
 			if gs:
 				var new_mode = not gs.is_accessibility_mode
 				if check_accessibility:
-					check_accessibility.button_pressed = new_mode
+					check_accessibility.set_pressed_no_signal(new_mode)
 				_on_accessibility_toggled(new_mode)
 				get_viewport().set_input_as_handled()
 				return
 				
-		# Глобальная горячая клавиша F2 / F3 для повтора описания локации и статуса в игре
-		if game_started and (event.keycode == KEY_F2 or event.keycode == KEY_F3):
+		# Глобальная горячая клавиша F2: повтор описания локации и статуса в игре ("Где я?")
+		if game_started and event.keycode == KEY_F2:
 			_repeat_current_location_audio()
+			get_viewport().set_input_as_handled()
+			return
+			
+		# Глобальная горячая клавиша F4 или F3: повтор текста последнего события / ответа игры из окна лога
+		if game_started and (event.keycode == KEY_F4 or event.keycode == KEY_F3):
+			_repeat_last_event_audio()
+			get_viewport().set_input_as_handled()
+			return
+
+		# Прокрутка и зачитывание истории окна событий по Page Up / Page Down
+		if game_started and (event.keycode == KEY_PAGEUP or event.keycode == KEY_PAGEDOWN):
+			_scroll_and_read_event_log(event.keycode == KEY_PAGEUP)
 			get_viewport().set_input_as_handled()
 			return
 
@@ -598,7 +624,9 @@ func _on_start_pressed() -> void:
 		return
 	game_started = true
 	title_screen.visible = false
+	_suppress_focus_narration = true
 	input_line.grab_focus()
+	_suppress_focus_narration = false
 	var gs = _get_game_state()
 	var am = _get_audio_manager()
 	if gs:
@@ -606,6 +634,9 @@ func _on_start_pressed() -> void:
 			gs.reset_game()
 		if output_log:
 			output_log.clear()
+		_event_log_history.clear()
+		_last_event_log_text = ""
+		_event_history_browse_index = -1
 		gs.start_game()
 	_update_compass_buttons()
 	_update_command_dropdown()
@@ -859,6 +890,8 @@ func _on_fullscreen_toggled(is_fs: bool) -> void:
 
 func _on_accessibility_toggled(enabled: bool) -> void:
 	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode == enabled:
+		return
 	var am = _get_audio_manager()
 	_stop_tts()
 	if gs:
@@ -881,7 +914,7 @@ func _on_accessibility_toggled(enabled: bool) -> void:
 	_apply_accessibility_theme(enabled)
 	
 	if enabled:
-		_speak_text("Режим для слабовидящих и озвучивание интерфейса включены. Стрелки и Tab для навигации, Enter для выбора. Клавиша F2 для повтора информации о локации.", true)
+		_speak_text("Режим для слабовидящих и озвучивание интерфейса включены. Стрелки и Tab для навигации, Enter для выбора. Клавиша F2 — где я, F4 — повторить события игры, PageUp и PageDown — история событий.", true)
 		var vp = get_viewport()
 		var cur_focus = vp.gui_get_focus_owner() if vp else null
 		if cur_focus:
@@ -1100,7 +1133,9 @@ func _execute_quick(cmd: String) -> void:
 		gs.process_command(cmd)
 	_update_compass_buttons()
 	_update_command_dropdown()
+	_suppress_focus_narration = true
 	input_line.grab_focus()
+	_suppress_focus_narration = false
 
 var _tts_voice_id: String = ""
 var _tts_voice_checked: bool = false
@@ -1136,20 +1171,21 @@ func _get_tts_voice_id() -> String:
 		_tts_voice_id = str(voices[0].get("id", ""))
 	return _tts_voice_id
 
+func _strip_bbcode(text: String) -> String:
+	if _bbcode_regex == null:
+		_bbcode_regex = RegEx.new()
+		_bbcode_regex.compile("\\[[^\\]]*\\]")
+	if _spaces_regex == null:
+		_spaces_regex = RegEx.new()
+		_spaces_regex.compile("\\s+")
+	var c = _bbcode_regex.sub(text, "", true).strip_edges()
+	return _spaces_regex.sub(c, " ", true).strip_edges()
+
 func _speak_text(text: String, interrupt: bool = false) -> void:
 	if text.is_empty():
 		return
 		
-	# Очистка всех тегов BBCode [color=...], [b] и др.
-	var regex = RegEx.new()
-	regex.compile("\\[[^\\]]*\\]")
-	var clean_text = regex.sub(text, "", true).strip_edges()
-	
-	# Очистка лишних пробелов
-	var sp_regex = RegEx.new()
-	sp_regex.compile("\\s+")
-	clean_text = sp_regex.sub(clean_text, " ", true).strip_edges()
-	
+	var clean_text = _strip_bbcode(text)
 	if clean_text.is_empty():
 		return
 		
@@ -1196,6 +1232,58 @@ func _repeat_current_location_audio() -> void:
 	var status_str = status_info.text if status_info else ""
 	_speak_text("Локация: %s. %s. %s." % [loc_str, exits_str, status_str], true)
 
+func _repeat_last_event_audio() -> void:
+	var gs = _get_game_state()
+	if not gs or not gs.is_accessibility_mode:
+		return
+	if _last_event_log_text.is_empty():
+		_speak_text("Окно событий: пока нет новых записей.", true)
+	else:
+		_speak_text("Окно событий: " + _last_event_log_text, true)
+
+func _scroll_and_read_event_log(is_up: bool) -> void:
+	var gs = _get_game_state()
+	if not gs or not gs.is_accessibility_mode:
+		return
+	if _event_log_history.is_empty():
+		_speak_text("История событий пуста.", true)
+		return
+		
+	if is_up:
+		if _event_history_browse_index == -1:
+			_event_history_browse_index = _event_log_history.size() - 1
+		else:
+			_event_history_browse_index = max(0, _event_history_browse_index - 1)
+	else:
+		if _event_history_browse_index != -1:
+			_event_history_browse_index += 1
+			if _event_history_browse_index >= _event_log_history.size():
+				_event_history_browse_index = -1
+				
+	var msg = ""
+	if _event_history_browse_index == -1:
+		msg = "Текущее событие: " + _last_event_log_text
+	else:
+		var pos_num = _event_history_browse_index + 1
+		var total_num = _event_log_history.size()
+		msg = "Запись %d из %d: %s" % [pos_num, total_num, _event_log_history[_event_history_browse_index]]
+		
+	if output_log:
+		var vbar = output_log.get_v_scroll_bar()
+		if vbar:
+			if is_up:
+				vbar.value = max(0.0, vbar.value - vbar.page)
+			else:
+				vbar.value = min(vbar.max_value, vbar.value + vbar.page)
+				
+	_speak_text(msg, true)
+
+func _on_output_log_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var gs = _get_game_state()
+		if gs and gs.is_accessibility_mode:
+			_repeat_last_event_audio()
+
 func _setup_mouse_hover_focus(node: Node) -> void:
 	if node is Control and node.focus_mode != Control.FOCUS_NONE:
 		if not node.mouse_entered.is_connected(_on_control_mouse_entered.bind(node)):
@@ -1206,10 +1294,12 @@ func _setup_mouse_hover_focus(node: Node) -> void:
 func _on_control_mouse_entered(c: Control) -> void:
 	var gs = _get_game_state()
 	if gs and gs.is_accessibility_mode and c and c.is_inside_tree() and c.is_visible_in_tree():
+		if _suppress_focus_narration:
+			return
 		c.grab_focus()
 
 func _on_gui_focus_changed(control: Control) -> void:
-	if not control:
+	if not control or _suppress_focus_narration:
 		return
 	var gs = _get_game_state()
 	if not gs or not gs.is_accessibility_mode:
@@ -1222,6 +1312,13 @@ func _on_gui_focus_changed(control: Control) -> void:
 func _get_control_accessibility_description(c: Control) -> String:
 	if not c:
 		return ""
+		
+	# 0. Окно журнала событий (OutputLog)
+	if c == output_log or c == output_log_panel:
+		var last = _last_event_log_text
+		if last.is_empty():
+			last = "новых событий пока нет"
+		return "Окно событий игры. Последнее сообщение: %s. Клавиша F4 для повтора, PageUp и PageDown для истории событий." % last
 		
 	# 1. CheckBox
 	if c is CheckBox:
@@ -1381,7 +1478,37 @@ func _on_text_printed(text: String, color: Color) -> void:
 		output_log.append_text("[color=#" + hex + "]" + text + "[/color]\n")
 	
 	if gs and gs.is_accessibility_mode:
-		_speak_text(text)
+		_pending_speech_lines.append(text)
+		call_deferred("_flush_pending_speech")
+
+func _flush_pending_speech() -> void:
+	if _pending_speech_lines.is_empty():
+		return
+	var lines_to_speak: Array[String] = []
+	for raw in _pending_speech_lines:
+		var clean = _strip_bbcode(raw)
+		# Пропускаем эхо введенной игроком команды вида "> осмотреть..."
+		if clean.begins_with(">"):
+			continue
+		if not clean.is_empty():
+			lines_to_speak.append(clean)
+	_pending_speech_lines.clear()
+	
+	if lines_to_speak.is_empty():
+		return
+		
+	var combined_speech = ". ".join(lines_to_speak)
+	combined_speech = combined_speech.replace("..", ".").replace("!.", "!").replace("?.", "?")
+	
+	_last_event_log_text = combined_speech
+	_event_log_history.append(combined_speech)
+	if _event_log_history.size() > 50:
+		_event_log_history.pop_front()
+	_event_history_browse_index = -1
+		
+	var gs = _get_game_state()
+	if gs and gs.is_accessibility_mode:
+		_speak_text(combined_speech, false)
 
 func _on_input_submitted(new_text: String) -> void:
 	var clean = new_text.strip_edges()
@@ -1401,14 +1528,20 @@ func _on_input_submitted(new_text: String) -> void:
 		open_load_menu(false)
 		input_line.clear()
 		return
+	elif lower in ["события", "лог", "история", "повтори", "повторить", "что произошло", "что случилось", "log", "history"]:
+		_repeat_last_event_audio()
+		input_line.clear()
+		return
 		
 	var gs = _get_game_state()
 	if gs:
 		gs.process_command(clean)
 	_update_compass_buttons()
 	_update_command_dropdown()
+	_suppress_focus_narration = true
 	input_line.clear()
 	input_line.grab_focus()
+	_suppress_focus_narration = false
 
 func _on_room_changed(room_id: int) -> void:
 	_update_header(room_id)
