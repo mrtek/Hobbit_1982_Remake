@@ -1,5 +1,7 @@
 # 🧙‍♂️ Хоббит / The Hobbit (1982 Remake)
- 
+
+[🇷🇺 Читать на русском (README.md)](README.md) | [🇬🇧 English version](README_EN.md)
+
 [![Play Online](https://img.shields.io/badge/▶_ИГРАТЬ_ОНЛАЙН-GitHub_Pages-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white)](https://mrtek.github.io/Hobbit_1982_Remake/)
 
 [![Godot Engine](https://img.shields.io/badge/Godot-4.3+-478CBF?logo=godotengine&logoColor=white)](https://godotengine.org)
