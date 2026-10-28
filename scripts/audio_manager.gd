@@ -12,7 +12,8 @@ const THEMES = {
 	"trolls": "03 Trolls.mp3",
 	"goblins": "04 Goblins.mp3",
 	"mirkwood": "05 Mirkwood.mp3",
-	"desolation": "06 Desolation of Smaug.mp3"
+	"desolation": "06 Desolation of Smaug.mp3",
+	"credits": "credits.mp3"
 }
 
 var music_volume: float = 0.75
@@ -91,6 +92,8 @@ func get_theme_filename(theme_name: String) -> String:
 	var base_name = THEMES.get(theme_name, "")
 	if base_name.is_empty():
 		return ""
+	if theme_name == "credits":
+		return base_name
 		
 	var mode_val = 0
 	var gs = _get_game_state()

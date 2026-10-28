@@ -540,14 +540,14 @@ func _initialize() -> void:
 	assert(cs.pic_right.material != null, "PicRight must have ragged edge shader material")
 	
 	# Проверяем загрузку картинок
-	assert(cs.loaded_textures.size() >= 12, "CreditsScreen must load all 12 initial images")
+	assert(cs.loaded_textures.size() >= 25, "CreditsScreen must load all 25 images")
 	
 	# Открытие экрана «Об игре»
 	main_instance._on_credits_pressed()
 	assert(main_instance.title_screen.visible == false, "Title screen must be hidden when credits opened")
 	assert(cs.visible == true, "CreditsScreen must be visible when opened")
 	assert(cs.is_active == true, "CreditsScreen must be active")
-	assert(am.current_theme == "fanfare", "Fanfare theme must be played when credits open")
+	assert(am.current_theme == "credits", "Credits theme must be played when credits open")
 	
 	# Проверка текста титров (автор и история создания)
 	var all_text: String = ""
@@ -573,18 +573,18 @@ func _initialize() -> void:
 	assert(am.current_theme == "fanfare", "Fanfare theme must continue/restart on title screen")
 	print("[PASS] CreditsScreen integration, shaders, textures, scrolling & music verified.")
 
-	# 21. Проверка кнопки 'Поставить звезду на GitHub' и надписи версии (v 0.99.01 Beta) в главном меню
+	# 21. Проверка кнопки 'Поставить звезду на GitHub' и надписи версии (v 1.0 Final) в главном меню
 	assert(main_instance.btn_star != null, "BtnStar must exist in TitleScreen MenuContainer")
 	assert("GitHub" in main_instance.btn_star.text and ("звезд" in main_instance.btn_star.text.to_lower() or "star" in main_instance.btn_star.text.to_lower()), "BtnStar text must invite to star on GitHub")
 	var desc_star = main_instance._get_control_accessibility_description(main_instance.btn_star)
 	assert("GitHub" in desc_star, "BtnStar speech description must mention GitHub")
 	
 	assert(main_instance.version_label != null, "VersionLabel node must be present in TitleScreen")
-	assert(main_instance.version_label.text == "v 0.99.01 Beta", "VersionLabel text must be 'v 0.99.01 Beta'")
+	assert(main_instance.version_label.text == "v 1.0 Final", "VersionLabel text must be 'v 1.0 Final'")
 	var mode_ver = main_instance.get_node("ModeSelectScreen/ModeSelectVersion")
 	assert(mode_ver != null, "ModeSelectVersion must exist in ModeSelectScreen")
-	assert(mode_ver.text == "v 0.99.01 Beta", "ModeSelectVersion text must be 'v 0.99.01 Beta'")
-	print("[PASS] BtnStar ('Поставить звезду на GitHub') and Version info 'v 0.99.01 Beta' verified across TitleScreen and ModeSelectScreen.")
+	assert(mode_ver.text == "v 1.0 Final", "ModeSelectVersion text must be 'v 1.0 Final'")
+	print("[PASS] BtnStar ('Поставить звезду на GitHub') and Version info 'v 1.0 Final' verified across TitleScreen and ModeSelectScreen.")
 
 	# 22. Проверка режима для слабовидящих (Accessibility Mode), синтеза речи UI (self-voicing), контрастного интерфейса и громкости 10%
 	assert(main_instance.check_accessibility != null, "CheckAccessibility node must exist in SettingsPanel")

@@ -3,10 +3,10 @@
 [🇷🇺 Читать на русском (README.md)](README.md) | [🇬🇧 English version](README_EN.md)
 
 [![Play Online](https://img.shields.io/badge/▶_PLAY_ONLINE-GitHub_Pages-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white)](https://mrtek.github.io/Hobbit_1982_Remake/)
-[![Download Release](https://img.shields.io/badge/📥_DOWNLOAD_(WINDOWS)-v0.99.01_Beta-blue?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/mrtek/Hobbit_1982_Remake/releases)
+[![Download Release](https://img.shields.io/badge/📥_DOWNLOAD_(WINDOWS)-v1.0_Final-blue?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/mrtek/Hobbit_1982_Remake/releases)
 
 [![Godot Engine](https://img.shields.io/badge/Godot-4.3+-478CBF?logo=godotengine&logoColor=white)](https://godotengine.org)
-[![Version](https://img.shields.io/badge/version-v0.99.01_Beta-gold)](#)
+[![Version](https://img.shields.io/badge/version-v1.0_Final-gold)](#)
 [![Genre](https://img.shields.io/badge/genre-Text--Graphic_Adventure-darkgreen)](#)
 [![Platform](https://img.shields.io/badge/platform-Web_%7C_Windows_%7C_Linux_%7C_macOS-lightgrey)](#)
 [![Author](https://img.shields.io/badge/Author-Freeonce_(aka_MrTEK)-blue)](#)
@@ -14,6 +14,8 @@
 
 > ### 🎮 **[PLAY ONLINE IN BROWSER (CLICK HERE)](https://mrtek.github.io/Hobbit_1982_Remake/)**
 > *Runs directly in your browser on PC, laptop, or tablet with zero download or installation required! All 6 save slots and audio settings persist automatically in your browser storage (IndexedDB).*
+>
+> 📦 **[Download Windows Standalone Release (v1.0 Final)](https://github.com/mrtek/Hobbit_1982_Remake/releases)**
 
 A modern cross-platform remake of the legendary 1982 text-graphic adventure **«The Hobbit»** by *Melbourne House* (original authors: **Philip Mitchell** and **Veronika Megler**), rebuilt from the ground up in the **Godot 4.3+** engine. Features complete bilingual support (**English** and **Russian**) with authentic 1982 original texts from the historical Melbourne House disassembly.
 

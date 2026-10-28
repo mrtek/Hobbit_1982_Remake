@@ -295,7 +295,7 @@ func _ready() -> void:
 		btn_select_modern.grab_focus()
 		
 	if gs and gs.is_accessibility_mode:
-		var intro_text = "The Hobbit: Remake, version 0.99.01 Beta. Game mode selection screen. 1 — Modern, 2 — Retro VGA, 3 — Classic ZX Spectrum. Press 1, 2 or 3, or use arrow keys and Enter. Key V to toggle voice." if (gs.current_language == HobbitGameState.Language.EN) else "Хоббит: Ремейк, версия 0.99.01 Beta. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания."
+		var intro_text = "The Hobbit: Remake, version 1.0 Final. Game mode selection screen. 1 — Modern, 2 — Retro VGA, 3 — Classic ZX Spectrum. Press 1, 2 or 3, or use arrow keys and Enter. Key V to toggle voice." if (gs.current_language == HobbitGameState.Language.EN) else "Хоббит: Ремейк, версия 1.0 Final. Экран выбора режима игры. 1 — Современный, 2 — Ретро VGA, 3 — Классический ZX Spectrum. Нажмите цифры 1, 2 или 3, либо используйте стрелки и Enter. Клавиша V для переключения озвучивания."
 		_speak_text(intro_text, true)
 
 func _notification(what: int) -> void:
@@ -889,7 +889,7 @@ func _on_credits_closed() -> void:
 		version_label.modulate.a = 1.0
 	var am = _get_audio_manager()
 	if am:
-		am.play_theme("fanfare")
+		am.play_theme("fanfare", false, false)
 	if btn_credits and btn_credits.is_inside_tree():
 		btn_credits.grab_focus()
 	var gs = _get_game_state()

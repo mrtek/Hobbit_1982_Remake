@@ -78,7 +78,7 @@ func open_credits() -> void:
 	# Start music
 	var am = _get_audio_manager()
 	if am and am.has_method("play_theme"):
-		am.play_theme("fanfare")
+		am.play_theme("credits", false, false)
 		
 	# Refresh image list if new ones were added
 	if loaded_textures.is_empty():
@@ -217,43 +217,42 @@ func _fade_picture(pic: TextureRect, new_tex: Texture2D, is_left: bool) -> void:
 
 func _load_all_credits_images() -> void:
 	loaded_textures.clear()
-	var paths_to_scan: Array[String] = [
-		OS.get_executable_path().get_base_dir().path_join("credits_images"),
-		OS.get_executable_path().get_base_dir().path_join("assets_ 4_godot_ready/credits_images"),
-		"G:/Coding/The Hobbit Remake/assets_ 4_godot_ready/credits_images/",
-		ProjectSettings.globalize_path("res://../assets_ 4_godot_ready/credits_images/"),
-		"res://assets/images/credits/"
-	]
 	
-	var discovered_files: Dictionary = {}
-	
-	for dir_path in paths_to_scan:
+	# 1. Primary: load the 25 packaged credits images directly from res:// (inside .pck)
+	for i in range(1, 26):
+		var path = "res://assets/images/credits/Credits_%02d.png" % i
+		var tex = _load_texture_from_path(path)
+		if tex:
+			loaded_textures.append(tex)
+			
+	# 2. Dynamic directory scan if fewer than 25 loaded or for additional images
+	if loaded_textures.size() < 25:
+		var dir_path = "res://assets/images/credits/"
 		var dir = DirAccess.open(dir_path)
 		if dir:
 			dir.list_dir_begin()
 			var file_name = dir.get_next()
+			var found_paths: Array[String] = []
 			while file_name != "":
 				if not dir.current_is_dir():
-					var ext = file_name.get_extension().to_lower()
-					if ext in ["jpg", "jpeg", "png", "webp"]:
-						var full_path = dir_path.path_join(file_name)
-						discovered_files[file_name] = full_path
+					var clean_name = file_name.trim_suffix(".import").trim_suffix(".remap")
+					var ext = clean_name.get_extension().to_lower()
+					if ext in ["png", "jpg", "jpeg", "webp"]:
+						var p = dir_path.path_join(clean_name)
+						if not p in found_paths:
+							found_paths.append(p)
 				file_name = dir.get_next()
 			dir.list_dir_end()
-			
-	var sorted_names = discovered_files.keys()
-	sorted_names.sort()
-	
-	for fname in sorted_names:
-		var p = discovered_files[fname]
-		var tex = _load_texture_from_path(p)
-		if tex:
-			loaded_textures.append(tex)
+			found_paths.sort()
+			for p in found_paths:
+				var tex = _load_texture_from_path(p)
+				if tex and not loaded_textures.has(tex):
+					loaded_textures.append(tex)
 			
 	print("[CreditsScreen] Successfully loaded %d credits images." % loaded_textures.size())
 
 func _load_texture_from_path(path: String) -> Texture2D:
-	if ResourceLoader.exists(path):
+	if ResourceLoader.exists(path) or path.begins_with("res://"):
 		var res = load(path)
 		if res is Texture2D:
 			return res
